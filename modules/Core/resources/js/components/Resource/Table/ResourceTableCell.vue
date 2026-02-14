@@ -7,8 +7,8 @@
         ? 'bg-white group-hover/tr:bg-neutral-50 group-aria-selected/tr:bg-neutral-50 dark:bg-neutral-900 group-hover/tr:dark:bg-neutral-900 group-hover/tr:dark:before:absolute group-hover/tr:dark:before:inset-0 group-hover/tr:dark:before:-z-10 group-hover/tr:dark:before:bg-neutral-500/10 group-aria-selected/tr:dark:bg-neutral-900 group-aria-selected/tr:dark:before:absolute group-aria-selected/tr:dark:before:inset-0 group-aria-selected/tr:dark:before:-z-10 group-aria-selected/tr:dark:before:bg-neutral-500/10'
         : 'bg-danger-100 text-danger-800 ring-1 ring-inset ring-danger-200 ring-offset-4 group-hover/tr:ring-offset-neutral-50 group-aria-selected/tr:ring-offset-neutral-50 hover:bg-danger-200 dark:bg-danger-600/40 dark:ring-danger-600/70 dark:ring-offset-neutral-900 group-hover/tr:dark:ring-offset-neutral-800 group-aria-selected/tr:dark:ring-offset-neutral-800',
       {
-        'lg:sticky lg:left-0': isPrimary,
-        'lg:sticky lg:right-0': isActionsColumn,
+        'lg:sticky lg:left-0 rtl:lg:right-0 rtl:lg:left-auto': isPrimary,
+        'lg:sticky lg:right-0 rtl:lg:left-0 rtl:lg:right-auto': isActionsColumn,
         'whitespace-normal break-all': wrap,
         'whitespace-nowrap': !wrap,
         'text-left': align === 'left',
@@ -31,7 +31,7 @@
 
       <IFormCheckbox
         v-if="isSelectable"
-        :class="[condensed ? '-ml-2' : '', 'mr-2']"
+        :class="[condensed ? '-ms-2' : '', 'me-2']"
         :checked="isSelected"
         @click="$emit('selected', row)"
       />
@@ -39,7 +39,7 @@
       <div
         :class="[
           'overflow-hidden',
-          isSelectable ? (condensed ? 'ml-4' : 'ml-6') : '',
+          isSelectable ? (condensed ? 'ms-4' : 'ms-6') : '',
         ]"
       >
         <component :is="link || route ? ILink : 'div'" v-bind="linkBindings">

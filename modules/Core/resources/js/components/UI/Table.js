@@ -94,7 +94,7 @@ export const ITable = defineComponent({
                     ref: tableRef,
                     id: props.id,
                     class: [
-                      'relative w-full min-w-full text-left text-sm/6 text-neutral-700 dark:text-neutral-200',
+                      'relative w-full min-w-full text-start text-sm/6 text-neutral-700 dark:text-neutral-200',
                       props.fixedLayout ? 'table-fixed' : '',
                     ],
                   },

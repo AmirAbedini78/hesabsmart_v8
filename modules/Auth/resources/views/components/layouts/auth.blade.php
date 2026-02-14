@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-v="{{ \Modules\Core\Application::VERSION }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ is_rtl() ? 'rtl' : 'ltr' }}" data-v="{{ \Modules\Core\Application::VERSION }}">
 
 <head>
     <meta charset="utf-8">

@@ -96,6 +96,21 @@ if (! function_exists('get_generated_lang')) {
     }
 }
 
+if (! function_exists('is_rtl')) {
+    /**
+     * Determine if the current locale is right-to-left (e.g. Persian, Arabic).
+     *
+     * @param  string|null  $locale
+     * @return bool
+     */
+    function is_rtl(?string $locale = null): bool
+    {
+        $locale = $locale ?? app()->getLocale();
+
+        return in_array($locale, ['fa', 'fa_IR', 'ar', 'ar_AE', 'ar_SA'], true);
+    }
+}
+
 if (! function_exists('clone_prefix')) {
     /**
      * Add clone prefix to the given string.

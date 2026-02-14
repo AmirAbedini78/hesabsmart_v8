@@ -5,7 +5,7 @@
       'group/tr',
       row._row_class,
       row._row_border
-        ? '[&>td:first-child]:before:absolute [&>td:first-child]:before:left-0 [&>td:first-child]:before:top-0 [&>td:first-child]:before:h-full [&>td:first-child]:before:w-auto [&>td:first-child]:before:border-l-2 [&>td:first-child]:before:border-transparent'
+        ? '[&>td:first-child]:before:absolute [&>td:first-child]:before:left-0 [&>td:first-child]:before:top-0 [&>td:first-child]:before:h-full [&>td:first-child]:before:w-auto [&>td:first-child]:before:border-l-2 [&>td:first-child]:before:border-transparent rtl:[&>td:first-child]:before:left-auto rtl:[&>td:first-child]:before:border-l-0 rtl:[&>td:last-child]:before:absolute rtl:[&>td:last-child]:before:right-0 rtl:[&>td:last-child]:before:left-auto rtl:[&>td:last-child]:before:top-0 rtl:[&>td:last-child]:before:h-full rtl:[&>td:last-child]:before:w-auto rtl:[&>td:last-child]:before:border-r-2 rtl:[&>td:last-child]:before:border-transparent'
         : '',
       row._row_border
         ? {
@@ -18,6 +18,16 @@
             '[&>td:first-child]:before:!border-info-500':
               row._row_border === 'info',
             '[&>td:first-child]:before:!border-primary-500':
+              row._row_border === 'primary',
+            'rtl:[&>td:last-child]:before:!border-warning-500':
+              row._row_border === 'warning',
+            'rtl:[&>td:last-child]:before:!border-danger-500':
+              row._row_border === 'danger',
+            'rtl:[&>td:last-child]:before:!border-success-500':
+              row._row_border === 'success',
+            'rtl:[&>td:last-child]:before:!border-info-500':
+              row._row_border === 'info',
+            'rtl:[&>td:last-child]:before:!border-primary-500':
               row._row_border === 'primary',
           }
         : '',

@@ -13,7 +13,7 @@
     <template #header="{ isPreEmpty }">
       <form
         v-show="!isPreEmpty"
-        class="order-10 flex-1 text-right"
+        class="order-10 flex-1 text-end"
         @submit.prevent="emptyTrash"
       >
         <IButton

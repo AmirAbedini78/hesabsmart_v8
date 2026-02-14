@@ -47,7 +47,7 @@
         </ITextDark>
       </div>
 
-      <div v-if="withViews" class="flex-1 text-right">
+      <div v-if="withViews" class="flex-1 text-end">
         <IButton
           v-if="settings.singleViewOnly"
           icon="Cog"
@@ -77,7 +77,7 @@
         <ITable
           :id="'table-' + tableIdentifier"
           :class="[
-            '[&_tbody>tr>td:first-child]:px-4 [&_thead>tr>th:first-child]:px-4',
+            '[&_tbody>tr>td:first-child]:px-4 [&_thead>tr>th:first-child]:px-4 rtl:[&_tbody>tr>td:last-child]:px-4 rtl:[&_thead>tr>th:last-child]:px-4',
             isEmpty
               ? '[&_.resizer]:pointer-events-none [&_.resizer]:!opacity-0'
               : '',

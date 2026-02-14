@@ -113,7 +113,7 @@
               element.primary ? $t('core::table.primary_column') : ''
             "
             :class="[
-              'mb-1.5 mr-2 flex items-center rounded-md border border-neutral-200 px-3 py-2 dark:border-neutral-500/30',
+              'mb-1.5 me-2 flex items-center rounded-md border border-neutral-200 px-3 py-2 dark:border-neutral-500/30',
               element.primary
                 ? 'bg-neutral-50 dark:bg-neutral-800'
                 : 'hover:bg-neutral-50 dark:hover:bg-neutral-800',
@@ -180,7 +180,7 @@
           type="number"
           min="200"
           step="50"
-          class="pr-8 sm:pr-10 [&::-webkit-calendar-picker-indicator]:opacity-0"
+          class="pe-8 sm:pe-10 [&::-webkit-calendar-picker-indicator]:opacity-0"
           list="maxHeight"
         />
 
@@ -199,7 +199,7 @@
         </datalist>
 
         <div
-          class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3"
+          class="pointer-events-none absolute inset-y-0 end-0 flex items-center pe-3"
         >
           <span class="-mt-1 text-neutral-400">px</span>
         </div>
@@ -247,7 +247,7 @@
     </div>
 
     <template #modal-footer>
-      <div class="flex items-center justify-between text-right">
+      <div class="flex items-center justify-between text-end">
         <IButton
           v-show="activeView.is_system_default || tableSettings.singleViewOnly"
           :disabled="form.busy"
@@ -258,7 +258,7 @@
           @confirmed="reset"
         />
 
-        <div class="ml-auto space-x-2">
+        <div class="ms-auto space-x-2">
           <IButton
             :disabled="form.busy"
             :text="$t('core::app.cancel')"

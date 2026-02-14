@@ -5,7 +5,7 @@
     <button
       v-once
       type="button"
-      class="border-r border-neutral-200 px-3 text-neutral-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500 dark:border-neutral-500/30 dark:text-neutral-200 md:hidden"
+      class="border-e border-neutral-200 px-3 text-neutral-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500 dark:border-neutral-500/30 dark:text-neutral-200 md:hidden"
       @click="sidebarOpen = true"
     >
       <span class="sr-only">Open sidebar</span>
@@ -13,7 +13,7 @@
       <Icon icon="Bars3BottomLeft" class="size-6" />
     </button>
 
-    <div class="flex flex-1 justify-between pr-4 sm:pr-6 lg:pr-8">
+    <div class="flex flex-1 justify-between pe-4 sm:pe-6 lg:pe-8">
       <div class="flex flex-1">
         <div v-show="hasTitle" class="mx-8 hidden max-w-xs py-5 lg:block">
           <h1
@@ -24,13 +24,13 @@
 
         <span
           v-show="hasTitle"
-          class="hidden h-[--navbar-height] border-l border-neutral-200 dark:border-neutral-500/30 lg:block"
+          class="hidden h-[--navbar-height] border-s border-neutral-200 dark:border-neutral-500/30 lg:block"
         />
 
         <TheNavbarSearch />
       </div>
 
-      <div v-once class="ml-3 flex items-center lg:ml-6">
+      <div v-once class="ms-3 flex items-center lg:ms-6">
         <IButton
           id="header__moon"
           v-i-tooltip.bottom="$t('core::app.theme.switch_light')"
@@ -67,7 +67,7 @@
           <TheNavbarNotifications />
         </div>
 
-        <div v-once class="ml-1 hidden md:block lg:ml-2">
+        <div v-once class="ms-1 hidden md:block lg:ms-2">
           <TheNavbarQuickCreate />
         </div>
 

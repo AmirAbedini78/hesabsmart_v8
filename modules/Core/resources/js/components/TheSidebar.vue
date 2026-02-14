@@ -25,11 +25,11 @@
       <TransitionChild
         as="template"
         enter="transition ease-in-out duration-300 transform"
-        enter-from="-translate-x-full"
+        enter-from="-translate-x-full rtl:translate-x-full"
         enter-to="translate-x-0"
         leave="transition ease-in-out duration-300 transform"
         leave-from="translate-x-0"
-        leave-to="-translate-x-full"
+        leave-to="-translate-x-full rtl:translate-x-full"
       >
         <DialogPanel
           class="relative flex w-56 max-w-xs flex-col bg-[rgb(var(--sidebar-bg-color))] pb-4 pt-5 dark:bg-[rgb(var(--sidebar-dark-bg-color))]"
@@ -43,10 +43,10 @@
             leave-from="opacity-100"
             leave-to="opacity-0"
           >
-            <div class="absolute right-0 top-0 -mr-12 pt-2">
+            <div class="absolute right-0 top-0 -mr-12 pt-2 rtl:right-auto rtl:left-0 rtl:mr-0 rtl:-ml-12">
               <button
                 type="button"
-                class="ml-1 flex size-10 items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                class="ms-1 flex size-10 items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
                 @click="sidebarOpen = false"
               >
                 <span class="sr-only">Close sidebar</span>
@@ -84,7 +84,7 @@
                   >
                     <Icon
                       v-if="item.icon"
-                      class="mr-4 size-6 shrink-0 text-neutral-300"
+                      class="me-4 size-6 shrink-0 text-neutral-300"
                       :icon="item.icon"
                     />
 
@@ -92,14 +92,14 @@
 
                     <IBadge
                       v-if="item.badge"
-                      class="absolute -left-px -top-px dark:bg-neutral-900"
+                      class="absolute -start-px -top-px dark:bg-neutral-900"
                       :variant="item.badgeVariant"
                       :text="item.badge"
                       pill
                     />
 
                     <Icon
-                      class="ml-auto size-4 text-neutral-300"
+                      class="ms-auto size-4 text-neutral-300"
                       :icon="
                         isGroupCollapsed(item.id)
                           ? 'ChevronRightSolid'
@@ -111,7 +111,7 @@
                   <!-- Child Items -->
                   <div
                     v-show="!isGroupCollapsed(item.id)"
-                    class="ml-5 mt-0.5 space-y-0.5 border-l border-neutral-700 pl-1.5"
+                    class="ms-5 mt-0.5 space-y-0.5 border-s border-neutral-700 ps-1.5"
                   >
                     <ILink
                       v-for="child in item.children"
@@ -127,7 +127,7 @@
                     >
                       <Icon
                         v-if="child.icon"
-                        class="mr-3 size-5 shrink-0 text-neutral-300"
+                        class="me-3 size-5 shrink-0 text-neutral-300"
                         :icon="child.icon"
                       />
 
@@ -135,7 +135,7 @@
 
                       <IBadge
                         v-if="child.badge"
-                        class="absolute -left-px -top-px dark:bg-neutral-900"
+                        class="absolute -start-px -top-px dark:bg-neutral-900"
                         :variant="child.badgeVariant"
                         :text="child.badge"
                         pill
@@ -145,7 +145,7 @@
                         v-if="child.inQuickCreate"
                         :to="child.quickCreateRoute"
                         :class="[
-                          'ml-auto rounded-md hover:bg-neutral-800 dark:hover:bg-neutral-900',
+                          'ms-auto rounded-md hover:bg-neutral-800 dark:hover:bg-neutral-900',
                           $route.path === child.quickCreateRoute
                             ? 'hidden'
                             : '',
@@ -172,7 +172,7 @@
                 >
                   <Icon
                     v-if="item.icon"
-                    class="mr-4 size-6 shrink-0 text-neutral-300"
+                    class="me-4 size-6 shrink-0 text-neutral-300"
                     :icon="item.icon"
                   />
 
@@ -180,7 +180,7 @@
 
                   <IBadge
                     v-if="item.badge"
-                    class="absolute -left-px -top-px dark:bg-neutral-900"
+                    class="absolute -start-px -top-px dark:bg-neutral-900"
                     :variant="item.badgeVariant"
                     :text="item.badge"
                     pill
@@ -190,7 +190,7 @@
                     v-if="item.inQuickCreate"
                     :to="item.quickCreateRoute"
                     :class="[
-                      'ml-auto rounded-md hover:bg-neutral-800 dark:hover:bg-neutral-900',
+                      'ms-auto rounded-md hover:bg-neutral-800 dark:hover:bg-neutral-900',
                       $route.path === item.quickCreateRoute ? 'hidden' : '',
                     ]"
                     plain
@@ -245,7 +245,7 @@
                 >
                   <Icon
                     v-if="item.icon"
-                    class="mr-3 size-6 shrink-0 text-neutral-300"
+                    class="me-3 size-6 shrink-0 text-neutral-300"
                     :icon="item.icon"
                   />
 
@@ -253,14 +253,14 @@
 
                   <IBadge
                     v-if="item.badge"
-                    class="absolute -left-px -top-px dark:bg-neutral-900"
+                    class="absolute -start-px -top-px dark:bg-neutral-900"
                     :variant="item.badgeVariant"
                     :text="item.badge"
                     pill
                   />
 
                   <Icon
-                    class="ml-auto size-4 text-neutral-300"
+                    class="ms-auto size-4 text-neutral-300"
                     :icon="
                       isGroupCollapsed(item.id)
                         ? 'ChevronRightSolid'
@@ -272,7 +272,7 @@
                 <!-- Child Items -->
                 <div
                   v-show="!isGroupCollapsed(item.id)"
-                  class="ml-[18px] mt-0.5 space-y-1 border-l border-neutral-700 pl-1.5"
+                  class="ms-[18px] mt-0.5 space-y-1 border-s border-neutral-700 ps-1.5"
                 >
                   <ILink
                     v-for="child in item.children"
@@ -288,7 +288,7 @@
                   >
                     <Icon
                       v-if="child.icon"
-                      class="mr-3 size-5 shrink-0 text-neutral-300"
+                      class="me-3 size-5 shrink-0 text-neutral-300"
                       :icon="child.icon"
                     />
 
@@ -296,7 +296,7 @@
 
                     <IBadge
                       v-if="child.badge"
-                      class="absolute -left-px -top-px dark:bg-neutral-900"
+                      class="absolute -start-px -top-px dark:bg-neutral-900"
                       :variant="child.badgeVariant"
                       :text="child.badge"
                       pill
@@ -306,7 +306,7 @@
                       v-if="child.inQuickCreate"
                       :to="child.quickCreateRoute"
                       :class="[
-                        'ml-auto hidden rounded-md hover:bg-neutral-800 dark:hover:bg-neutral-900',
+                        'ms-auto hidden rounded-md hover:bg-neutral-800 dark:hover:bg-neutral-900',
                         $route.path !== child.quickCreateRoute
                           ? 'group-hover:block'
                           : '',
@@ -333,7 +333,7 @@
               >
                 <Icon
                   v-if="item.icon"
-                  class="mr-3 size-6 shrink-0 text-neutral-300"
+                  class="me-3 size-6 shrink-0 text-neutral-300"
                   :icon="item.icon"
                 />
 
@@ -341,7 +341,7 @@
 
                 <IBadge
                   v-if="item.badge"
-                  class="absolute -left-px -top-px dark:bg-neutral-900"
+                  class="absolute -start-px -top-px dark:bg-neutral-900"
                   :variant="item.badgeVariant"
                   :text="item.badge"
                   pill
@@ -351,7 +351,7 @@
                   v-if="item.inQuickCreate"
                   :to="item.quickCreateRoute"
                   :class="[
-                    'ml-auto hidden rounded-md hover:bg-neutral-800 dark:hover:bg-neutral-900',
+                    'ms-auto hidden rounded-md hover:bg-neutral-800 dark:hover:bg-neutral-900',
                     $route.path !== item.quickCreateRoute
                       ? 'group-hover:block'
                       : '',

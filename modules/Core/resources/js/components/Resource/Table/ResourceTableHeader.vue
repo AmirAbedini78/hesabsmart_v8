@@ -4,8 +4,8 @@
       'group/th relative bg-neutral-50 dark:bg-neutral-900 dark:before:absolute dark:before:inset-0 dark:before:-z-10 dark:before:bg-neutral-500/10',
       isPrimary || isActionsColumn ? 'z-30' : 'z-20',
       {
-        'draggable-exclude lg:sticky lg:left-0': isPrimary,
-        'table-actions-column !px-2 lg:sticky lg:right-0': isActionsColumn,
+        'draggable-exclude lg:sticky lg:left-0 rtl:lg:right-0 rtl:lg:left-auto': isPrimary,
+        'table-actions-column !px-2 lg:sticky lg:right-0 rtl:lg:left-0 rtl:lg:right-auto': isActionsColumn,
         'text-left': align === 'left',
         'text-center': align === 'center',
         'text-right': align === 'right',
@@ -46,7 +46,7 @@
     <div v-if="!isActionsColumn" class="inline-flex items-center">
       <IFormCheckbox
         v-if="isSelectable"
-        :class="[condensed ? '-ml-2' : '', 'mr-2']"
+        :class="[condensed ? '-ms-2' : '', 'me-2']"
         :indeterminate="indeterminate"
         :checked="indeterminate || allRowsSelected"
         @change="$emit('checkboxChanged', indeterminate)"
@@ -56,11 +56,11 @@
         :class="[
           'inline-flex items-center',
           isSelectable ? 'mt-px' : '',
-          isSelectable ? (condensed ? 'ml-4' : 'ml-6') : '',
+          isSelectable ? (condensed ? 'ms-4' : 'ms-6') : '',
         ]"
       >
         <span
-          :class="['truncate', isOrdered ? 'mr-2' : '']"
+          :class="['truncate', isOrdered ? 'me-2' : '']"
           :style="{
             maxWidth: `${parseInt(width, 10) - totalXMargin}px`,
           }"
