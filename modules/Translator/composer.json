@@ -1,0 +1,25 @@
+{
+    "name": "concordcrm/translator",
+    "description": "",
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Translator\\": "app/",
+            "Modules\\Translator\\Database\\Factories\\": "database/factories/",
+            "Modules\\Translator\\Database\\Seeders\\": "database/seeders/",
+            "Modules\\Translator\\Database\\State\\": "database/state/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Translator\\Tests\\": "tests/"
+        }
+    }
+}

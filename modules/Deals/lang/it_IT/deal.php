@@ -1,0 +1,176 @@
+<?php
+/**
+ * Concord CRM - https://www.concordcrm.com
+ *
+ * @version   1.7.0
+ *
+ * @link      Releases - https://www.concordcrm.com/releases
+ * @link      Terms Of Service - https://www.concordcrm.com/terms
+ *
+ * @copyright Copyright (c) 2022-2025 KONKORD DIGITAL
+ */
+
+return [
+    'deal' => 'Trattativa',
+    'deals' => 'Trattative',
+    'create' => 'Crea Trattativa',
+    'add' => 'Aggiungi Trattativa',
+    'sort_by' => 'Ordina trattative per',
+    'name' => 'Nome Trattativa',
+    'choose_or_create' => 'Scegli o crea trattativa',
+    'associate_with' => 'Associa trattativa con :name',
+    'add_products' => 'Aggiungi prodotti',
+    'dont_add_products' => 'Non aggiungere prodotti',
+    'reopen' => 'Riapri',
+    'won_date' => 'Data Vinta',
+    'lost_date' => 'Data Persa',
+    'status_related_filter_notice' => 'Questa regola si applica principalmente quando si filtrano trattative con stato ":status".',
+    'status' => [
+        'status' => 'Stato',
+        'won' => 'Vinto',
+        'lost' => 'Perso',
+        'open' => 'Aperto',
+    ],
+    'been_in_stage_time' => 'Stato attuale per :time',
+    'hasnt_been_in_stage' => 'Questa trattativa non è ancora stata in questo stadio',
+    'total_created' => 'Totale Creati',
+    'total_assigned' => 'Totale Assegnati',
+    'import' => 'Importa Trattative',
+    'export' => 'Esporta Trattative',
+    'import_in' => 'Importa Trattative in :pipeline',
+    'total' => 'Totale Trattative',
+    'closed_deals' => 'Trattative Chiuse',
+    'won_deals' => 'Trattative Vinte',
+    'open_deals' => 'Trattative Aperte',
+    'lost_deals' => 'Trattative Perse',
+    'forecast_amount' => 'Importo Previsionale',
+    'closed_amount' => 'Importo Chiuso',
+    'dissociate' => 'Dissocia Trattativa',
+    'no_companies_associated' => 'Nessuna azienda associata alla trattativa.',
+    'no_contacts_associated' => 'Nessun contatto associato alla trattativa.',
+    'associate_field_info' => 'Usa questo campo per associare una trattativa esistente invece di crearne una nuova.',
+    'create_with' => 'Crea Trattativa con :name',
+    'already_associated' => 'Questa trattativa è già associata con :with.',
+    'lost_reasons' => [
+        'lost_reason' => 'Motivo Perso',
+        'lost_reasons' => 'Motivi Persi',
+        'name' => 'Nome',
+        'choose_lost_reason' => 'Scegli un motivo perso',
+        'choose_lost_reason_or_enter' => 'Scegli un motivo perso o inseriscilo manualmente',
+    ],
+    'settings' => [
+        'lost_reason_is_required' => 'Il motivo perso è obbligatorio',
+        'lost_reason_is_required_info' => 'Quando abilitato, gli agenti di vendita saranno obbligati a scegliere o inserire un motivo perso quando segnano una trattativa come persa.',
+        'allow_lost_reason_enter' => 'Consenti agli agenti di vendita di inserire motivi persi personalizzati',
+        'allow_lost_reason_enter_info' => 'Quando disabilitato, gli agenti di vendita potranno scegliere solo dalla lista predefinita di motivi persi quando segnano la trattativa come persa.',
+    ],
+    'cards' => [
+        'by_stage' => 'Trattative per fase',
+        'lost_in_stage' => 'Fase trattative perse',
+        'lost_in_stage_info' => 'Visualizza in quale fase le trattative vengono più spesso perse. Le fasi mostrate nei rapporti sono le fasi in cui la trattativa si trovava al momento in cui è stata segnata come persa.',
+        'won_in_stage' => 'Fase trattative vinte',
+        'won_in_stage_info' => 'Visualizza in quale fase le trattative vengono più spesso vinte. Le fasi mostrate nei rapporti sono le fasi in cui la trattativa si trovava al momento in cui è stata segnata come vinta.',
+        'closing' => 'Chiusura trattative',
+        'closing_info' => 'Visualizza le trattative che si prevede saranno chiuse in base al periodo selezionato e alla data di chiusura prevista. Le trattative segnate come "Vinte" o "Perse" sono escluse dalla lista.',
+        'recently_created' => 'Trattative create di recente',
+        'recently_modified' => 'Trattative modificate di recente',
+        'won_by_revenue_by_month' => 'Ricavi da trattative vinte per mese',
+        'won_by_date' => 'Trattative vinte per giorno',
+        'assigned_by_sale_agent' => 'Trattative assegnate per agente di vendita',
+        'assigned_by_sale_agent_info' => 'Visualizza il numero totale di trattative assegnate a ciascun agente di vendita. Scopri quanto guadagno queste trattative potrebbero portare alla tua attività e quanto ricavo hai già ottenuto da trattative chiuse.',
+        'created_by_sale_agent' => 'Trattative create per agente di vendita',
+        'created_by_sale_agent_info' => 'Visualizza quali agenti di vendita stanno creando più trattative. Scopri quanto guadagno queste trattative potrebbero portare alla tua attività e quanto ricavo hai già ottenuto da trattative chiuse.',
+        'recently_created_info' => 'Mostrando le ultime :total trattative create negli ultimi :days giorni, ordinate dalla più recente.',
+        'recently_modified_info' => 'Mostrando le ultime :total trattative modificate negli ultimi :days giorni.',
+        'won_by_month' => 'Trattative vinte per mese',
+    ],
+    'notifications' => [
+        'assigned' => 'Ti è stata assegnata una trattativa :name da :user',
+    ],
+    'stage' => [
+        'weighted_value' => ':weighted_total - :win_probability di :total',
+        'changed_date' => 'Data Cambio Fase',
+        'add' => 'Aggiungi Nuova Fase',
+        'name' => 'Nome Fase',
+        'win_probability' => 'Probabilità di Vincita',
+        'delete_usage_warning' => 'La fase è già associata a trattative, quindi non può essere eliminata.',
+    ],
+    'deal_amount' => 'Importo Trattativa',
+    'deal_expected_close_date' => 'Data prevista di chiusura trattativa',
+    'count' => [
+        'all' => '1 trattativa | :count trattative',
+        'open' => ':resource numero trattative aperte',
+        'won' => ':resource numero trattative vinte',
+        'lost' => ':resource numero trattative perse',
+        'closed' => ':resource numero trattative chiuse',
+    ],
+    'pipeline' => [
+        'name' => 'Nome Pipeline',
+        'pipeline' => 'Pipeline',
+        'pipelines' => 'Pipelines',
+        'create' => 'Crea Pipeline',
+        'edit' => 'Modifica Pipeline',
+        'updated' => 'Pipeline aggiornata con successo',
+        'deleted' => 'Pipeline eliminata con successo',
+        'delete_primary_warning' => 'La pipeline primaria non può essere eliminata.',
+        'delete_usage_warning_deals' => 'La pipeline è già associata a trattative, quindi non può essere eliminata.',
+        'visibility_group' => [
+            'primary_restrictions' => 'Questa è la pipeline primaria, quindi la visibilità non può essere modificata.',
+        ],
+        'reorder' => 'Riordina pipelines',
+        'missing_stages' => 'La pipeline non ha fasi.',
+    ],
+    'actions' => [
+        'change_stage' => 'Cambia Fase',
+        'mark_as_open' => 'Segna come aperto',
+        'mark_as_won' => 'Segna come vinto',
+        'mark_as_lost' => 'Segna come perso',
+    ],
+    'views' => [
+        'all' => 'Tutte le Trattative',
+        'my' => 'Le Mie Trattative',
+        'my_recently_assigned' => 'Le Mie Trattative Assegnate di Recente',
+        'created_this_month' => 'Trattative Create Questo Mese',
+        'won' => 'Trattative Vinte',
+        'lost' => 'Trattative Perse',
+        'open' => 'Trattative Aperte',
+    ],
+    'mail_placeholders' => [
+        'assigneer' => 'Il nome dell\'utente che ha assegnato la trattativa',
+    ],
+    'workflows' => [
+        'triggers' => [
+            'status_changed' => 'Stato della trattativa cambiato',
+            'stage_changed' => 'Fase della trattativa cambiata',
+            'created' => 'Trattativa Creata',
+        ],
+        'actions' => [
+            'mark_associated_activities_as_complete' => 'Segna le attività associate come completate',
+            'mark_associated_deals_as_won' => 'Segna le trattative associate come vinte',
+            'mark_associated_deals_as_lost' => 'Segna le trattative associate come perse',
+            'delete_associated_activities' => 'Elimina attività associate',
+            'fields' => [
+                'email_to_contact' => 'Contatto principale della trattativa',
+                'email_to_company' => 'Azienda principale della trattativa',
+                'email_to_owner_email' => 'E-mail del proprietario della trattativa',
+                'email_to_creator_email' => 'E-mail del creatore della trattativa',
+                'lost_reason' => 'Con il seguente motivo perso',
+            ],
+        ],
+    ],
+    'timeline' => [
+        'stage' => [
+            'moved' => ':user ha spostato la trattativa da :previous a :stage fase',
+        ],
+        'marked_as_lost' => ':user ha segnato la trattativa come persa con il seguente motivo: :reason',
+        'marked_as_won' => ':user ha segnato la trattativa come vinta',
+        'marked_as_open' => ':user ha segnato la trattativa come aperta',
+    ],
+    'metrics' => [
+        'open' => 'Trattative Aperte',
+    ],
+    'empty_state' => [
+        'title' => 'Non hai creato nessuna trattativa.',
+        'description' => 'Inizia creando una nuova trattativa.',
+    ],
+];

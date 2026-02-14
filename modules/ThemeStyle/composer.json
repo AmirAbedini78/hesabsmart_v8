@@ -1,0 +1,25 @@
+{
+    "name": "concordcrm/themestyle",
+    "description": "",
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\ThemeStyle\\": "app/",
+            "Modules\\ThemeStyle\\Database\\Factories\\": "database/factories/",
+            "Modules\\ThemeStyle\\Database\\Seeders\\": "database/seeders/",
+            "Modules\\ThemeStyle\\Database\\State\\": "database/state/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\ThemeStyle\\Tests\\": "tests/"
+        }
+    }
+}

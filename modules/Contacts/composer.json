@@ -1,0 +1,25 @@
+{
+    "name": "concordcrm/contacts",
+    "description": "",
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Contacts\\": "app/",
+            "Modules\\Contacts\\Database\\Factories\\": "database/factories/",
+            "Modules\\Contacts\\Database\\Seeders\\": "database/seeders/",
+            "Modules\\Contacts\\Database\\State\\": "database/state/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Contacts\\Tests\\": "tests/"
+        }
+    }
+}

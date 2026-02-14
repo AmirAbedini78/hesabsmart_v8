@@ -1,0 +1,25 @@
+{
+    "name": "concordcrm/webforms",
+    "description": "",
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\WebForms\\": "app/",
+            "Modules\\WebForms\\Database\\Factories\\": "database/factories/",
+            "Modules\\WebForms\\Database\\Seeders\\": "database/seeders/",
+            "Modules\\WebForms\\Database\\State\\": "database/state/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\WebForms\\Tests\\": "tests/"
+        }
+    }
+}

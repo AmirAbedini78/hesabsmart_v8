@@ -1,0 +1,25 @@
+{
+    "name": "concordcrm/activities",
+    "description": "",
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Activities\\": "app/",
+            "Modules\\Activities\\Database\\Factories\\": "database/factories/",
+            "Modules\\Activities\\Database\\Seeders\\": "database/seeders/",
+            "Modules\\Activities\\Database\\State\\": "database/state/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Activities\\Tests\\": "tests/"
+        }
+    }
+}

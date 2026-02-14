@@ -1,0 +1,176 @@
+<?php
+/**
+ * Concord CRM - https://www.concordcrm.com
+ *
+ * @version   1.7.0
+ *
+ * @link      Releases - https://www.concordcrm.com/releases
+ * @link      Terms Of Service - https://www.concordcrm.com/terms
+ *
+ * @copyright Copyright (c) 2022-2025 KONKORD DIGITAL
+ */
+
+return [
+    'deal' => 'Obchod',
+    'deals' => 'Obchody',
+    'create' => 'Vytvoriť obchod',
+    'add' => 'Pridať obchod',
+    'sort_by' => 'Zoradiť obchody podľa',
+    'name' => 'Názov obchodu',
+    'choose_or_create' => 'Vyberte alebo vytvorte obchod',
+    'associate_with' => 'Priradiť obchod k :name',
+    'add_products' => 'Pridať obchody',
+    'dont_add_products' => 'Nepridávať obchody',
+    'reopen' => 'Obnoviť obchod',
+    'won_date' => 'Dátum výhry',
+    'lost_date' => 'Dátum prehry',
+    'status_related_filter_notice' => 'Toto pravidlo sa uplatňuje hlavne pri filtrovaní obchodov so stavom ":status".',
+    'status' => [
+        'status' => 'Stav',
+        'won' => 'Výhra',
+        'lost' => 'Prehra',
+        'open' => 'Otvorené',
+    ],
+    'been_in_stage_time' => 'Bol tu :time',
+    'hasnt_been_in_stage' => 'Tento obchod ešte nie je v tomto štádiu',
+    'total_created' => 'Vytvorených',
+    'total_assigned' => 'Pridelených',
+    'import' => 'Importovať obchody',
+    'export' => 'Exportovať obchody',
+    'import_in' => 'Importovať obchody v :pipeline',
+    'total' => 'Obchodov spolu',
+    'closed_deals' => 'Uzavreté obchody',
+    'won_deals' => 'Vyhraté obchody',
+    'open_deals' => 'Otvorené obchody',
+    'lost_deals' => 'Prehraté obchody',
+    'forecast_amount' => 'Odhadovaná suma',
+    'closed_amount' => 'Uzatvorená suma',
+    'dissociate' => 'Oddeliť obchod',
+    'no_companies_associated' => 'Obchod nie je priradený k žiadnej firme.',
+    'no_contacts_associated' => 'Obchod nie je priradený k žiadnemu kontaktu.',
+    'associate_field_info' => 'Toto pole použite na priradenie existujúceho obchodu namiesto vytvárania nového.',
+    'create_with' => 'Vytvoriť obchod s :name',
+    'already_associated' => 'Tento obchod už je priradený k :with.',
+    'lost_reasons' => [
+        'lost_reason' => 'Dôvod prehry',
+        'lost_reasons' => 'Dôvody prehry',
+        'name' => 'Názov',
+        'choose_lost_reason' => 'Vybrať dôvod prehry',
+        'choose_lost_reason_or_enter' => 'Vyberte dôvod prehry alebo zadajte ho ručne',
+    ],
+    'settings' => [
+        'lost_reason_is_required' => 'Vyžaduje sa dôvod prehry',
+        'lost_reason_is_required_info' => 'Ak je táto možnosť povolená, obchodní zástupcovia budú musieť pri označovaní obchodu ako prehratého vybrať alebo zadať dôvod prehry manuálne.',
+        'allow_lost_reason_enter' => 'Umožnite obchodným zástupcom zadať vlastný dôvod prehry',
+        'allow_lost_reason_enter_info' => 'Ak je táto možnosť vypnutá, obchodní zástupcovia si budú môcť pri označení obchodu ako prehratého vybrať iba z preddefinovaného zoznamu dôvodov prehry.',
+    ],
+    'cards' => [
+        'by_stage' => 'Fázy obchodov',
+        'lost_in_stage' => 'Fáza prehratých obchodov',
+        'lost_in_stage_info' => 'Zobraziť, v akej fáze sú obchody najčastejšie prehraté. Fázy zobrazené v prehľade sú fázy, v ktorých sa obchod nachádzal, keď bol označený ako prehratý.',
+        'won_in_stage' => 'Fáza vyhratých obchodov',
+        'won_in_stage_info' => 'Zobraziť, v akej fáze sú obchody najčastejšie vyhrávané. Fázy zobrazené v prehľade sú fázy, v ktorých sa obchod nachádzal, keď bol označený ako vyhratý.',
+        'closing' => 'Uzatvorené obchody',
+        'closing_info' => 'Zobraziť obchody, ktorých uzavretie sa predpokladá na základe zvoleného obdobia a očakávaného dátumu uzavretia, obchody označené ako „Výhra“ alebo „Prehra“ sú zo zoznamu vylúčené.',
+        'recently_created' => 'Nedávno vytvorené obchody',
+        'recently_modified' => 'Nedávno upravené obchody',
+        'won_by_revenue_by_month' => 'Obrat z vyhratých obchodov',
+        'won_by_date' => 'Vyhraté obchody',
+        'assigned_by_sale_agent' => 'Pridelené obchody',
+        'assigned_by_sale_agent_info' => 'Pozrite si celkový počet pridelených obchodov pre každého obchodného zástupcu. Zistite, aký obrat vám tieto obchody pravdepodobne prinesú. A koľko príjmov už máte z uzavretých obchodov.',
+        'created_by_sale_agent' => 'Vytvorené obchody',
+        'created_by_sale_agent_info' => 'Pozrite si, ktorí obchodní zástupcovia vytvárajú najviac obchodov. Zistite, aký obrat vám tieto obchody pravdepodobne prinesú. A aký obrat už máte z uzavretých obchodov.',
+        'recently_created_info' => 'Zobrazuje sa posledných :total vytvorených obchodov za posledných :days, zoradených podľa najnovších.',
+        'recently_modified_info' => 'Zobrazuje sa posledných :total upravených obchodov za posledných :days dní.',
+        'won_by_month' => 'Vyhraté obchody',
+    ],
+    'notifications' => [
+        'assigned' => 'Používateľ :user vás priradil k obchodu :name',
+    ],
+    'stage' => [
+        'weighted_value' => ':weighted_total - :win_probability z :total',
+        'changed_date' => 'Dátum zmeny fázy',
+        'add' => 'Pridať novú fázu',
+        'name' => 'Názov fázy',
+        'win_probability' => 'Pravdepodobnosť výhry',
+        'delete_usage_warning' => 'Fáza je už spojená s obchodmi, a preto sa nedá odstrániť.',
+    ],
+    'deal_amount' => 'Suma obchodu',
+    'deal_expected_close_date' => 'Očakávaný dátum uzavretia',
+    'count' => [
+        'all' => '1 obchod | :count obchodov',
+        'open' => ':resource počet otvorených obchodov',
+        'won' => ':resource počet vyhratých obchodov',
+        'lost' => ':resource počet prehratých obchodov',
+        'closed' => ':resource počet uzavretých obchodov',
+    ],
+    'pipeline' => [
+        'name' => 'Názov kanálu',
+        'pipeline' => 'Kanál',
+        'pipelines' => 'Kanály',
+        'create' => 'Vytvoriť kanál',
+        'edit' => 'Upraviť kanál',
+        'updated' => 'Kanál bol úspešne aktualizovaný',
+        'deleted' => 'Kanál bol úspešne vymazaný',
+        'delete_primary_warning' => 'Primárny kanál nie je možné odstrániť',
+        'delete_usage_warning_deals' => 'Kanál je už spojený s obchodmi, preto ho nemožno odstrániť.',
+        'visibility_group' => [
+            'primary_restrictions' => 'Toto je primárny kanál, preto viditeľnosť nemožno zmeniť.',
+        ],
+        'reorder' => 'Zmeniť poradie kanála',
+        'missing_stages' => 'Kanál nemá žiadne fázy',
+    ],
+    'actions' => [
+        'change_stage' => 'Zmeniť fázu',
+        'mark_as_open' => 'Označiť obchod ako otvorený',
+        'mark_as_won' => 'Označiť obchod ako vyhratý',
+        'mark_as_lost' => 'Označiť obchod ako prehratý',
+    ],
+    'views' => [
+        'all' => 'Všetky obchody',
+        'my' => 'Moje obchody',
+        'my_recently_assigned' => 'Moje nedávno pridelené obchody',
+        'created_this_month' => 'Obchody vytvorené tento mesiac',
+        'won' => 'Vyhraté obchody',
+        'lost' => 'Prehraté obchody',
+        'open' => 'Otvorené obchody',
+    ],
+    'mail_placeholders' => [
+        'assigneer' => 'Používateľ, ktorý priradil obchod',
+    ],
+    'workflows' => [
+        'triggers' => [
+            'status_changed' => 'Stav obchodu zmenený',
+            'stage_changed' => 'Fáza obchodu zmenená',
+            'created' => 'Vytvorený nový obchod',
+        ],
+        'actions' => [
+            'mark_associated_activities_as_complete' => 'Označiť súvisiace aktivity ako dokončené',
+            'mark_associated_deals_as_won' => 'Označiť priradené obchody ako vyhraté',
+            'mark_associated_deals_as_lost' => 'Označiť priradené obchody ako prehraté',
+            'delete_associated_activities' => 'Odstrániť súvisiace aktivity',
+            'fields' => [
+                'email_to_contact' => 'Primárny kontakt',
+                'email_to_company' => 'Firemný e-mail',
+                'email_to_owner_email' => 'E-mail vlastníka',
+                'email_to_creator_email' => 'E-mail tvorcu',
+                'lost_reason' => 'S nasledovným dôvodom prehry',
+            ],
+        ],
+    ],
+    'timeline' => [
+        'stage' => [
+            'moved' => ':user presunul obchod z :previous do :stage fázy',
+        ],
+        'marked_as_lost' => ':user označil obchod ako prehratý z nasledujúceho dôvodu: :reason',
+        'marked_as_won' => ':user označil obchod za vyhratý',
+        'marked_as_open' => ':user obchod znovu otvoril',
+    ],
+    'metrics' => [
+        'open' => 'Otvorené obchody',
+    ],
+    'empty_state' => [
+        'title' => 'Nevytvorili ste žiadne obchody.',
+        'description' => 'Začnite s vytvorením nového obchodu.',
+    ],
+];

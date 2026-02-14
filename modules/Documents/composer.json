@@ -1,0 +1,25 @@
+{
+    "name": "concordcrm/documents",
+    "description": "",
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Documents\\": "app/",
+            "Modules\\Documents\\Database\\Factories\\": "database/factories/",
+            "Modules\\Documents\\Database\\Seeders\\": "database/seeders/",
+            "Modules\\Documents\\Database\\State\\": "database/state/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Documents\\Tests\\": "tests/"
+        }
+    }
+}

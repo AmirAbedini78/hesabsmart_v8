@@ -1,0 +1,25 @@
+{
+    "name": "concordcrm/billable",
+    "description": "",
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Billable\\": "app/",
+            "Modules\\Billable\\Database\\Factories\\": "database/factories/",
+            "Modules\\Billable\\Database\\Seeders\\": "database/seeders/",
+            "Modules\\Billable\\Database\\State\\": "database/state/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Billable\\Tests\\": "tests/"
+        }
+    }
+}

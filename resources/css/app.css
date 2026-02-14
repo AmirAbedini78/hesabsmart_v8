@@ -1,0 +1,65 @@
+/**
+ * Concord CRM - https://www.concordcrm.com
+ *
+ * @version   1.7.0
+ *
+ * @link      Releases - https://www.concordcrm.com/releases
+ * @link      Terms Of Service - https://www.concordcrm.com/terms
+ *
+ * @copyright Copyright (c) 2022-2025 KONKORD DIGITAL
+ */
+/* https://tailwindcss.com/docs/using-with-preprocessors#build-time-imports */
+@import './variables.css';
+@import './buttons.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+[v-cloak] {
+  display: none !important;
+}
+
+/**
+ If default border color is needed apply the CSS below
+
+ *, :after, :before {
+    border-color: rgb(var(--color-neutral-200));
+}
+*/
+
+.flip-list-move {
+  transition: transform 0.6s;
+}
+
+.drag-ghost-rounded {
+  @apply rounded-md border border-dashed border-neutral-400 opacity-60;
+}
+
+.drag-ghost {
+  @apply border border-dashed border-neutral-400 opacity-60;
+}
+
+.mention {
+  @apply rounded-md bg-neutral-100 px-1 py-0.5 text-base text-neutral-800 sm:text-sm;
+}
+
+/* z-index fixes */
+
+#_cbhtml #divSnippetList,
+.is-ui #divSnippetList {
+  z-index: 1000;
+}
+
+.dialog {
+  z-index: 1050;
+}
+
+.notification,
+.notifications {
+  z-index: 1200;
+}
+
+.confetti {
+  z-index: 1350;
+}

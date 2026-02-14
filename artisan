@@ -1,0 +1,35 @@
+#!/usr/bin/env php
+<?php
+
+use Symfony\Component\Console\Input\ArgvInput;
+
+define('LARAVEL_START', microtime(true));
+
+require_once __DIR__ . '/detached.php';
+
+/*
+|--------------------------------------------------------------------------
+| Early memory limit checks.
+|--------------------------------------------------------------------------
+|
+| We will check the memory limit before the autoloader is included to prevent any
+| ghost errors thrown before installation or while using the application
+| as in most cases if the memory limit is 32MB, will fail.
+|
+| There are hosting providers who have different memory limit for cli and fpm
+| in some cases, the memory limit for cli may be low and cause the execution to fail.
+|
+*/
+DetachedHelper::raiseMemoryLimit('256M');
+
+// Register the Composer autoloader...
+require __DIR__.'/vendor/autoload.php';
+
+// Register the Modules autoloader...
+(new \Modules\Core\Module\ModuleAutoloader())->register();
+
+// Bootstrap Laravel and handle the command...
+$status = (require_once __DIR__.'/bootstrap/app.php')
+    ->handleCommand(new ArgvInput);
+
+exit($status);

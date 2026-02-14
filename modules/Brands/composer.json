@@ -1,0 +1,25 @@
+{
+    "name": "concordcrm/brands",
+    "description": "",
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Brands\\": "app/",
+            "Modules\\Brands\\Database\\Factories\\": "database/factories/",
+            "Modules\\Brands\\Database\\Seeders\\": "database/seeders/",
+            "Modules\\Brands\\Database\\State\\": "database/state/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Brands\\Tests\\": "tests/"
+        }
+    }
+}

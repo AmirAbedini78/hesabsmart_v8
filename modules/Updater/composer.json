@@ -1,0 +1,24 @@
+{
+    "name": "concordcrm/updater",
+    "description": "",
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Updater\\": "app/",
+            "Modules\\Updater\\Database\\Factories\\": "database/factories/",
+            "Modules\\Updater\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Updater\\Tests\\": "tests/"
+        }
+    }
+}

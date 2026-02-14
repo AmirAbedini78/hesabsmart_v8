@@ -1,0 +1,24 @@
+{
+    "name": "concordcrm/installer",
+    "description": "",
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Installer\\": "app/",
+            "Modules\\Installer\\Database\\Factories\\": "database/factories/",
+            "Modules\\Installer\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Installer\\Tests\\": "tests/"
+        }
+    }
+}
