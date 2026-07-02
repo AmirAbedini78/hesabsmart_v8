@@ -70,7 +70,9 @@
       "docs/ai/03-architecture/builder-runtime-write-phase-plan.md",
       "docs/ai/03-architecture/builder-runtime-path-allowlist-strategy.md",
       "docs/ai/03-architecture/builder-runtime-write-backup-strategy.md",
-      "docs/ai/03-architecture/builder-runtime-write-plan-artifact-mvp.md"
+      "docs/ai/03-architecture/builder-runtime-write-plan-artifact-mvp.md",
+      "docs/ai/03-architecture/builder-runtime-write-final-confirmation-gate.md",
+      "docs/ai/03-architecture/builder-runtime-write-confirmation-invalidation-strategy.md"
     ],
     "demo_journey_contracts": [
       "docs/ai/05-rag/contracts/builder-studio-demo-journey-contract.json"
@@ -112,7 +114,8 @@
       "docs/ai/05-rag/contracts/builder-runtime-write-phase-contract.json",
       "docs/ai/05-rag/contracts/builder-runtime-path-allowlist-contract.json",
       "docs/ai/05-rag/contracts/builder-runtime-write-backup-contract.json",
-      "docs/ai/05-rag/contracts/builder-runtime-write-plan-artifact-contract.json"
+      "docs/ai/05-rag/contracts/builder-runtime-write-plan-artifact-contract.json",
+      "docs/ai/05-rag/contracts/builder-runtime-write-final-confirmation-contract.json"
     ]
   },
   "generated_or_derived_files": {
@@ -288,6 +291,8 @@
     "Staged file validation does not copy files to runtime, run migrations, register routes, mark published, or publish.",
     "Runtime write plan artifact maps staged files to future runtime paths, applies the allowlist, plans backups, and writes only under storage/app/builder-runtime-write-plans.",
     "Runtime write plan artifact is storage-only and is not execution.",
+    "Runtime write final confirmation planning is documentation and contracts only; no persistence, endpoint, or UI action exists.",
+    "Future runtime write final confirmation must be explicit human action and must bind to execution, plan path, checksum, candidate, staged validation report, and approved candidate preflight evidence.",
     "Runtime write phase planning remains non-executable; no runtime write endpoint, copy-to-runtime endpoint, publish endpoint, or runtime write UI action exists.",
     "Future runtime write must require staging_validated execution status, human final confirmation, runtime path allowlist, backups before overwrite, rollback manifest updates, and runtime path lock.",
     "RAG is knowledge layer, Tool Registry is action layer, and MCP is future adapter.",

@@ -4,6 +4,8 @@
   "tool_registry_implemented": false,
   "mcp_server_implemented": false,
   "runtime_write_tool_implemented": false,
+  "final_confirmation_tool_implemented": false,
+  "no_tool_maps_to_final_confirmation_endpoint": true,
   "tool_schema_required_fields": [
     "name",
     "purpose",
@@ -83,6 +85,8 @@
     "drop_table",
     "write_migration_directly",
     "execute_publish",
+    "confirm_runtime_write",
+    "grant_runtime_write_final_confirmation",
     "execute_runtime_write",
     "copy_staged_artifacts_to_runtime",
     "copy_to_runtime",

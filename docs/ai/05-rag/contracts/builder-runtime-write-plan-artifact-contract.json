@@ -1,6 +1,8 @@
 {
   "purpose": "Describe the storage-only runtime write plan artifact for staged-validated Builder publish execution records.",
   "current_implementation_status": "runtime_write_plan_artifact_mvp",
+  "final_confirmation_required_after_plan_before_future_runtime_write": true,
+  "final_confirmation_persistence_implemented": false,
   "endpoint": "POST /api/builder/publish-executions/{id}/runtime-write-plan",
   "allowed_execution_statuses": [
     "staging_validated"
