@@ -243,12 +243,19 @@
       :latest-report="publishExecutionReport"
       :validation-report="stagedFileValidationReport"
       :runtime-write-plan-report="runtimeWritePlanReport"
+      :final-confirmation-report="runtimeWriteFinalConfirmationReport"
+      :final-confirmations="runtimeWriteFinalConfirmations"
       :loading="publishExecutionCreating"
       :validation-loading="stagedFileValidating"
       :runtime-write-plan-loading="runtimeWritePlanCreating"
+      :final-confirmation-loading="runtimeWriteFinalConfirmationLoading"
       @create-execution-record="$emit('create-publish-execution-record')"
       @validate-staged-files="$emit('validate-staged-files', $event)"
       @create-runtime-write-plan="$emit('create-runtime-write-plan', $event)"
+      @request-final-confirmation="$emit('request-runtime-write-final-confirmation', $event)"
+      @grant-final-confirmation="$emit('grant-runtime-write-final-confirmation', $event)"
+      @reject-final-confirmation="$emit('reject-runtime-write-final-confirmation', $event)"
+      @revoke-final-confirmation="$emit('revoke-runtime-write-final-confirmation', $event)"
     />
   </div>
 </template>
@@ -275,6 +282,7 @@ const props = defineProps({
   publishExecutionCreating: Boolean,
   stagedFileValidating: Boolean,
   runtimeWritePlanCreating: Boolean,
+  runtimeWriteFinalConfirmationLoading: Boolean,
   validationReport: Object,
   previewRun: Object,
   previewManifest: Object,
@@ -287,6 +295,11 @@ const props = defineProps({
   publishExecutionReport: Object,
   stagedFileValidationReport: Object,
   runtimeWritePlanReport: Object,
+  runtimeWriteFinalConfirmationReport: Object,
+  runtimeWriteFinalConfirmations: {
+    type: Array,
+    default: () => [],
+  },
 })
 
 defineEmits([
@@ -304,6 +317,10 @@ defineEmits([
   'create-publish-execution-record',
   'validate-staged-files',
   'create-runtime-write-plan',
+  'request-runtime-write-final-confirmation',
+  'grant-runtime-write-final-confirmation',
+  'reject-runtime-write-final-confirmation',
+  'revoke-runtime-write-final-confirmation',
 ])
 
 const formattedValidationReport = computed(() => formatJson(props.validationReport))

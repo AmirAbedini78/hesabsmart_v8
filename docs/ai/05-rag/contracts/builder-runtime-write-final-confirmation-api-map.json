@@ -1,0 +1,77 @@
+{
+  "name": "ERPSMART Builder Runtime Write Final Confirmation API Map",
+  "current_implementation_status": "final_confirmation_persistence_mvp",
+  "writes_control_plane_records": true,
+  "runtime_writes_performed": 0,
+  "publish_executed": false,
+  "copy_to_runtime_executed": false,
+  "confirmation_does_not_publish": true,
+  "confirmation_does_not_write_runtime": true,
+  "no_runtime_write_endpoint": true,
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/api/builder/publish-executions/{id}/runtime-write-final-confirmations",
+      "purpose": "List final confirmation records for a publish execution.",
+      "safe_for_ui": true,
+      "safe_for_agent": true,
+      "runtime_writes_performed": 0,
+      "publish_executed": false
+    },
+    {
+      "method": "POST",
+      "path": "/api/builder/publish-executions/{id}/runtime-write-final-confirmations",
+      "purpose": "Request human final confirmation for the current runtime write plan.",
+      "safe_for_ui": true,
+      "safe_for_agent": false,
+      "requires_explicit_human_initiation": true,
+      "next_status": "requested",
+      "runtime_writes_performed": 0,
+      "publish_executed": false,
+      "copy_to_runtime_executed": false
+    },
+    {
+      "method": "POST",
+      "path": "/api/builder/runtime-write-final-confirmations/{id}/grant",
+      "purpose": "Grant final confirmation after freshness checks.",
+      "safe_for_ui": true,
+      "safe_for_agent": false,
+      "requires_explicit_human_initiation": true,
+      "allowed_current_statuses": ["requested"],
+      "next_status": "granted|invalidated",
+      "runtime_writes_performed": 0,
+      "publish_executed": false,
+      "copy_to_runtime_executed": false
+    },
+    {
+      "method": "POST",
+      "path": "/api/builder/runtime-write-final-confirmations/{id}/reject",
+      "purpose": "Reject requested final confirmation.",
+      "safe_for_ui": true,
+      "safe_for_agent": false,
+      "requires_explicit_human_initiation": true,
+      "allowed_current_statuses": ["requested"],
+      "next_status": "rejected",
+      "runtime_writes_performed": 0,
+      "publish_executed": false
+    },
+    {
+      "method": "POST",
+      "path": "/api/builder/runtime-write-final-confirmations/{id}/revoke",
+      "purpose": "Revoke requested or granted final confirmation.",
+      "safe_for_ui": true,
+      "safe_for_agent": false,
+      "requires_explicit_human_initiation": true,
+      "allowed_current_statuses": ["requested", "granted"],
+      "next_status": "revoked",
+      "runtime_writes_performed": 0,
+      "publish_executed": false
+    }
+  ],
+  "forbidden_endpoints": [
+    "/api/builder/publish-executions/{id}/execute-runtime-write",
+    "/api/builder/publish-executions/{id}/copy-to-runtime",
+    "/api/builder/definitions/{id}/publish",
+    "/api/builder/publish-executions/{id}/rollback"
+  ]
+}

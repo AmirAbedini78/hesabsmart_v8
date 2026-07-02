@@ -4,8 +4,9 @@
   "tool_registry_implemented": false,
   "mcp_server_implemented": false,
   "runtime_write_tool_implemented": false,
-  "final_confirmation_tool_implemented": false,
-  "no_tool_maps_to_final_confirmation_endpoint": true,
+  "final_confirmation_api_implemented": true,
+  "final_confirmation_tools_available_to_ai_autonomously": false,
+  "no_autonomous_tool_maps_to_final_confirmation_endpoint": true,
   "tool_schema_required_fields": [
     "name",
     "purpose",

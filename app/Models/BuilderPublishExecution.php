@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class BuilderPublishExecution extends Model
 {
@@ -65,6 +66,11 @@ class BuilderPublishExecution extends Model
     public function approvalRequest(): BelongsTo
     {
         return $this->belongsTo(BuilderPublishApprovalRequest::class, 'builder_publish_approval_request_id');
+    }
+
+    public function runtimeWriteFinalConfirmations(): HasMany
+    {
+        return $this->hasMany(BuilderRuntimeWriteFinalConfirmation::class, 'builder_publish_execution_id');
     }
 
     public function isTerminal(): bool

@@ -215,6 +215,7 @@
               :publish-execution-creating="publishExecutionCreating"
               :staged-file-validating="stagedFileValidating"
               :runtime-write-plan-creating="runtimeWritePlanCreating"
+              :runtime-write-final-confirmation-loading="runtimeWriteFinalConfirmationLoading"
               :validation-report="validationReport || definition.last_validation_report_json"
               :preview-run="previewRun"
               :preview-manifest="definition.last_preview_manifest_json"
@@ -227,6 +228,8 @@
               :publish-execution-report="publishExecutionReport"
               :staged-file-validation-report="stagedFileValidationReport"
               :runtime-write-plan-report="runtimeWritePlanReport"
+              :runtime-write-final-confirmation-report="runtimeWriteFinalConfirmationReport"
+              :runtime-write-final-confirmations="runtimeWriteFinalConfirmations"
               @save="saveDefinition"
               @validate="runValidation"
               @preview="runPreview"
@@ -241,6 +244,10 @@
               @create-publish-execution-record="createExecutionRecord"
               @validate-staged-files="validateStagedFiles"
               @create-runtime-write-plan="createRuntimeWritePlanArtifact"
+              @request-runtime-write-final-confirmation="requestFinalConfirmation"
+              @grant-runtime-write-final-confirmation="grantFinalConfirmation"
+              @reject-runtime-write-final-confirmation="rejectFinalConfirmation"
+              @revoke-runtime-write-final-confirmation="revokeFinalConfirmation"
             />
           </div>
         </div>
@@ -279,12 +286,17 @@ import {
   getApprovedCandidatePreflight,
   listPublishExecutions,
   listPublishApprovalRequests,
+  listRuntimeWriteFinalConfirmations,
   previewDefinition,
   rejectPublishApprovalRequest,
+  rejectRuntimeWriteFinalConfirmation,
   restoreDefinition,
   requestPublishApproval,
+  requestRuntimeWriteFinalConfirmation,
   revokePublishApprovalRequest,
+  revokeRuntimeWriteFinalConfirmation,
   updateDefinition,
+  grantRuntimeWriteFinalConfirmation,
   validatePublishExecutionStagedFiles,
   validateDefinition,
 } from '../services/builderApi'
@@ -303,6 +315,7 @@ const approvedCandidatePreflightLoading = ref(false)
 const publishExecutionCreating = ref(false)
 const stagedFileValidating = ref(false)
 const runtimeWritePlanCreating = ref(false)
+const runtimeWriteFinalConfirmationLoading = ref(false)
 const lifecycleAction = ref(null)
 const definition = ref(null)
 const definitionJson = ref(null)
@@ -318,6 +331,8 @@ const publishExecutions = ref([])
 const publishExecutionReport = ref(null)
 const stagedFileValidationReport = ref(null)
 const runtimeWritePlanReport = ref(null)
+const runtimeWriteFinalConfirmations = ref([])
+const runtimeWriteFinalConfirmationReport = ref(null)
 const jsonError = ref(null)
 const apiError = ref(null)
 const demoFlowSteps = [
@@ -496,6 +511,15 @@ async function loadPublishExecutions() {
   publishExecutions.value = Array.isArray(data) ? data : data.data || []
 }
 
+async function loadRuntimeWriteFinalConfirmations(executionId) {
+  if (!executionId) {
+    return
+  }
+
+  const { data } = await listRuntimeWriteFinalConfirmations(executionId)
+  runtimeWriteFinalConfirmations.value = Array.isArray(data) ? data : data.data || []
+}
+
 async function requestApproval() {
   approvalRequestLoading.value = true
   apiError.value = null
@@ -623,11 +647,79 @@ async function createRuntimeWritePlanArtifact(executionId) {
     const { data } = await createRuntimeWritePlan(executionId)
     runtimeWritePlanReport.value = data
     await loadPublishExecutions()
+    await loadRuntimeWriteFinalConfirmations(executionId)
     Innoclapps.success('Runtime write plan created under storage. No publish or runtime writes were performed.')
   } catch (error) {
     apiError.value = errorMessage(error)
   } finally {
     runtimeWritePlanCreating.value = false
+  }
+}
+
+async function requestFinalConfirmation(executionId) {
+  runtimeWriteFinalConfirmationLoading.value = true
+  apiError.value = null
+
+  try {
+    const { data } = await requestRuntimeWriteFinalConfirmation(executionId)
+    runtimeWriteFinalConfirmationReport.value = data
+    await loadRuntimeWriteFinalConfirmations(executionId)
+    Innoclapps.success('Runtime write final confirmation requested. No runtime write or publish was performed.')
+  } catch (error) {
+    apiError.value = errorMessage(error)
+  } finally {
+    runtimeWriteFinalConfirmationLoading.value = false
+  }
+}
+
+async function grantFinalConfirmation(confirmation) {
+  const note = window.prompt('Decision note for final confirmation') || ''
+  runtimeWriteFinalConfirmationLoading.value = true
+  apiError.value = null
+
+  try {
+    const { data } = await grantRuntimeWriteFinalConfirmation(confirmation.id, note)
+    runtimeWriteFinalConfirmationReport.value = data
+    await loadRuntimeWriteFinalConfirmations(confirmation.builder_publish_execution_id)
+    Innoclapps.success('Final confirmation granted as control-plane state only. No runtime write or publish was performed.')
+  } catch (error) {
+    apiError.value = errorMessage(error)
+  } finally {
+    runtimeWriteFinalConfirmationLoading.value = false
+  }
+}
+
+async function rejectFinalConfirmation(confirmation) {
+  const note = window.prompt('Decision note for final confirmation rejection') || ''
+  runtimeWriteFinalConfirmationLoading.value = true
+  apiError.value = null
+
+  try {
+    const { data } = await rejectRuntimeWriteFinalConfirmation(confirmation.id, note)
+    runtimeWriteFinalConfirmationReport.value = data
+    await loadRuntimeWriteFinalConfirmations(confirmation.builder_publish_execution_id)
+    Innoclapps.success('Final confirmation rejected. No runtime write or publish was performed.')
+  } catch (error) {
+    apiError.value = errorMessage(error)
+  } finally {
+    runtimeWriteFinalConfirmationLoading.value = false
+  }
+}
+
+async function revokeFinalConfirmation(confirmation) {
+  const note = window.prompt('Decision note for final confirmation revocation') || ''
+  runtimeWriteFinalConfirmationLoading.value = true
+  apiError.value = null
+
+  try {
+    const { data } = await revokeRuntimeWriteFinalConfirmation(confirmation.id, note)
+    runtimeWriteFinalConfirmationReport.value = data
+    await loadRuntimeWriteFinalConfirmations(confirmation.builder_publish_execution_id)
+    Innoclapps.success('Final confirmation revoked. No runtime write or publish was performed.')
+  } catch (error) {
+    apiError.value = errorMessage(error)
+  } finally {
+    runtimeWriteFinalConfirmationLoading.value = false
   }
 }
 
@@ -736,6 +828,8 @@ function setDefinition(value) {
   publishExecutionReport.value = null
   stagedFileValidationReport.value = null
   runtimeWritePlanReport.value = null
+  runtimeWriteFinalConfirmations.value = []
+  runtimeWriteFinalConfirmationReport.value = null
 }
 
 function normalizeDefinition(value) {

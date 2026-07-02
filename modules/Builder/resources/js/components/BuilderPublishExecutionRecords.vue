@@ -49,6 +49,21 @@
         @click="$emit('create-runtime-write-plan', latestExecutionId)"
       />
 
+      <IAlert variant="info">
+        <IAlertBody>
+          Final confirmation only. This records human confirmation state and does not write runtime files, copy staged artifacts, run migrations, register routes, or publish.
+        </IAlertBody>
+      </IAlert>
+
+      <IButton
+        class="w-full justify-center"
+        icon="CheckCircle"
+        text="Request Runtime Write Final Confirmation"
+        :disabled="!latestExecutionId"
+        :loading="finalConfirmationLoading"
+        @click="$emit('request-final-confirmation', latestExecutionId)"
+      />
+
       <div v-if="latestReport" class="space-y-3">
         <div class="grid gap-2 text-sm">
           <div class="flex justify-between gap-4">
@@ -226,6 +241,82 @@
         <pre class="max-h-96 overflow-auto whitespace-pre-wrap rounded-md bg-neutral-50 p-3 text-xs dark:bg-neutral-900">{{ formattedRuntimeWritePlanReport }}</pre>
       </div>
 
+      <div v-if="finalConfirmationReport || finalConfirmations.length" class="space-y-3">
+        <ITextDark class="font-medium" text="Runtime write final confirmations" />
+
+        <div v-if="finalConfirmationReport" class="grid gap-2 text-sm">
+          <div class="flex justify-between gap-4">
+            <span class="text-neutral-500 dark:text-neutral-400">status</span>
+            <span class="font-mono">{{ finalConfirmationReport.status }}</span>
+          </div>
+          <div class="flex justify-between gap-4">
+            <span class="text-neutral-500 dark:text-neutral-400">runtime_writes_performed</span>
+            <span class="font-mono">{{ finalConfirmationReport.runtime_writes_performed }}</span>
+          </div>
+          <div class="flex justify-between gap-4">
+            <span class="text-neutral-500 dark:text-neutral-400">publish_executed</span>
+            <span class="font-mono">{{ String(finalConfirmationReport.publish_executed) }}</span>
+          </div>
+          <div class="flex justify-between gap-4">
+            <span class="text-neutral-500 dark:text-neutral-400">copy_to_runtime_executed</span>
+            <span class="font-mono">{{ String(finalConfirmationReport.copy_to_runtime_executed) }}</span>
+          </div>
+        </div>
+
+        <IAlert v-if="finalConfirmationReport?.blockers?.length" variant="danger">
+          <IAlertBody>
+            <div class="mb-1 font-medium">Blockers</div>
+            <ul class="list-disc space-y-1 pl-5">
+              <li v-for="blocker in finalConfirmationReport.blockers" :key="blocker">
+                {{ blocker }}
+              </li>
+            </ul>
+          </IAlertBody>
+        </IAlert>
+
+        <div
+          v-for="confirmation in finalConfirmations"
+          :key="confirmation.id"
+          class="rounded-md border border-neutral-200 p-3 text-sm dark:border-neutral-700"
+        >
+          <div class="flex items-center justify-between gap-3">
+            <span class="font-medium">#{{ confirmation.id }} {{ confirmation.status }}</span>
+            <span class="text-xs text-neutral-500 dark:text-neutral-400">{{ confirmation.requested_at || confirmation.created_at }}</span>
+          </div>
+          <div class="mt-2 grid gap-1 text-xs">
+            <div>candidate_id: <span class="font-mono">{{ confirmation.candidate_id || '-' }}</span></div>
+            <div>runtime_write_plan_path: <span class="break-all font-mono">{{ confirmation.runtime_write_plan_path || '-' }}</span></div>
+          </div>
+          <div class="mt-3 flex flex-wrap gap-2">
+            <IButton
+              size="sm"
+              text="Grant Confirmation"
+              :disabled="confirmation.status !== 'requested'"
+              :loading="finalConfirmationLoading"
+              @click="$emit('grant-final-confirmation', confirmation)"
+            />
+            <IButton
+              size="sm"
+              variant="secondary"
+              text="Reject Confirmation"
+              :disabled="confirmation.status !== 'requested'"
+              :loading="finalConfirmationLoading"
+              @click="$emit('reject-final-confirmation', confirmation)"
+            />
+            <IButton
+              size="sm"
+              variant="secondary"
+              text="Revoke Confirmation"
+              :disabled="!['requested', 'granted'].includes(confirmation.status)"
+              :loading="finalConfirmationLoading"
+              @click="$emit('revoke-final-confirmation', confirmation)"
+            />
+          </div>
+        </div>
+
+        <pre v-if="finalConfirmationReport" class="max-h-96 overflow-auto whitespace-pre-wrap rounded-md bg-neutral-50 p-3 text-xs dark:bg-neutral-900">{{ formattedFinalConfirmationReport }}</pre>
+      </div>
+
       <div v-if="records.length" class="space-y-2">
         <ITextDark class="font-medium" text="Execution records" />
         <div
@@ -259,12 +350,26 @@ const props = defineProps({
   latestReport: Object,
   validationReport: Object,
   runtimeWritePlanReport: Object,
+  finalConfirmationReport: Object,
+  finalConfirmations: {
+    type: Array,
+    default: () => [],
+  },
   loading: Boolean,
   validationLoading: Boolean,
   runtimeWritePlanLoading: Boolean,
+  finalConfirmationLoading: Boolean,
 })
 
-defineEmits(['create-execution-record', 'validate-staged-files', 'create-runtime-write-plan'])
+defineEmits([
+  'create-execution-record',
+  'validate-staged-files',
+  'create-runtime-write-plan',
+  'request-final-confirmation',
+  'grant-final-confirmation',
+  'reject-final-confirmation',
+  'revoke-final-confirmation',
+])
 
 const latestExecutionId = computed(() =>
   props.latestReport?.execution_id || props.records?.[0]?.id || null
@@ -280,5 +385,9 @@ const formattedValidationReport = computed(() =>
 
 const formattedRuntimeWritePlanReport = computed(() =>
   props.runtimeWritePlanReport ? JSON.stringify(props.runtimeWritePlanReport, null, 2) : 'Not run yet.'
+)
+
+const formattedFinalConfirmationReport = computed(() =>
+  props.finalConfirmationReport ? JSON.stringify(props.finalConfirmationReport, null, 2) : 'Not run yet.'
 )
 </script>

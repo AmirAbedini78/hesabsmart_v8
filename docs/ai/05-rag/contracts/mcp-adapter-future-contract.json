@@ -5,6 +5,7 @@
   "mcp_must_not_expose_final_confirmation_tools": true,
   "mcp_must_not_expose_runtime_write_tools": true,
   "mcp_must_not_bypass_human_confirmation": true,
+  "runtime_write_final_confirmation_persistence_exists": true,
   "erpsmart_core_depends_on_mcp": false,
   "internal_tool_registry_first": true,
   "phase_1_read_only_tools": [

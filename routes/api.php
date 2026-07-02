@@ -3,6 +3,7 @@
 use App\Http\Controllers\Builder\BuilderDefinitionController;
 use App\Http\Controllers\Builder\BuilderPublishApprovalRequestController;
 use App\Http\Controllers\Builder\BuilderPublishExecutionController;
+use App\Http\Controllers\Builder\BuilderRuntimeWriteFinalConfirmationController;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 
@@ -42,6 +43,21 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('builder')->group(function 
 
     Route::post('publish-executions/{execution}/runtime-write-plan', [BuilderPublishExecutionController::class, 'runtimeWritePlan'])
         ->name('builder.publish-executions.runtime-write-plan');
+
+    Route::get('publish-executions/{execution}/runtime-write-final-confirmations', [BuilderRuntimeWriteFinalConfirmationController::class, 'index'])
+        ->name('builder.publish-executions.runtime-write-final-confirmations.index');
+
+    Route::post('publish-executions/{execution}/runtime-write-final-confirmations', [BuilderRuntimeWriteFinalConfirmationController::class, 'store'])
+        ->name('builder.publish-executions.runtime-write-final-confirmations.store');
+
+    Route::post('runtime-write-final-confirmations/{confirmation}/grant', [BuilderRuntimeWriteFinalConfirmationController::class, 'grant'])
+        ->name('builder.runtime-write-final-confirmations.grant');
+
+    Route::post('runtime-write-final-confirmations/{confirmation}/reject', [BuilderRuntimeWriteFinalConfirmationController::class, 'reject'])
+        ->name('builder.runtime-write-final-confirmations.reject');
+
+    Route::post('runtime-write-final-confirmations/{confirmation}/revoke', [BuilderRuntimeWriteFinalConfirmationController::class, 'revoke'])
+        ->name('builder.runtime-write-final-confirmations.revoke');
 
     Route::get('definitions/{builderDefinition}/publish-approval-requests', [BuilderPublishApprovalRequestController::class, 'index'])
         ->name('builder.definitions.publish-approval-requests.index');

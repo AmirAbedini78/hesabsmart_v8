@@ -76,6 +76,26 @@ export function createRuntimeWritePlan(executionId) {
   return Innoclapps.request().post(`/builder/publish-executions/${executionId}/runtime-write-plan`)
 }
 
+export function listRuntimeWriteFinalConfirmations(executionId) {
+  return Innoclapps.request(`/builder/publish-executions/${executionId}/runtime-write-final-confirmations`)
+}
+
+export function requestRuntimeWriteFinalConfirmation(executionId) {
+  return Innoclapps.request().post(`/builder/publish-executions/${executionId}/runtime-write-final-confirmations`)
+}
+
+export function grantRuntimeWriteFinalConfirmation(confirmationId, note) {
+  return Innoclapps.request().post(`/builder/runtime-write-final-confirmations/${confirmationId}/grant`, { note })
+}
+
+export function rejectRuntimeWriteFinalConfirmation(confirmationId, note) {
+  return Innoclapps.request().post(`/builder/runtime-write-final-confirmations/${confirmationId}/reject`, { note })
+}
+
+export function revokeRuntimeWriteFinalConfirmation(confirmationId, note) {
+  return Innoclapps.request().post(`/builder/runtime-write-final-confirmations/${confirmationId}/revoke`, { note })
+}
+
 export function archiveDefinition(id) {
   return Innoclapps.request().post(`${endpoint}/${id}/archive`)
 }
