@@ -244,11 +244,13 @@
       :validation-report="stagedFileValidationReport"
       :runtime-write-plan-report="runtimeWritePlanReport"
       :final-confirmation-report="runtimeWriteFinalConfirmationReport"
+      :runtime-write-preflight-report="runtimeWriteExecutionPreflightReport"
       :final-confirmations="runtimeWriteFinalConfirmations"
       :loading="publishExecutionCreating"
       :validation-loading="stagedFileValidating"
       :runtime-write-plan-loading="runtimeWritePlanCreating"
       :final-confirmation-loading="runtimeWriteFinalConfirmationLoading"
+      :runtime-write-preflight-loading="runtimeWriteExecutionPreflightLoading"
       @create-execution-record="$emit('create-publish-execution-record')"
       @validate-staged-files="$emit('validate-staged-files', $event)"
       @create-runtime-write-plan="$emit('create-runtime-write-plan', $event)"
@@ -256,6 +258,7 @@
       @grant-final-confirmation="$emit('grant-runtime-write-final-confirmation', $event)"
       @reject-final-confirmation="$emit('reject-runtime-write-final-confirmation', $event)"
       @revoke-final-confirmation="$emit('revoke-runtime-write-final-confirmation', $event)"
+      @run-runtime-write-preflight="$emit('run-runtime-write-execution-preflight', $event)"
     />
   </div>
 </template>
@@ -283,6 +286,7 @@ const props = defineProps({
   stagedFileValidating: Boolean,
   runtimeWritePlanCreating: Boolean,
   runtimeWriteFinalConfirmationLoading: Boolean,
+  runtimeWriteExecutionPreflightLoading: Boolean,
   validationReport: Object,
   previewRun: Object,
   previewManifest: Object,
@@ -296,6 +300,7 @@ const props = defineProps({
   stagedFileValidationReport: Object,
   runtimeWritePlanReport: Object,
   runtimeWriteFinalConfirmationReport: Object,
+  runtimeWriteExecutionPreflightReport: Object,
   runtimeWriteFinalConfirmations: {
     type: Array,
     default: () => [],
@@ -321,6 +326,7 @@ defineEmits([
   'grant-runtime-write-final-confirmation',
   'reject-runtime-write-final-confirmation',
   'revoke-runtime-write-final-confirmation',
+  'run-runtime-write-execution-preflight',
 ])
 
 const formattedValidationReport = computed(() => formatJson(props.validationReport))

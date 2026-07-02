@@ -44,6 +44,9 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('builder')->group(function 
     Route::post('publish-executions/{execution}/runtime-write-plan', [BuilderPublishExecutionController::class, 'runtimeWritePlan'])
         ->name('builder.publish-executions.runtime-write-plan');
 
+    Route::post('publish-executions/{execution}/runtime-write-preflight', [BuilderPublishExecutionController::class, 'runtimeWritePreflight'])
+        ->name('builder.publish-executions.runtime-write-preflight');
+
     Route::get('publish-executions/{execution}/runtime-write-final-confirmations', [BuilderRuntimeWriteFinalConfirmationController::class, 'index'])
         ->name('builder.publish-executions.runtime-write-final-confirmations.index');
 

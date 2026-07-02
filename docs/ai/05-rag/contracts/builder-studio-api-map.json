@@ -364,6 +364,22 @@
     },
     {
       "method": "POST",
+      "path": "/api/builder/publish-executions/{id}/runtime-write-preflight",
+      "purpose": "Run control-plane runtime write execution preflight after final confirmation.",
+      "status": "implemented",
+      "safe_for_ui": true,
+      "safe_for_agent": false,
+      "requires_admin": true,
+      "publish_related": false,
+      "actual_publish": false,
+      "runtime_writes_performed": 0,
+      "publish_executed": false,
+      "copy_to_runtime_executed": false,
+      "ready_for_future_runtime_write_is_not_execution": true,
+      "notes": "Preflight only. Writes report under storage/app/builder-runtime-write-preflights and does not write runtime files, copy staged artifacts, run migrations, register routes, or publish."
+    },
+    {
+      "method": "POST",
       "path": "/api/builder/definitions/{id}/archive",
       "purpose": "Archive an unpublished Builder definition.",
       "status": "implemented",

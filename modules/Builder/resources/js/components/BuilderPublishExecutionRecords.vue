@@ -64,6 +64,21 @@
         @click="$emit('request-final-confirmation', latestExecutionId)"
       />
 
+      <IAlert variant="info">
+        <IAlertBody>
+          Preflight only. This checks final confirmation and runtime write readiness. It does not write runtime files, copy staged artifacts, run migrations, register routes, or publish.
+        </IAlertBody>
+      </IAlert>
+
+      <IButton
+        class="w-full justify-center"
+        icon="ShieldCheck"
+        text="Run Runtime Write Preflight"
+        :disabled="!latestExecutionId"
+        :loading="runtimeWritePreflightLoading"
+        @click="$emit('run-runtime-write-preflight', latestExecutionId)"
+      />
+
       <div v-if="latestReport" class="space-y-3">
         <div class="grid gap-2 text-sm">
           <div class="flex justify-between gap-4">
@@ -317,6 +332,66 @@
         <pre v-if="finalConfirmationReport" class="max-h-96 overflow-auto whitespace-pre-wrap rounded-md bg-neutral-50 p-3 text-xs dark:bg-neutral-900">{{ formattedFinalConfirmationReport }}</pre>
       </div>
 
+      <div v-if="runtimeWritePreflightReport" class="space-y-3">
+        <ITextDark class="font-medium" text="Runtime write execution preflight" />
+        <div class="grid gap-2 text-sm">
+          <div class="flex justify-between gap-4">
+            <span class="text-neutral-500 dark:text-neutral-400">status</span>
+            <span class="font-mono">{{ runtimeWritePreflightReport.status }}</span>
+          </div>
+          <div class="flex justify-between gap-4">
+            <span class="text-neutral-500 dark:text-neutral-400">ready_for_future_runtime_write</span>
+            <span class="font-mono">{{ String(runtimeWritePreflightReport.ready_for_future_runtime_write) }}</span>
+          </div>
+          <div class="flex justify-between gap-4">
+            <span class="text-neutral-500 dark:text-neutral-400">preflight_report_path</span>
+            <span class="break-all text-right font-mono text-xs">{{ runtimeWritePreflightReport.preflight_report_path || '-' }}</span>
+          </div>
+        </div>
+
+        <IAlert v-if="runtimeWritePreflightReport.blockers?.length" variant="danger">
+          <IAlertBody>
+            <div class="mb-1 font-medium">Blockers</div>
+            <ul class="list-disc space-y-1 pl-5">
+              <li v-for="blocker in runtimeWritePreflightReport.blockers" :key="blocker">
+                {{ blocker }}
+              </li>
+            </ul>
+          </IAlertBody>
+        </IAlert>
+
+        <IAlert v-if="runtimeWritePreflightReport.warnings?.length" variant="warning">
+          <IAlertBody>
+            <div class="mb-1 font-medium">Warnings</div>
+            <ul class="list-disc space-y-1 pl-5">
+              <li v-for="warning in runtimeWritePreflightReport.warnings" :key="warning">
+                {{ warning }}
+              </li>
+            </ul>
+          </IAlertBody>
+        </IAlert>
+
+        <div v-if="runtimeWritePreflightReport.checks?.length">
+          <ITextDark class="font-medium" text="Checks" />
+          <ul class="mt-1 space-y-1 text-sm">
+            <li v-for="check in runtimeWritePreflightReport.checks" :key="check.key">
+              <span class="font-mono">{{ check.status }}</span> {{ check.key }} - {{ check.message }}
+            </li>
+          </ul>
+        </div>
+
+        <div v-if="runtimeWritePreflightReport.forbidden_actions?.length">
+          <ITextDark class="font-medium" text="Forbidden actions" />
+          <ul class="mt-1 list-disc space-y-1 pl-5 text-sm">
+            <li v-for="action in runtimeWritePreflightReport.forbidden_actions" :key="action">
+              {{ action }}
+            </li>
+          </ul>
+        </div>
+
+        <pre class="max-h-96 overflow-auto whitespace-pre-wrap rounded-md bg-neutral-50 p-3 text-xs dark:bg-neutral-900">{{ formattedRuntimeWritePreflightReport }}</pre>
+      </div>
+
       <div v-if="records.length" class="space-y-2">
         <ITextDark class="font-medium" text="Execution records" />
         <div
@@ -351,6 +426,7 @@ const props = defineProps({
   validationReport: Object,
   runtimeWritePlanReport: Object,
   finalConfirmationReport: Object,
+  runtimeWritePreflightReport: Object,
   finalConfirmations: {
     type: Array,
     default: () => [],
@@ -359,6 +435,7 @@ const props = defineProps({
   validationLoading: Boolean,
   runtimeWritePlanLoading: Boolean,
   finalConfirmationLoading: Boolean,
+  runtimeWritePreflightLoading: Boolean,
 })
 
 defineEmits([
@@ -369,6 +446,7 @@ defineEmits([
   'grant-final-confirmation',
   'reject-final-confirmation',
   'revoke-final-confirmation',
+  'run-runtime-write-preflight',
 ])
 
 const latestExecutionId = computed(() =>
@@ -389,5 +467,9 @@ const formattedRuntimeWritePlanReport = computed(() =>
 
 const formattedFinalConfirmationReport = computed(() =>
   props.finalConfirmationReport ? JSON.stringify(props.finalConfirmationReport, null, 2) : 'Not run yet.'
+)
+
+const formattedRuntimeWritePreflightReport = computed(() =>
+  props.runtimeWritePreflightReport ? JSON.stringify(props.runtimeWritePreflightReport, null, 2) : 'Not run yet.'
 )
 </script>

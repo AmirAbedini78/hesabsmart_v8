@@ -76,6 +76,10 @@ export function createRuntimeWritePlan(executionId) {
   return Innoclapps.request().post(`/builder/publish-executions/${executionId}/runtime-write-plan`)
 }
 
+export function runRuntimeWriteExecutionPreflight(executionId) {
+  return Innoclapps.request().post(`/builder/publish-executions/${executionId}/runtime-write-preflight`)
+}
+
 export function listRuntimeWriteFinalConfirmations(executionId) {
   return Innoclapps.request(`/builder/publish-executions/${executionId}/runtime-write-final-confirmations`)
 }

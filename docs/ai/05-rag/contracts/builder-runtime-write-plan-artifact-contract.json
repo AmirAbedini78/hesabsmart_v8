@@ -4,6 +4,7 @@
   "final_confirmation_required_after_plan_before_future_runtime_write": true,
   "final_confirmation_persistence_implemented": true,
   "final_confirmation_can_bind_to_runtime_write_plan_artifact": true,
+  "checked_by_runtime_write_execution_preflight": true,
   "endpoint": "POST /api/builder/publish-executions/{id}/runtime-write-plan",
   "allowed_execution_statuses": [
     "staging_validated"

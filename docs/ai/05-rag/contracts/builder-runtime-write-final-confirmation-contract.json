@@ -10,6 +10,7 @@
   "mcp_may_confirm": false,
   "confirmation_does_not_publish": true,
   "confirmation_does_not_write_runtime": true,
+  "feeds_runtime_write_execution_preflight": true,
   "binds_to": [
     "builder_definition_id",
     "builder_publish_execution_id",

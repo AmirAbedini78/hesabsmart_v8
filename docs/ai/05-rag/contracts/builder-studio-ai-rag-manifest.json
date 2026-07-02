@@ -28,6 +28,7 @@
       "app/Services/Builder/BuilderPublishStagedFileValidationService.php",
       "app/Services/Builder/BuilderRuntimeWritePlanArtifactService.php",
       "app/Services/Builder/BuilderRuntimeWriteFinalConfirmationService.php",
+      "app/Services/Builder/BuilderRuntimeWriteExecutionPreflightService.php",
       "app/Http/Controllers/Builder/BuilderRuntimeWriteFinalConfirmationController.php"
     ],
     "frontend": [
@@ -76,7 +77,8 @@
       "docs/ai/03-architecture/builder-runtime-write-plan-artifact-mvp.md",
       "docs/ai/03-architecture/builder-runtime-write-final-confirmation-gate.md",
       "docs/ai/03-architecture/builder-runtime-write-confirmation-invalidation-strategy.md",
-      "docs/ai/03-architecture/builder-runtime-write-final-confirmation-persistence-mvp.md"
+      "docs/ai/03-architecture/builder-runtime-write-final-confirmation-persistence-mvp.md",
+      "docs/ai/03-architecture/builder-runtime-write-execution-preflight-mvp.md"
     ],
     "demo_journey_contracts": [
       "docs/ai/05-rag/contracts/builder-studio-demo-journey-contract.json"
@@ -120,7 +122,8 @@
       "docs/ai/05-rag/contracts/builder-runtime-write-backup-contract.json",
       "docs/ai/05-rag/contracts/builder-runtime-write-plan-artifact-contract.json",
       "docs/ai/05-rag/contracts/builder-runtime-write-final-confirmation-contract.json",
-      "docs/ai/05-rag/contracts/builder-runtime-write-final-confirmation-api-map.json"
+      "docs/ai/05-rag/contracts/builder-runtime-write-final-confirmation-api-map.json",
+      "docs/ai/05-rag/contracts/builder-runtime-write-execution-preflight-contract.json"
     ]
   },
   "generated_or_derived_files": {
@@ -162,7 +165,8 @@
     "App\\Services\\Builder\\BuilderPublishExecutionPreparationService",
     "App\\Services\\Builder\\BuilderPublishStagedFileValidationService",
     "App\\Services\\Builder\\BuilderRuntimeWritePlanArtifactService",
-    "App\\Services\\Builder\\BuilderRuntimeWriteFinalConfirmationService"
+    "App\\Services\\Builder\\BuilderRuntimeWriteFinalConfirmationService",
+    "App\\Services\\Builder\\BuilderRuntimeWriteExecutionPreflightService"
   ],
   "frontend_module_files": [
     "modules/Builder/resources/js/app.js",
@@ -222,7 +226,8 @@
     "create publish execution preparation record with lock, preflight, staging root, rollback manifest draft, and audit events",
     "validate staged storage artifacts and write staged file validation report under storage",
     "create runtime write plan artifact under storage when explicitly human initiated",
-    "request, grant, reject, and revoke runtime write final confirmation as control-plane state when explicitly human initiated"
+    "request, grant, reject, and revoke runtime write final confirmation as control-plane state when explicitly human initiated",
+    "run runtime write execution preflight when explicitly human initiated"
   ],
   "forbidden_operations": [
     "publish from Builder Studio MVP",
@@ -252,6 +257,8 @@
     "autonomously validate staged files",
     "autonomously create runtime write plan artifacts",
     "autonomously request, grant, reject, or revoke runtime write final confirmation",
+    "autonomously run runtime write execution preflight",
+    "treat ready_for_future_runtime_write as runtime write execution",
     "copy staged files to runtime",
     "call forbidden tools",
     "use MCP to bypass permissions, approval, or audit",
@@ -303,6 +310,7 @@
     "Runtime write plan artifact is storage-only and is not execution.",
     "Runtime write final confirmation planning established the gate and invalidation rules before persistence was added.",
     "Runtime write final confirmation persistence records control-plane review state and audit events only.",
+    "Runtime write execution preflight is storage-only control-plane readiness reporting and is not runtime write execution.",
     "Future runtime write final confirmation must be explicit human action and must bind to execution, plan path, checksum, candidate, staged validation report, and approved candidate preflight evidence.",
     "Runtime write phase planning remains non-executable; no runtime write endpoint, copy-to-runtime endpoint, publish endpoint, or runtime write UI action exists.",
     "Future runtime write must require staging_validated execution status, human final confirmation, runtime path allowlist, backups before overwrite, rollback manifest updates, and runtime path lock.",

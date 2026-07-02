@@ -19,6 +19,8 @@ class BuilderPublishExecution extends Model
     public const STATUS_STAGING_VALIDATION_FAILED = 'staging_validation_failed';
     public const STATUS_RUNTIME_WRITE_PLANNED = 'runtime_write_planned';
     public const STATUS_RUNTIME_WRITE_PLAN_BLOCKED = 'runtime_write_plan_blocked';
+    public const STATUS_RUNTIME_WRITE_PREFLIGHT_PASSED = 'runtime_write_preflight_passed';
+    public const STATUS_RUNTIME_WRITE_PREFLIGHT_BLOCKED = 'runtime_write_preflight_blocked';
     public const STATUS_FAILED = 'failed';
     public const STATUS_CANCELLED = 'cancelled';
 
@@ -82,6 +84,8 @@ class BuilderPublishExecution extends Model
             self::STATUS_STAGING_VALIDATION_FAILED,
             self::STATUS_RUNTIME_WRITE_PLANNED,
             self::STATUS_RUNTIME_WRITE_PLAN_BLOCKED,
+            self::STATUS_RUNTIME_WRITE_PREFLIGHT_PASSED,
+            self::STATUS_RUNTIME_WRITE_PREFLIGHT_BLOCKED,
             self::STATUS_FAILED,
             self::STATUS_CANCELLED,
         ], true);

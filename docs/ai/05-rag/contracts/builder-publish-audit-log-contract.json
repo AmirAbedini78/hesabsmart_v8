@@ -24,7 +24,10 @@
     "runtime_write_confirmation_granted",
     "runtime_write_confirmation_rejected",
     "runtime_write_confirmation_revoked",
-    "runtime_write_confirmation_invalidated"
+    "runtime_write_confirmation_invalidated",
+    "runtime_write_preflight_started",
+    "runtime_write_preflight_passed",
+    "runtime_write_preflight_blocked"
   ],
   "future_events": [
     "candidate_snapshot_created",
@@ -51,6 +54,9 @@
     "runtime_write_confirmation_rejected",
     "runtime_write_confirmation_revoked",
     "runtime_write_confirmation_invalidated",
+    "runtime_write_preflight_started",
+    "runtime_write_preflight_passed",
+    "runtime_write_preflight_blocked",
     "runtime_write_backup_created",
     "runtime_write_started",
     "runtime_write_succeeded",
