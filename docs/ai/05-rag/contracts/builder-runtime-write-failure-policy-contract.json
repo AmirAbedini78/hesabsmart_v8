@@ -1,0 +1,11 @@
+{
+  "name": "ERPSMART Builder Runtime Write Failure Policy Contract",
+  "current_implementation_status": "policy_only",
+  "rollback_execution_implemented": false,
+  "automatic_rollback_implemented": false,
+  "human_confirmation_required_for_future_rollback": true,
+  "partial_write_detection_required": true,
+  "checksum_verification_required": true,
+  "audit_required": true,
+  "post_write_smoke_required": true
+}

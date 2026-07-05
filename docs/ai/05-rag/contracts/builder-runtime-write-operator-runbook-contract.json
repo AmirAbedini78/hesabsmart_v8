@@ -1,0 +1,26 @@
+{
+  "name": "ERPSMART Builder Runtime Write Operator Runbook Contract",
+  "current_implementation_status": "runbook_only",
+  "operator_acknowledgement_required_before_future_runtime_write": true,
+  "required_checklist_items": [
+    "confirm_builder_definition",
+    "confirm_candidate_snapshot",
+    "confirm_approval_request",
+    "confirm_publish_execution_record",
+    "confirm_staged_validation_passed",
+    "confirm_runtime_write_plan",
+    "confirm_final_confirmation_granted",
+    "confirm_runtime_write_preflight_passed",
+    "confirm_backups_prepared",
+    "confirm_post_backup_readiness_passed",
+    "confirm_target_module_slug",
+    "confirm_no_core_saas_updater_installer_paths",
+    "confirm_backup_manifest_exists",
+    "confirm_rollback_manifest_exists",
+    "confirm_operator_understands_runtime_write_risk",
+    "confirm_no_ai_autonomous_execution",
+    "confirm_maintenance_window_if_needed"
+  ],
+  "ai_may_acknowledge_operator_runbook": false,
+  "mcp_may_acknowledge_operator_runbook": false
+}

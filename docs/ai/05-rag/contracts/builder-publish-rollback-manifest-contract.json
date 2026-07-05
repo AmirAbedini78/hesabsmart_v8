@@ -11,6 +11,7 @@
   "post_backup_readiness_checks_backup_references": true,
   "future_rollback_manifest_must_include_runtime_write_backups": true,
   "rollback_execution_implemented": false,
+  "future_rollback_requires_separate_human_confirmation": true,
   "required_fields": [
     "publish_id",
     "candidate_id",

@@ -1,0 +1,24 @@
+{
+  "name": "ERPSMART Builder Runtime Write Kill-Switch Contract",
+  "current_implementation_status": "policy_only",
+  "runtime_write_enabled_default": false,
+  "environment_guard_required": true,
+  "config_guard_required": true,
+  "per_execution_guard_required": true,
+  "ai_may_override_kill_switch": false,
+  "mcp_may_override_kill_switch": false,
+  "hard_forbidden_paths": [
+    "modules/Core",
+    "modules/SaaS",
+    "modules/Updater",
+    "modules/Installer",
+    "public/build",
+    "vendor",
+    "node_modules",
+    ".env",
+    "composer.json",
+    "package.json",
+    "routes/web.php",
+    "resources/js/app.js"
+  ]
+}

@@ -82,7 +82,11 @@
       "docs/ai/03-architecture/builder-runtime-write-final-confirmation-persistence-mvp.md",
       "docs/ai/03-architecture/builder-runtime-write-execution-preflight-mvp.md",
       "docs/ai/03-architecture/builder-runtime-write-backup-artifact-mvp.md",
-      "docs/ai/03-architecture/builder-post-backup-runtime-write-readiness-mvp.md"
+      "docs/ai/03-architecture/builder-post-backup-runtime-write-readiness-mvp.md",
+      "docs/ai/03-architecture/builder-runtime-write-execution-architecture-review.md",
+      "docs/ai/03-architecture/builder-runtime-write-operator-runbook.md",
+      "docs/ai/03-architecture/builder-runtime-write-kill-switch-policy.md",
+      "docs/ai/03-architecture/builder-runtime-write-failure-and-rollback-policy.md"
     ],
     "demo_journey_contracts": [
       "docs/ai/05-rag/contracts/builder-studio-demo-journey-contract.json"
@@ -129,7 +133,11 @@
       "docs/ai/05-rag/contracts/builder-runtime-write-final-confirmation-api-map.json",
       "docs/ai/05-rag/contracts/builder-runtime-write-execution-preflight-contract.json",
       "docs/ai/05-rag/contracts/builder-runtime-write-backup-artifact-contract.json",
-      "docs/ai/05-rag/contracts/builder-post-backup-runtime-write-readiness-contract.json"
+      "docs/ai/05-rag/contracts/builder-post-backup-runtime-write-readiness-contract.json",
+      "docs/ai/05-rag/contracts/builder-runtime-write-execution-architecture-review-contract.json",
+      "docs/ai/05-rag/contracts/builder-runtime-write-operator-runbook-contract.json",
+      "docs/ai/05-rag/contracts/builder-runtime-write-kill-switch-contract.json",
+      "docs/ai/05-rag/contracts/builder-runtime-write-failure-policy-contract.json"
     ]
   },
   "generated_or_derived_files": {
@@ -331,6 +339,8 @@
     "Runtime write execution preflight is storage-only control-plane readiness reporting and is not runtime write execution.",
     "Runtime write backup artifact copies existing future runtime target files into storage/app/builder-publish-backups only and is not runtime write execution.",
     "Post-backup runtime write readiness is storage-only control-plane reporting and ready_for_runtime_write_execution is not runtime write execution.",
+    "runtime write execution architecture review is review-only and required before any future runtime write implementation.",
+    "Runtime write execution architecture review is review-only and does not implement runtime write, copy-to-runtime, publish, or rollback endpoints.",
     "Future runtime write final confirmation must be explicit human action and must bind to execution, plan path, checksum, candidate, staged validation report, and approved candidate preflight evidence.",
     "Runtime write phase planning remains non-executable; no runtime write endpoint, copy-to-runtime endpoint, publish endpoint, or runtime write UI action exists.",
     "Future runtime write must require staging_validated execution status, human final confirmation, runtime path allowlist, backups before overwrite, rollback manifest updates, and runtime path lock.",
