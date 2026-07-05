@@ -79,6 +79,21 @@
         @click="$emit('run-runtime-write-preflight', latestExecutionId)"
       />
 
+      <IAlert variant="info">
+        <IAlertBody>
+          Backup artifact only. This backs up existing future runtime target files into storage and does not copy staged files to runtime, run migrations, register routes, or publish.
+        </IAlertBody>
+      </IAlert>
+
+      <IButton
+        class="w-full justify-center"
+        icon="ArchiveBox"
+        text="Prepare Runtime Write Backups"
+        :disabled="!latestExecutionId"
+        :loading="runtimeWriteBackupsLoading"
+        @click="$emit('prepare-runtime-write-backups', latestExecutionId)"
+      />
+
       <div v-if="latestReport" class="space-y-3">
         <div class="grid gap-2 text-sm">
           <div class="flex justify-between gap-4">
@@ -392,6 +407,70 @@
         <pre class="max-h-96 overflow-auto whitespace-pre-wrap rounded-md bg-neutral-50 p-3 text-xs dark:bg-neutral-900">{{ formattedRuntimeWritePreflightReport }}</pre>
       </div>
 
+      <div v-if="runtimeWriteBackupsReport" class="space-y-3">
+        <ITextDark class="font-medium" text="Runtime write backup artifact" />
+        <div class="grid gap-2 text-sm">
+          <div class="flex justify-between gap-4">
+            <span class="text-neutral-500 dark:text-neutral-400">status</span>
+            <span class="font-mono">{{ runtimeWriteBackupsReport.status }}</span>
+          </div>
+          <div class="flex justify-between gap-4">
+            <span class="text-neutral-500 dark:text-neutral-400">backup_manifest_path</span>
+            <span class="break-all text-right font-mono text-xs">{{ runtimeWriteBackupsReport.backup_manifest_path || '-' }}</span>
+          </div>
+          <div class="flex justify-between gap-4">
+            <span class="text-neutral-500 dark:text-neutral-400">existing_files_backed_up</span>
+            <span class="font-mono">{{ runtimeWriteBackupsReport.summary?.existing_files_backed_up || 0 }}</span>
+          </div>
+          <div class="flex justify-between gap-4">
+            <span class="text-neutral-500 dark:text-neutral-400">new_files_no_backup_needed</span>
+            <span class="font-mono">{{ runtimeWriteBackupsReport.summary?.new_files_no_backup_needed || 0 }}</span>
+          </div>
+        </div>
+
+        <IAlert v-if="runtimeWriteBackupsReport.blockers?.length" variant="danger">
+          <IAlertBody>
+            <div class="mb-1 font-medium">Blockers</div>
+            <ul class="list-disc space-y-1 pl-5">
+              <li v-for="blocker in runtimeWriteBackupsReport.blockers" :key="blocker">
+                {{ blocker }}
+              </li>
+            </ul>
+          </IAlertBody>
+        </IAlert>
+
+        <IAlert v-if="runtimeWriteBackupsReport.warnings?.length" variant="warning">
+          <IAlertBody>
+            <div class="mb-1 font-medium">Warnings</div>
+            <ul class="list-disc space-y-1 pl-5">
+              <li v-for="warning in runtimeWriteBackupsReport.warnings" :key="warning">
+                {{ warning }}
+              </li>
+            </ul>
+          </IAlertBody>
+        </IAlert>
+
+        <div v-if="runtimeWriteBackupsReport.checks?.length">
+          <ITextDark class="font-medium" text="Checks" />
+          <ul class="mt-1 space-y-1 text-sm">
+            <li v-for="check in runtimeWriteBackupsReport.checks" :key="check.key">
+              <span class="font-mono">{{ check.status }}</span> {{ check.key }} - {{ check.message }}
+            </li>
+          </ul>
+        </div>
+
+        <div v-if="runtimeWriteBackupsReport.forbidden_actions?.length">
+          <ITextDark class="font-medium" text="Forbidden actions" />
+          <ul class="mt-1 list-disc space-y-1 pl-5 text-sm">
+            <li v-for="action in runtimeWriteBackupsReport.forbidden_actions" :key="action">
+              {{ action }}
+            </li>
+          </ul>
+        </div>
+
+        <pre class="max-h-96 overflow-auto whitespace-pre-wrap rounded-md bg-neutral-50 p-3 text-xs dark:bg-neutral-900">{{ formattedRuntimeWriteBackupsReport }}</pre>
+      </div>
+
       <div v-if="records.length" class="space-y-2">
         <ITextDark class="font-medium" text="Execution records" />
         <div
@@ -427,6 +506,7 @@ const props = defineProps({
   runtimeWritePlanReport: Object,
   finalConfirmationReport: Object,
   runtimeWritePreflightReport: Object,
+  runtimeWriteBackupsReport: Object,
   finalConfirmations: {
     type: Array,
     default: () => [],
@@ -436,6 +516,7 @@ const props = defineProps({
   runtimeWritePlanLoading: Boolean,
   finalConfirmationLoading: Boolean,
   runtimeWritePreflightLoading: Boolean,
+  runtimeWriteBackupsLoading: Boolean,
 })
 
 defineEmits([
@@ -447,6 +528,7 @@ defineEmits([
   'reject-final-confirmation',
   'revoke-final-confirmation',
   'run-runtime-write-preflight',
+  'prepare-runtime-write-backups',
 ])
 
 const latestExecutionId = computed(() =>
@@ -471,5 +553,9 @@ const formattedFinalConfirmationReport = computed(() =>
 
 const formattedRuntimeWritePreflightReport = computed(() =>
   props.runtimeWritePreflightReport ? JSON.stringify(props.runtimeWritePreflightReport, null, 2) : 'Not run yet.'
+)
+
+const formattedRuntimeWriteBackupsReport = computed(() =>
+  props.runtimeWriteBackupsReport ? JSON.stringify(props.runtimeWriteBackupsReport, null, 2) : 'Not run yet.'
 )
 </script>

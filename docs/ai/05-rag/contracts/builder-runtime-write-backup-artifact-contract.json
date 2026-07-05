@@ -1,0 +1,49 @@
+{
+  "name": "ERPSMART Builder Runtime Write Backup Artifact Contract",
+  "current_implementation_status": "runtime_write_backup_artifact_mvp",
+  "endpoint": "POST /api/builder/publish-executions/{id}/runtime-write-backups",
+  "allowed_execution_statuses": [
+    "runtime_write_preflight_passed"
+  ],
+  "resulting_statuses": [
+    "runtime_write_backups_prepared",
+    "runtime_write_backup_blocked"
+  ],
+  "allowed_write_scope": "storage/app/builder-publish-backups",
+  "forbidden_write_scopes": [
+    "modules/",
+    "database/migrations",
+    "routes/",
+    "resources/js/app.js",
+    "public/build",
+    "vendor",
+    "node_modules"
+  ],
+  "existing_runtime_files_may_be_read": true,
+  "existing_runtime_files_may_be_copied_to_backup_storage": true,
+  "staged_files_may_be_copied_to_runtime": false,
+  "runtime_writes_performed": 0,
+  "publish_executed": false,
+  "copy_to_runtime_executed": false,
+  "migrations_run": false,
+  "agent_may_call_when_human_initiated": true,
+  "agent_may_execute_runtime_write": false,
+  "mcp_may_execute_runtime_write": false,
+  "required_checks": [
+    "execution_status_runtime_write_preflight_passed",
+    "runtime_write_preflight_report_exists",
+    "runtime_write_preflight_ready_true",
+    "runtime_write_plan_exists",
+    "runtime_write_plan_valid_json",
+    "rollback_manifest_exists",
+    "rollback_manifest_valid_json",
+    "backup_root_under_storage",
+    "no_runtime_paths_written",
+    "no_staged_artifacts_copied",
+    "existing_files_backed_up_under_storage_only",
+    "planned_migrations_not_executed",
+    "runtime_writes_zero",
+    "publish_executed_false",
+    "copy_to_runtime_false"
+  ]
+}

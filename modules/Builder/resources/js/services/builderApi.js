@@ -80,6 +80,10 @@ export function runRuntimeWriteExecutionPreflight(executionId) {
   return Innoclapps.request().post(`/builder/publish-executions/${executionId}/runtime-write-preflight`)
 }
 
+export function prepareRuntimeWriteBackups(executionId) {
+  return Innoclapps.request().post(`/builder/publish-executions/${executionId}/runtime-write-backups`)
+}
+
 export function listRuntimeWriteFinalConfirmations(executionId) {
   return Innoclapps.request(`/builder/publish-executions/${executionId}/runtime-write-final-confirmations`)
 }

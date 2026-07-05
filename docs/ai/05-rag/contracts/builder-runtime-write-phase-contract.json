@@ -6,6 +6,7 @@
   "final_confirmation_persistence_implemented": true,
   "final_confirmation_persistence_mvp": true,
   "runtime_write_execution_preflight_implemented": true,
+  "runtime_write_backup_artifact_implemented": true,
   "runtime_write_endpoint_implemented": false,
   "runtime_write_ui_action_implemented": false,
   "runtime_writes_currently_allowed": false,

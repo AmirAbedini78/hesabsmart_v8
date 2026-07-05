@@ -217,6 +217,7 @@
               :runtime-write-plan-creating="runtimeWritePlanCreating"
               :runtime-write-final-confirmation-loading="runtimeWriteFinalConfirmationLoading"
               :runtime-write-execution-preflight-loading="runtimeWriteExecutionPreflightLoading"
+              :runtime-write-backups-loading="runtimeWriteBackupsLoading"
               :validation-report="validationReport || definition.last_validation_report_json"
               :preview-run="previewRun"
               :preview-manifest="definition.last_preview_manifest_json"
@@ -231,6 +232,7 @@
               :runtime-write-plan-report="runtimeWritePlanReport"
               :runtime-write-final-confirmation-report="runtimeWriteFinalConfirmationReport"
               :runtime-write-execution-preflight-report="runtimeWriteExecutionPreflightReport"
+              :runtime-write-backups-report="runtimeWriteBackupsReport"
               :runtime-write-final-confirmations="runtimeWriteFinalConfirmations"
               @save="saveDefinition"
               @validate="runValidation"
@@ -251,6 +253,7 @@
               @reject-runtime-write-final-confirmation="rejectFinalConfirmation"
               @revoke-runtime-write-final-confirmation="revokeFinalConfirmation"
               @run-runtime-write-execution-preflight="runRuntimeWritePreflight"
+              @prepare-runtime-write-backups="prepareRuntimeWriteBackupArtifact"
             />
           </div>
         </div>
@@ -291,6 +294,7 @@ import {
   listPublishApprovalRequests,
   listRuntimeWriteFinalConfirmations,
   previewDefinition,
+  prepareRuntimeWriteBackups,
   rejectPublishApprovalRequest,
   rejectRuntimeWriteFinalConfirmation,
   restoreDefinition,
@@ -321,6 +325,7 @@ const stagedFileValidating = ref(false)
 const runtimeWritePlanCreating = ref(false)
 const runtimeWriteFinalConfirmationLoading = ref(false)
 const runtimeWriteExecutionPreflightLoading = ref(false)
+const runtimeWriteBackupsLoading = ref(false)
 const lifecycleAction = ref(null)
 const definition = ref(null)
 const definitionJson = ref(null)
@@ -339,6 +344,7 @@ const runtimeWritePlanReport = ref(null)
 const runtimeWriteFinalConfirmations = ref([])
 const runtimeWriteFinalConfirmationReport = ref(null)
 const runtimeWriteExecutionPreflightReport = ref(null)
+const runtimeWriteBackupsReport = ref(null)
 const jsonError = ref(null)
 const apiError = ref(null)
 const demoFlowSteps = [
@@ -749,6 +755,26 @@ async function runRuntimeWritePreflight(executionId) {
   }
 }
 
+async function prepareRuntimeWriteBackupArtifact(executionId) {
+  if (!executionId) {
+    return
+  }
+
+  runtimeWriteBackupsLoading.value = true
+  apiError.value = null
+
+  try {
+    const { data } = await prepareRuntimeWriteBackups(executionId)
+    runtimeWriteBackupsReport.value = data
+    await loadPublishExecutions()
+    Innoclapps.success('Runtime write backups prepared under storage. No runtime write, copy, or publish was performed.')
+  } catch (error) {
+    apiError.value = errorMessage(error)
+  } finally {
+    runtimeWriteBackupsLoading.value = false
+  }
+}
+
 async function archiveCurrentDefinition() {
   lifecycleAction.value = 'archive'
   apiError.value = null
@@ -857,6 +883,7 @@ function setDefinition(value) {
   runtimeWriteFinalConfirmations.value = []
   runtimeWriteFinalConfirmationReport.value = null
   runtimeWriteExecutionPreflightReport.value = null
+  runtimeWriteBackupsReport.value = null
 }
 
 function normalizeDefinition(value) {

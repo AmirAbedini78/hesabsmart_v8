@@ -380,6 +380,21 @@
     },
     {
       "method": "POST",
+      "path": "/api/builder/publish-executions/{id}/runtime-write-backups",
+      "purpose": "Prepare storage-only backup artifacts for existing future runtime target files after passed runtime write preflight.",
+      "status": "implemented",
+      "safe_for_ui": true,
+      "safe_for_agent": false,
+      "requires_admin": true,
+      "publish_related": false,
+      "actual_publish": false,
+      "runtime_writes_performed": 0,
+      "publish_executed": false,
+      "copy_to_runtime_executed": false,
+      "notes": "Backup artifact only. Existing target files may be copied into storage/app/builder-publish-backups; staged artifacts are not copied to runtime."
+    },
+    {
+      "method": "POST",
       "path": "/api/builder/definitions/{id}/archive",
       "purpose": "Archive an unpublished Builder definition.",
       "status": "implemented",

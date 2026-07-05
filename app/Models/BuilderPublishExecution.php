@@ -21,6 +21,8 @@ class BuilderPublishExecution extends Model
     public const STATUS_RUNTIME_WRITE_PLAN_BLOCKED = 'runtime_write_plan_blocked';
     public const STATUS_RUNTIME_WRITE_PREFLIGHT_PASSED = 'runtime_write_preflight_passed';
     public const STATUS_RUNTIME_WRITE_PREFLIGHT_BLOCKED = 'runtime_write_preflight_blocked';
+    public const STATUS_RUNTIME_WRITE_BACKUPS_PREPARED = 'runtime_write_backups_prepared';
+    public const STATUS_RUNTIME_WRITE_BACKUP_BLOCKED = 'runtime_write_backup_blocked';
     public const STATUS_FAILED = 'failed';
     public const STATUS_CANCELLED = 'cancelled';
 
@@ -86,6 +88,8 @@ class BuilderPublishExecution extends Model
             self::STATUS_RUNTIME_WRITE_PLAN_BLOCKED,
             self::STATUS_RUNTIME_WRITE_PREFLIGHT_PASSED,
             self::STATUS_RUNTIME_WRITE_PREFLIGHT_BLOCKED,
+            self::STATUS_RUNTIME_WRITE_BACKUPS_PREPARED,
+            self::STATUS_RUNTIME_WRITE_BACKUP_BLOCKED,
             self::STATUS_FAILED,
             self::STATUS_CANCELLED,
         ], true);

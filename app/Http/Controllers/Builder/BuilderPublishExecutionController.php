@@ -6,6 +6,7 @@ use App\Models\BuilderDefinition;
 use App\Models\BuilderPublishExecution;
 use App\Services\Builder\BuilderPublishExecutionPreparationService;
 use App\Services\Builder\BuilderPublishStagedFileValidationService;
+use App\Services\Builder\BuilderRuntimeWriteBackupArtifactService;
 use App\Services\Builder\BuilderRuntimeWriteExecutionPreflightService;
 use App\Services\Builder\BuilderRuntimeWritePlanArtifactService;
 use Illuminate\Http\JsonResponse;
@@ -48,5 +49,12 @@ class BuilderPublishExecutionController extends ApiController
         BuilderRuntimeWriteExecutionPreflightService $preflight
     ): JsonResponse {
         return $this->response($preflight->preflight($execution));
+    }
+
+    public function runtimeWriteBackups(
+        BuilderPublishExecution $execution,
+        BuilderRuntimeWriteBackupArtifactService $backups
+    ): JsonResponse {
+        return $this->response($backups->prepare($execution));
     }
 }
