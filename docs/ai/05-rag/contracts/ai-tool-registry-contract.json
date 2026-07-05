@@ -101,6 +101,18 @@
       "runtime_writes_performed": 0,
       "publish_executed": false,
       "copy_to_runtime_executed": false
+    },
+    {
+      "name": "builder.check_post_backup_runtime_write_readiness",
+      "maps_to": "POST /api/builder/publish-executions/{id}/post-backup-runtime-write-readiness",
+      "safety_class": "control_plane_write",
+      "approval_required": true,
+      "audit_required": true,
+      "requires_explicit_human_initiation": true,
+      "runtime_writes_performed": 0,
+      "publish_executed": false,
+      "copy_to_runtime_executed": false,
+      "ready_for_runtime_write_execution_is_not_execution": true
     }
   ],
   "forbidden_tools": [

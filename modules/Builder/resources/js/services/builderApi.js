@@ -84,6 +84,10 @@ export function prepareRuntimeWriteBackups(executionId) {
   return Innoclapps.request().post(`/builder/publish-executions/${executionId}/runtime-write-backups`)
 }
 
+export function runPostBackupRuntimeWriteReadiness(executionId) {
+  return Innoclapps.request().post(`/builder/publish-executions/${executionId}/post-backup-runtime-write-readiness`)
+}
+
 export function listRuntimeWriteFinalConfirmations(executionId) {
   return Innoclapps.request(`/builder/publish-executions/${executionId}/runtime-write-final-confirmations`)
 }

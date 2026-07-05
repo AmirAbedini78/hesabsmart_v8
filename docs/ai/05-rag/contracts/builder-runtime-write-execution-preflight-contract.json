@@ -39,6 +39,7 @@
   "ready_for_future_runtime_write_is_not_execution": true,
   "backup_artifact_follows_passed_preflight": true,
   "preflight_ready_is_not_execution": true,
+  "post_backup_readiness_checks_preflight_output": true,
   "agent_may_call_when_human_initiated": true,
   "agent_may_execute_runtime_write": false,
   "mcp_may_execute_runtime_write": false

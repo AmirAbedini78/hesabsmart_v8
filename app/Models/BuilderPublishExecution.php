@@ -23,6 +23,8 @@ class BuilderPublishExecution extends Model
     public const STATUS_RUNTIME_WRITE_PREFLIGHT_BLOCKED = 'runtime_write_preflight_blocked';
     public const STATUS_RUNTIME_WRITE_BACKUPS_PREPARED = 'runtime_write_backups_prepared';
     public const STATUS_RUNTIME_WRITE_BACKUP_BLOCKED = 'runtime_write_backup_blocked';
+    public const STATUS_RUNTIME_WRITE_READINESS_PASSED = 'runtime_write_readiness_passed';
+    public const STATUS_RUNTIME_WRITE_READINESS_BLOCKED = 'runtime_write_readiness_blocked';
     public const STATUS_FAILED = 'failed';
     public const STATUS_CANCELLED = 'cancelled';
 
@@ -90,6 +92,8 @@ class BuilderPublishExecution extends Model
             self::STATUS_RUNTIME_WRITE_PREFLIGHT_BLOCKED,
             self::STATUS_RUNTIME_WRITE_BACKUPS_PREPARED,
             self::STATUS_RUNTIME_WRITE_BACKUP_BLOCKED,
+            self::STATUS_RUNTIME_WRITE_READINESS_PASSED,
+            self::STATUS_RUNTIME_WRITE_READINESS_BLOCKED,
             self::STATUS_FAILED,
             self::STATUS_CANCELLED,
         ], true);

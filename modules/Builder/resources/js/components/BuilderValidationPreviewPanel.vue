@@ -246,6 +246,7 @@
       :final-confirmation-report="runtimeWriteFinalConfirmationReport"
       :runtime-write-preflight-report="runtimeWriteExecutionPreflightReport"
       :runtime-write-backups-report="runtimeWriteBackupsReport"
+      :post-backup-readiness-report="postBackupReadinessReport"
       :final-confirmations="runtimeWriteFinalConfirmations"
       :loading="publishExecutionCreating"
       :validation-loading="stagedFileValidating"
@@ -253,6 +254,7 @@
       :final-confirmation-loading="runtimeWriteFinalConfirmationLoading"
       :runtime-write-preflight-loading="runtimeWriteExecutionPreflightLoading"
       :runtime-write-backups-loading="runtimeWriteBackupsLoading"
+      :post-backup-readiness-loading="postBackupReadinessLoading"
       @create-execution-record="$emit('create-publish-execution-record')"
       @validate-staged-files="$emit('validate-staged-files', $event)"
       @create-runtime-write-plan="$emit('create-runtime-write-plan', $event)"
@@ -262,6 +264,7 @@
       @revoke-final-confirmation="$emit('revoke-runtime-write-final-confirmation', $event)"
       @run-runtime-write-preflight="$emit('run-runtime-write-execution-preflight', $event)"
       @prepare-runtime-write-backups="$emit('prepare-runtime-write-backups', $event)"
+      @check-post-backup-readiness="$emit('check-post-backup-readiness', $event)"
     />
   </div>
 </template>
@@ -291,6 +294,7 @@ const props = defineProps({
   runtimeWriteFinalConfirmationLoading: Boolean,
   runtimeWriteExecutionPreflightLoading: Boolean,
   runtimeWriteBackupsLoading: Boolean,
+  postBackupReadinessLoading: Boolean,
   validationReport: Object,
   previewRun: Object,
   previewManifest: Object,
@@ -306,6 +310,7 @@ const props = defineProps({
   runtimeWriteFinalConfirmationReport: Object,
   runtimeWriteExecutionPreflightReport: Object,
   runtimeWriteBackupsReport: Object,
+  postBackupReadinessReport: Object,
   runtimeWriteFinalConfirmations: {
     type: Array,
     default: () => [],
@@ -333,6 +338,7 @@ defineEmits([
   'revoke-runtime-write-final-confirmation',
   'run-runtime-write-execution-preflight',
   'prepare-runtime-write-backups',
+  'check-post-backup-readiness',
 ])
 
 const formattedValidationReport = computed(() => formatJson(props.validationReport))

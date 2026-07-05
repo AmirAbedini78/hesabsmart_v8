@@ -395,6 +395,22 @@
     },
     {
       "method": "POST",
+      "path": "/api/builder/publish-executions/{id}/post-backup-runtime-write-readiness",
+      "purpose": "Check storage-only post-backup runtime write readiness after backup artifacts are prepared.",
+      "status": "implemented",
+      "safe_for_ui": true,
+      "safe_for_agent": false,
+      "requires_admin": true,
+      "publish_related": false,
+      "actual_publish": false,
+      "runtime_writes_performed": 0,
+      "publish_executed": false,
+      "copy_to_runtime_executed": false,
+      "ready_for_runtime_write_execution_is_not_execution": true,
+      "notes": "Readiness only. Writes report under storage/app/builder-runtime-write-readiness and does not copy staged files to runtime, run migrations, register routes, or publish."
+    },
+    {
+      "method": "POST",
       "path": "/api/builder/definitions/{id}/archive",
       "purpose": "Archive an unpublished Builder definition.",
       "status": "implemented",

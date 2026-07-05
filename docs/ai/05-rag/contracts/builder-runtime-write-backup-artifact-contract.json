@@ -26,6 +26,8 @@
   "publish_executed": false,
   "copy_to_runtime_executed": false,
   "migrations_run": false,
+  "post_backup_readiness_follows_backup_artifact": true,
+  "backup_artifact_remains_storage_only": true,
   "agent_may_call_when_human_initiated": true,
   "agent_may_execute_runtime_write": false,
   "mcp_may_execute_runtime_write": false,

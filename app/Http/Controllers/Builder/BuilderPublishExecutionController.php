@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Builder;
 
 use App\Models\BuilderDefinition;
 use App\Models\BuilderPublishExecution;
+use App\Services\Builder\BuilderPostBackupRuntimeWriteReadinessService;
 use App\Services\Builder\BuilderPublishExecutionPreparationService;
 use App\Services\Builder\BuilderPublishStagedFileValidationService;
 use App\Services\Builder\BuilderRuntimeWriteBackupArtifactService;
@@ -56,5 +57,12 @@ class BuilderPublishExecutionController extends ApiController
         BuilderRuntimeWriteBackupArtifactService $backups
     ): JsonResponse {
         return $this->response($backups->prepare($execution));
+    }
+
+    public function postBackupRuntimeWriteReadiness(
+        BuilderPublishExecution $execution,
+        BuilderPostBackupRuntimeWriteReadinessService $readiness
+    ): JsonResponse {
+        return $this->response($readiness->readiness($execution));
     }
 }

@@ -30,7 +30,10 @@
     "runtime_write_preflight_blocked",
     "runtime_write_backup_started",
     "runtime_write_backup_created",
-    "runtime_write_backup_blocked"
+    "runtime_write_backup_blocked",
+    "runtime_write_readiness_started",
+    "runtime_write_readiness_passed",
+    "runtime_write_readiness_blocked"
   ],
   "future_events": [
     "candidate_snapshot_created",
@@ -63,6 +66,9 @@
     "runtime_write_backup_started",
     "runtime_write_backup_created",
     "runtime_write_backup_blocked",
+    "runtime_write_readiness_started",
+    "runtime_write_readiness_passed",
+    "runtime_write_readiness_blocked",
     "runtime_write_started",
     "runtime_write_succeeded",
     "runtime_write_failed",

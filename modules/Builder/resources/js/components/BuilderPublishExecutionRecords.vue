@@ -94,6 +94,21 @@
         @click="$emit('prepare-runtime-write-backups', latestExecutionId)"
       />
 
+      <IAlert variant="info">
+        <IAlertBody>
+          Readiness only. This checks backup artifacts and runtime write prerequisites. It does not copy staged files to runtime, run migrations, register routes, or publish.
+        </IAlertBody>
+      </IAlert>
+
+      <IButton
+        class="w-full justify-center"
+        icon="ShieldCheck"
+        text="Check Post-Backup Runtime Write Readiness"
+        :disabled="!latestExecutionId"
+        :loading="postBackupReadinessLoading"
+        @click="$emit('check-post-backup-readiness', latestExecutionId)"
+      />
+
       <div v-if="latestReport" class="space-y-3">
         <div class="grid gap-2 text-sm">
           <div class="flex justify-between gap-4">
@@ -471,6 +486,66 @@
         <pre class="max-h-96 overflow-auto whitespace-pre-wrap rounded-md bg-neutral-50 p-3 text-xs dark:bg-neutral-900">{{ formattedRuntimeWriteBackupsReport }}</pre>
       </div>
 
+      <div v-if="postBackupReadinessReport" class="space-y-3">
+        <ITextDark class="font-medium" text="Post-backup runtime write readiness" />
+        <div class="grid gap-2 text-sm">
+          <div class="flex justify-between gap-4">
+            <span class="text-neutral-500 dark:text-neutral-400">status</span>
+            <span class="font-mono">{{ postBackupReadinessReport.status }}</span>
+          </div>
+          <div class="flex justify-between gap-4">
+            <span class="text-neutral-500 dark:text-neutral-400">ready_for_runtime_write_execution</span>
+            <span class="font-mono">{{ String(postBackupReadinessReport.ready_for_runtime_write_execution) }}</span>
+          </div>
+          <div class="flex justify-between gap-4">
+            <span class="text-neutral-500 dark:text-neutral-400">readiness_report_path</span>
+            <span class="break-all text-right font-mono text-xs">{{ postBackupReadinessReport.readiness_report_path || '-' }}</span>
+          </div>
+        </div>
+
+        <IAlert v-if="postBackupReadinessReport.blockers?.length" variant="danger">
+          <IAlertBody>
+            <div class="mb-1 font-medium">Blockers</div>
+            <ul class="list-disc space-y-1 pl-5">
+              <li v-for="blocker in postBackupReadinessReport.blockers" :key="blocker">
+                {{ blocker }}
+              </li>
+            </ul>
+          </IAlertBody>
+        </IAlert>
+
+        <IAlert v-if="postBackupReadinessReport.warnings?.length" variant="warning">
+          <IAlertBody>
+            <div class="mb-1 font-medium">Warnings</div>
+            <ul class="list-disc space-y-1 pl-5">
+              <li v-for="warning in postBackupReadinessReport.warnings" :key="warning">
+                {{ warning }}
+              </li>
+            </ul>
+          </IAlertBody>
+        </IAlert>
+
+        <div v-if="postBackupReadinessReport.checks?.length">
+          <ITextDark class="font-medium" text="Checks" />
+          <ul class="mt-1 space-y-1 text-sm">
+            <li v-for="check in postBackupReadinessReport.checks" :key="check.key">
+              <span class="font-mono">{{ check.status }}</span> {{ check.key }} - {{ check.message }}
+            </li>
+          </ul>
+        </div>
+
+        <div v-if="postBackupReadinessReport.forbidden_actions?.length">
+          <ITextDark class="font-medium" text="Forbidden actions" />
+          <ul class="mt-1 list-disc space-y-1 pl-5 text-sm">
+            <li v-for="action in postBackupReadinessReport.forbidden_actions" :key="action">
+              {{ action }}
+            </li>
+          </ul>
+        </div>
+
+        <pre class="max-h-96 overflow-auto whitespace-pre-wrap rounded-md bg-neutral-50 p-3 text-xs dark:bg-neutral-900">{{ formattedPostBackupReadinessReport }}</pre>
+      </div>
+
       <div v-if="records.length" class="space-y-2">
         <ITextDark class="font-medium" text="Execution records" />
         <div
@@ -507,6 +582,7 @@ const props = defineProps({
   finalConfirmationReport: Object,
   runtimeWritePreflightReport: Object,
   runtimeWriteBackupsReport: Object,
+  postBackupReadinessReport: Object,
   finalConfirmations: {
     type: Array,
     default: () => [],
@@ -517,6 +593,7 @@ const props = defineProps({
   finalConfirmationLoading: Boolean,
   runtimeWritePreflightLoading: Boolean,
   runtimeWriteBackupsLoading: Boolean,
+  postBackupReadinessLoading: Boolean,
 })
 
 defineEmits([
@@ -529,6 +606,7 @@ defineEmits([
   'revoke-final-confirmation',
   'run-runtime-write-preflight',
   'prepare-runtime-write-backups',
+  'check-post-backup-readiness',
 ])
 
 const latestExecutionId = computed(() =>
@@ -557,5 +635,9 @@ const formattedRuntimeWritePreflightReport = computed(() =>
 
 const formattedRuntimeWriteBackupsReport = computed(() =>
   props.runtimeWriteBackupsReport ? JSON.stringify(props.runtimeWriteBackupsReport, null, 2) : 'Not run yet.'
+)
+
+const formattedPostBackupReadinessReport = computed(() =>
+  props.postBackupReadinessReport ? JSON.stringify(props.postBackupReadinessReport, null, 2) : 'Not run yet.'
 )
 </script>

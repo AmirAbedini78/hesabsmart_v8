@@ -30,6 +30,7 @@
       "app/Services/Builder/BuilderRuntimeWriteFinalConfirmationService.php",
       "app/Services/Builder/BuilderRuntimeWriteExecutionPreflightService.php",
       "app/Services/Builder/BuilderRuntimeWriteBackupArtifactService.php",
+      "app/Services/Builder/BuilderPostBackupRuntimeWriteReadinessService.php",
       "app/Http/Controllers/Builder/BuilderRuntimeWriteFinalConfirmationController.php"
     ],
     "frontend": [
@@ -80,7 +81,8 @@
       "docs/ai/03-architecture/builder-runtime-write-confirmation-invalidation-strategy.md",
       "docs/ai/03-architecture/builder-runtime-write-final-confirmation-persistence-mvp.md",
       "docs/ai/03-architecture/builder-runtime-write-execution-preflight-mvp.md",
-      "docs/ai/03-architecture/builder-runtime-write-backup-artifact-mvp.md"
+      "docs/ai/03-architecture/builder-runtime-write-backup-artifact-mvp.md",
+      "docs/ai/03-architecture/builder-post-backup-runtime-write-readiness-mvp.md"
     ],
     "demo_journey_contracts": [
       "docs/ai/05-rag/contracts/builder-studio-demo-journey-contract.json"
@@ -126,7 +128,8 @@
       "docs/ai/05-rag/contracts/builder-runtime-write-final-confirmation-contract.json",
       "docs/ai/05-rag/contracts/builder-runtime-write-final-confirmation-api-map.json",
       "docs/ai/05-rag/contracts/builder-runtime-write-execution-preflight-contract.json",
-      "docs/ai/05-rag/contracts/builder-runtime-write-backup-artifact-contract.json"
+      "docs/ai/05-rag/contracts/builder-runtime-write-backup-artifact-contract.json",
+      "docs/ai/05-rag/contracts/builder-post-backup-runtime-write-readiness-contract.json"
     ]
   },
   "generated_or_derived_files": {
@@ -139,6 +142,7 @@
     "publish_staged_file_validation_reports": "storage/app/builder-publish-staged-validations",
     "runtime_write_plan_artifacts": "storage/app/builder-runtime-write-plans",
     "runtime_write_backup_artifacts": "storage/app/builder-publish-backups",
+    "post_backup_runtime_write_readiness_reports": "storage/app/builder-runtime-write-readiness",
     "temporary_definition_files": "storage/app/builder-definitions",
     "vector_indexes": "derived and rebuildable",
     "generated_preview_files_are_source_of_truth": false,
@@ -146,7 +150,8 @@
     "publish_dry_run_artifacts_are_source_of_truth": false,
     "publish_candidate_snapshots_are_source_of_truth": false,
     "runtime_write_plan_artifacts_are_source_of_truth": false,
-    "runtime_write_backup_artifacts_are_source_of_truth": false
+    "runtime_write_backup_artifacts_are_source_of_truth": false,
+    "post_backup_runtime_write_readiness_reports_are_source_of_truth": false
   },
   "backend_models": [
     "App\\Models\\BuilderDefinition",
@@ -172,7 +177,8 @@
     "App\\Services\\Builder\\BuilderRuntimeWritePlanArtifactService",
     "App\\Services\\Builder\\BuilderRuntimeWriteFinalConfirmationService",
     "App\\Services\\Builder\\BuilderRuntimeWriteExecutionPreflightService",
-    "App\\Services\\Builder\\BuilderRuntimeWriteBackupArtifactService"
+    "App\\Services\\Builder\\BuilderRuntimeWriteBackupArtifactService",
+    "App\\Services\\Builder\\BuilderPostBackupRuntimeWriteReadinessService"
   ],
   "frontend_module_files": [
     "modules/Builder/resources/js/app.js",
@@ -234,7 +240,8 @@
     "create runtime write plan artifact under storage when explicitly human initiated",
     "request, grant, reject, and revoke runtime write final confirmation as control-plane state when explicitly human initiated",
     "run runtime write execution preflight when explicitly human initiated",
-    "prepare runtime write backup artifacts under storage when explicitly human initiated"
+    "prepare runtime write backup artifacts under storage when explicitly human initiated",
+    "check post-backup runtime write readiness under storage when explicitly human initiated"
   ],
   "forbidden_operations": [
     "publish from Builder Studio MVP",
@@ -266,8 +273,10 @@
     "autonomously request, grant, reject, or revoke runtime write final confirmation",
     "autonomously run runtime write execution preflight",
     "autonomously prepare runtime write backup artifacts",
+    "autonomously run post-backup runtime write readiness",
     "treat ready_for_future_runtime_write as runtime write execution",
     "treat runtime write backups as runtime write execution",
+    "treat ready_for_runtime_write_execution as runtime write execution",
     "copy staged files to runtime",
     "call forbidden tools",
     "use MCP to bypass permissions, approval, or audit",
@@ -321,6 +330,7 @@
     "Runtime write final confirmation persistence records control-plane review state and audit events only.",
     "Runtime write execution preflight is storage-only control-plane readiness reporting and is not runtime write execution.",
     "Runtime write backup artifact copies existing future runtime target files into storage/app/builder-publish-backups only and is not runtime write execution.",
+    "Post-backup runtime write readiness is storage-only control-plane reporting and ready_for_runtime_write_execution is not runtime write execution.",
     "Future runtime write final confirmation must be explicit human action and must bind to execution, plan path, checksum, candidate, staged validation report, and approved candidate preflight evidence.",
     "Runtime write phase planning remains non-executable; no runtime write endpoint, copy-to-runtime endpoint, publish endpoint, or runtime write UI action exists.",
     "Future runtime write must require staging_validated execution status, human final confirmation, runtime path allowlist, backups before overwrite, rollback manifest updates, and runtime path lock.",
