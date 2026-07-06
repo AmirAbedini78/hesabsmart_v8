@@ -6,6 +6,7 @@
   "mcp_must_not_expose_runtime_write_tools": true,
   "mcp_must_not_expose_runtime_write_execution_tools": true,
   "mcp_must_not_expose_kill_switch_override_tools": true,
+  "mcp_must_not_expose_runtime_write_kill_switch_override_tools": true,
   "mcp_must_not_expose_operator_acknowledgement_tools": true,
   "mcp_must_not_expose_rollback_execution_tools": true,
   "mcp_must_not_bypass_human_confirmation": true,
@@ -33,6 +34,7 @@
     "confirm_runtime_write",
     "execute_runtime_write",
     "copy_to_runtime",
+    "override_kill_switch",
     "uninstall_module",
     "change_permissions"
   ],

@@ -34,6 +34,9 @@
     "runtime_write_readiness_started",
     "runtime_write_readiness_passed",
     "runtime_write_readiness_blocked",
+    "runtime_write_kill_switch_checked",
+    "runtime_write_kill_switch_blocked",
+    "runtime_write_kill_switch_passed",
     "runtime_write_architecture_reviewed"
   ],
   "future_events": [
@@ -73,6 +76,8 @@
     "runtime_write_architecture_reviewed",
     "runtime_write_operator_acknowledged",
     "runtime_write_kill_switch_checked",
+    "runtime_write_kill_switch_blocked",
+    "runtime_write_kill_switch_passed",
     "runtime_write_file_temp_created",
     "runtime_write_file_committed",
     "runtime_write_file_failed",

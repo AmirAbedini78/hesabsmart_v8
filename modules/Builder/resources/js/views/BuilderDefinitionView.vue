@@ -219,6 +219,7 @@
               :runtime-write-execution-preflight-loading="runtimeWriteExecutionPreflightLoading"
               :runtime-write-backups-loading="runtimeWriteBackupsLoading"
               :post-backup-readiness-loading="postBackupReadinessLoading"
+              :runtime-write-kill-switch-guard-loading="runtimeWriteKillSwitchGuardLoading"
               :validation-report="validationReport || definition.last_validation_report_json"
               :preview-run="previewRun"
               :preview-manifest="definition.last_preview_manifest_json"
@@ -235,6 +236,7 @@
               :runtime-write-execution-preflight-report="runtimeWriteExecutionPreflightReport"
               :runtime-write-backups-report="runtimeWriteBackupsReport"
               :post-backup-readiness-report="postBackupReadinessReport"
+              :runtime-write-kill-switch-guard-report="runtimeWriteKillSwitchGuardReport"
               :runtime-write-final-confirmations="runtimeWriteFinalConfirmations"
               @save="saveDefinition"
               @validate="runValidation"
@@ -257,6 +259,7 @@
               @run-runtime-write-execution-preflight="runRuntimeWritePreflight"
               @prepare-runtime-write-backups="prepareRuntimeWriteBackupArtifact"
               @check-post-backup-readiness="checkPostBackupReadiness"
+              @check-runtime-write-kill-switch-guard="checkRuntimeWriteKillSwitchGuardReport"
             />
           </div>
         </div>
@@ -286,6 +289,7 @@ import {
   analyzePublishReadiness,
   approvePublishApprovalRequest,
   archiveDefinition,
+  checkRuntimeWriteKillSwitchGuard,
   createPublishExecutionRecord,
   createPublishCandidateSnapshot,
   createRuntimeWritePlan,
@@ -331,6 +335,7 @@ const runtimeWriteFinalConfirmationLoading = ref(false)
 const runtimeWriteExecutionPreflightLoading = ref(false)
 const runtimeWriteBackupsLoading = ref(false)
 const postBackupReadinessLoading = ref(false)
+const runtimeWriteKillSwitchGuardLoading = ref(false)
 const lifecycleAction = ref(null)
 const definition = ref(null)
 const definitionJson = ref(null)
@@ -351,6 +356,7 @@ const runtimeWriteFinalConfirmationReport = ref(null)
 const runtimeWriteExecutionPreflightReport = ref(null)
 const runtimeWriteBackupsReport = ref(null)
 const postBackupReadinessReport = ref(null)
+const runtimeWriteKillSwitchGuardReport = ref(null)
 const jsonError = ref(null)
 const apiError = ref(null)
 const demoFlowSteps = [
@@ -801,6 +807,26 @@ async function checkPostBackupReadiness(executionId) {
   }
 }
 
+async function checkRuntimeWriteKillSwitchGuardReport(executionId) {
+  if (!executionId) {
+    return
+  }
+
+  runtimeWriteKillSwitchGuardLoading.value = true
+  apiError.value = null
+
+  try {
+    const { data } = await checkRuntimeWriteKillSwitchGuard(executionId)
+    runtimeWriteKillSwitchGuardReport.value = data
+    await loadPublishExecutions()
+    Innoclapps.success('Runtime write kill-switch guard checked. No runtime write, copy, or publish was performed.')
+  } catch (error) {
+    apiError.value = errorMessage(error)
+  } finally {
+    runtimeWriteKillSwitchGuardLoading.value = false
+  }
+}
+
 async function archiveCurrentDefinition() {
   lifecycleAction.value = 'archive'
   apiError.value = null
@@ -911,6 +937,7 @@ function setDefinition(value) {
   runtimeWriteExecutionPreflightReport.value = null
   runtimeWriteBackupsReport.value = null
   postBackupReadinessReport.value = null
+  runtimeWriteKillSwitchGuardReport.value = null
 }
 
 function normalizeDefinition(value) {

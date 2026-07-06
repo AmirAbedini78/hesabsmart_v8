@@ -109,6 +109,21 @@
         @click="$emit('check-post-backup-readiness', latestExecutionId)"
       />
 
+      <IAlert variant="info">
+        <IAlertBody>
+          Kill-switch guard only. This checks whether runtime write is enabled, but does not execute runtime write, copy staged files, run migrations, register routes, or publish.
+        </IAlertBody>
+      </IAlert>
+
+      <IButton
+        class="w-full justify-center"
+        icon="ShieldCheck"
+        text="Check Runtime Write Kill-Switch"
+        :disabled="!latestExecutionId"
+        :loading="runtimeWriteKillSwitchGuardLoading"
+        @click="$emit('check-runtime-write-kill-switch-guard', latestExecutionId)"
+      />
+
       <div v-if="latestReport" class="space-y-3">
         <div class="grid gap-2 text-sm">
           <div class="flex justify-between gap-4">
@@ -546,6 +561,70 @@
         <pre class="max-h-96 overflow-auto whitespace-pre-wrap rounded-md bg-neutral-50 p-3 text-xs dark:bg-neutral-900">{{ formattedPostBackupReadinessReport }}</pre>
       </div>
 
+      <div v-if="runtimeWriteKillSwitchGuardReport" class="space-y-3">
+        <ITextDark class="font-medium" text="Runtime write kill-switch guard" />
+        <div class="grid gap-2 text-sm">
+          <div class="flex justify-between gap-4">
+            <span class="text-neutral-500 dark:text-neutral-400">status</span>
+            <span class="font-mono">{{ runtimeWriteKillSwitchGuardReport.status }}</span>
+          </div>
+          <div class="flex justify-between gap-4">
+            <span class="text-neutral-500 dark:text-neutral-400">runtime_write_enabled</span>
+            <span class="font-mono">{{ String(runtimeWriteKillSwitchGuardReport.runtime_write_enabled) }}</span>
+          </div>
+          <div class="flex justify-between gap-4">
+            <span class="text-neutral-500 dark:text-neutral-400">runtime_write_guard_passed</span>
+            <span class="font-mono">{{ String(runtimeWriteKillSwitchGuardReport.runtime_write_guard_passed) }}</span>
+          </div>
+          <div class="flex justify-between gap-4">
+            <span class="text-neutral-500 dark:text-neutral-400">guard_report_path</span>
+            <span class="break-all text-right font-mono text-xs">{{ runtimeWriteKillSwitchGuardReport.guard_report_path || '-' }}</span>
+          </div>
+        </div>
+
+        <IAlert v-if="runtimeWriteKillSwitchGuardReport.blockers?.length" variant="danger">
+          <IAlertBody>
+            <div class="mb-1 font-medium">Blockers</div>
+            <ul class="list-disc space-y-1 pl-5">
+              <li v-for="blocker in runtimeWriteKillSwitchGuardReport.blockers" :key="blocker">
+                {{ blocker }}
+              </li>
+            </ul>
+          </IAlertBody>
+        </IAlert>
+
+        <IAlert v-if="runtimeWriteKillSwitchGuardReport.warnings?.length" variant="warning">
+          <IAlertBody>
+            <div class="mb-1 font-medium">Warnings</div>
+            <ul class="list-disc space-y-1 pl-5">
+              <li v-for="warning in runtimeWriteKillSwitchGuardReport.warnings" :key="warning">
+                {{ warning }}
+              </li>
+            </ul>
+          </IAlertBody>
+        </IAlert>
+
+        <div v-if="runtimeWriteKillSwitchGuardReport.checks?.length">
+          <ITextDark class="font-medium" text="Checks" />
+          <ul class="mt-1 space-y-1 text-sm">
+            <li v-for="check in runtimeWriteKillSwitchGuardReport.checks" :key="check.key">
+              <span class="font-mono">{{ check.status }}</span> {{ check.key }} - {{ check.message }}
+            </li>
+          </ul>
+        </div>
+
+        <div v-if="runtimeWriteKillSwitchGuardReport.forbidden_actions?.length">
+          <ITextDark class="font-medium" text="Forbidden actions" />
+          <ul class="mt-1 list-disc space-y-1 pl-5 text-sm">
+            <li v-for="action in runtimeWriteKillSwitchGuardReport.forbidden_actions" :key="action">
+              {{ action }}
+            </li>
+          </ul>
+        </div>
+
+        <pre class="max-h-96 overflow-auto whitespace-pre-wrap rounded-md bg-neutral-50 p-3 text-xs dark:bg-neutral-900">{{ formattedRuntimeWriteKillSwitchGuardReport }}</pre>
+      </div>
+
       <div v-if="records.length" class="space-y-2">
         <ITextDark class="font-medium" text="Execution records" />
         <div
@@ -583,6 +662,7 @@ const props = defineProps({
   runtimeWritePreflightReport: Object,
   runtimeWriteBackupsReport: Object,
   postBackupReadinessReport: Object,
+  runtimeWriteKillSwitchGuardReport: Object,
   finalConfirmations: {
     type: Array,
     default: () => [],
@@ -594,6 +674,7 @@ const props = defineProps({
   runtimeWritePreflightLoading: Boolean,
   runtimeWriteBackupsLoading: Boolean,
   postBackupReadinessLoading: Boolean,
+  runtimeWriteKillSwitchGuardLoading: Boolean,
 })
 
 defineEmits([
@@ -607,6 +688,7 @@ defineEmits([
   'run-runtime-write-preflight',
   'prepare-runtime-write-backups',
   'check-post-backup-readiness',
+  'check-runtime-write-kill-switch-guard',
 ])
 
 const latestExecutionId = computed(() =>
@@ -639,5 +721,9 @@ const formattedRuntimeWriteBackupsReport = computed(() =>
 
 const formattedPostBackupReadinessReport = computed(() =>
   props.postBackupReadinessReport ? JSON.stringify(props.postBackupReadinessReport, null, 2) : 'Not run yet.'
+)
+
+const formattedRuntimeWriteKillSwitchGuardReport = computed(() =>
+  props.runtimeWriteKillSwitchGuardReport ? JSON.stringify(props.runtimeWriteKillSwitchGuardReport, null, 2) : 'Not run yet.'
 )
 </script>

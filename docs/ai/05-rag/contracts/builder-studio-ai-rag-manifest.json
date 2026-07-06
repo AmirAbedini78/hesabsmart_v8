@@ -31,6 +31,7 @@
       "app/Services/Builder/BuilderRuntimeWriteExecutionPreflightService.php",
       "app/Services/Builder/BuilderRuntimeWriteBackupArtifactService.php",
       "app/Services/Builder/BuilderPostBackupRuntimeWriteReadinessService.php",
+      "app/Services/Builder/BuilderRuntimeWriteKillSwitchGuardService.php",
       "app/Http/Controllers/Builder/BuilderRuntimeWriteFinalConfirmationController.php"
     ],
     "frontend": [
@@ -86,6 +87,7 @@
       "docs/ai/03-architecture/builder-runtime-write-execution-architecture-review.md",
       "docs/ai/03-architecture/builder-runtime-write-operator-runbook.md",
       "docs/ai/03-architecture/builder-runtime-write-kill-switch-policy.md",
+      "docs/ai/03-architecture/builder-runtime-write-kill-switch-guard-mvp.md",
       "docs/ai/03-architecture/builder-runtime-write-failure-and-rollback-policy.md"
     ],
     "demo_journey_contracts": [
@@ -137,6 +139,7 @@
       "docs/ai/05-rag/contracts/builder-runtime-write-execution-architecture-review-contract.json",
       "docs/ai/05-rag/contracts/builder-runtime-write-operator-runbook-contract.json",
       "docs/ai/05-rag/contracts/builder-runtime-write-kill-switch-contract.json",
+      "docs/ai/05-rag/contracts/builder-runtime-write-kill-switch-guard-contract.json",
       "docs/ai/05-rag/contracts/builder-runtime-write-failure-policy-contract.json"
     ]
   },
@@ -151,6 +154,7 @@
     "runtime_write_plan_artifacts": "storage/app/builder-runtime-write-plans",
     "runtime_write_backup_artifacts": "storage/app/builder-publish-backups",
     "post_backup_runtime_write_readiness_reports": "storage/app/builder-runtime-write-readiness",
+    "runtime_write_kill_switch_guard_reports": "storage/app/builder-runtime-write-guards",
     "temporary_definition_files": "storage/app/builder-definitions",
     "vector_indexes": "derived and rebuildable",
     "generated_preview_files_are_source_of_truth": false,
@@ -159,7 +163,8 @@
     "publish_candidate_snapshots_are_source_of_truth": false,
     "runtime_write_plan_artifacts_are_source_of_truth": false,
     "runtime_write_backup_artifacts_are_source_of_truth": false,
-    "post_backup_runtime_write_readiness_reports_are_source_of_truth": false
+    "post_backup_runtime_write_readiness_reports_are_source_of_truth": false,
+    "runtime_write_kill_switch_guard_reports_are_source_of_truth": false
   },
   "backend_models": [
     "App\\Models\\BuilderDefinition",
@@ -186,7 +191,8 @@
     "App\\Services\\Builder\\BuilderRuntimeWriteFinalConfirmationService",
     "App\\Services\\Builder\\BuilderRuntimeWriteExecutionPreflightService",
     "App\\Services\\Builder\\BuilderRuntimeWriteBackupArtifactService",
-    "App\\Services\\Builder\\BuilderPostBackupRuntimeWriteReadinessService"
+    "App\\Services\\Builder\\BuilderPostBackupRuntimeWriteReadinessService",
+    "App\\Services\\Builder\\BuilderRuntimeWriteKillSwitchGuardService"
   ],
   "frontend_module_files": [
     "modules/Builder/resources/js/app.js",
@@ -249,7 +255,8 @@
     "request, grant, reject, and revoke runtime write final confirmation as control-plane state when explicitly human initiated",
     "run runtime write execution preflight when explicitly human initiated",
     "prepare runtime write backup artifacts under storage when explicitly human initiated",
-    "check post-backup runtime write readiness under storage when explicitly human initiated"
+    "check post-backup runtime write readiness under storage when explicitly human initiated",
+    "check runtime write kill-switch guard under storage when explicitly human initiated"
   ],
   "forbidden_operations": [
     "publish from Builder Studio MVP",
@@ -282,9 +289,11 @@
     "autonomously run runtime write execution preflight",
     "autonomously prepare runtime write backup artifacts",
     "autonomously run post-backup runtime write readiness",
+    "autonomously run runtime write kill-switch guard",
     "treat ready_for_future_runtime_write as runtime write execution",
     "treat runtime write backups as runtime write execution",
     "treat ready_for_runtime_write_execution as runtime write execution",
+    "treat runtime_write_guard_passed as runtime write execution",
     "copy staged files to runtime",
     "call forbidden tools",
     "use MCP to bypass permissions, approval, or audit",
