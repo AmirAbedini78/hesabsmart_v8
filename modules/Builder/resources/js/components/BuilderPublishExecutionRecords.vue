@@ -124,6 +124,21 @@
         @click="$emit('check-runtime-write-kill-switch-guard', latestExecutionId)"
       />
 
+      <IAlert variant="info">
+        <IAlertBody>
+          Operator acknowledgement only. This records human runbook acknowledgement and does not execute runtime write, copy staged files, run migrations, register routes, or publish.
+        </IAlertBody>
+      </IAlert>
+
+      <IButton
+        class="w-full justify-center"
+        icon="ClipboardDocumentCheck"
+        text="Request Operator Runbook Acknowledgement"
+        :disabled="!latestExecutionId"
+        :loading="runtimeWriteOperatorAcknowledgementLoading"
+        @click="$emit('request-operator-acknowledgement', latestExecutionId)"
+      />
+
       <div v-if="latestReport" class="space-y-3">
         <div class="grid gap-2 text-sm">
           <div class="flex justify-between gap-4">
@@ -625,6 +640,75 @@
         <pre class="max-h-96 overflow-auto whitespace-pre-wrap rounded-md bg-neutral-50 p-3 text-xs dark:bg-neutral-900">{{ formattedRuntimeWriteKillSwitchGuardReport }}</pre>
       </div>
 
+      <div v-if="runtimeWriteOperatorAcknowledgementReport || operatorAcknowledgements.length" class="space-y-3">
+        <ITextDark class="font-medium" text="Runtime write operator acknowledgements" />
+
+        <div v-if="runtimeWriteOperatorAcknowledgementReport" class="grid gap-2 text-sm">
+          <div class="flex justify-between gap-4">
+            <span class="text-neutral-500 dark:text-neutral-400">status</span>
+            <span class="font-mono">{{ runtimeWriteOperatorAcknowledgementReport.status }}</span>
+          </div>
+          <div class="flex justify-between gap-4">
+            <span class="text-neutral-500 dark:text-neutral-400">runtime_writes_performed</span>
+            <span class="font-mono">{{ runtimeWriteOperatorAcknowledgementReport.runtime_writes_performed }}</span>
+          </div>
+          <div class="flex justify-between gap-4">
+            <span class="text-neutral-500 dark:text-neutral-400">publish_executed</span>
+            <span class="font-mono">{{ String(runtimeWriteOperatorAcknowledgementReport.publish_executed) }}</span>
+          </div>
+          <div class="flex justify-between gap-4">
+            <span class="text-neutral-500 dark:text-neutral-400">copy_to_runtime_executed</span>
+            <span class="font-mono">{{ String(runtimeWriteOperatorAcknowledgementReport.copy_to_runtime_executed) }}</span>
+          </div>
+        </div>
+
+        <IAlert v-if="runtimeWriteOperatorAcknowledgementReport?.blockers?.length" variant="danger">
+          <IAlertBody>
+            <div class="mb-1 font-medium">Blockers</div>
+            <ul class="list-disc space-y-1 pl-5">
+              <li v-for="blocker in runtimeWriteOperatorAcknowledgementReport.blockers" :key="blocker">
+                {{ blocker }}
+              </li>
+            </ul>
+          </IAlertBody>
+        </IAlert>
+
+        <div
+          v-for="acknowledgement in operatorAcknowledgements"
+          :key="acknowledgement.id"
+          class="rounded-md border border-neutral-200 p-3 text-sm dark:border-neutral-700"
+        >
+          <div class="flex items-center justify-between gap-3">
+            <span class="font-medium">#{{ acknowledgement.id }} {{ acknowledgement.status }}</span>
+            <span class="text-xs text-neutral-500 dark:text-neutral-400">{{ acknowledgement.acknowledged_at || acknowledgement.created_at }}</span>
+          </div>
+          <div class="mt-2 grid gap-1 text-xs">
+            <div>runbook_version: <span class="font-mono">{{ acknowledgement.runbook_version || '-' }}</span></div>
+            <div>kill_switch_guard_path: <span class="break-all font-mono">{{ acknowledgement.kill_switch_guard_path || '-' }}</span></div>
+            <div>post_backup_readiness_path: <span class="break-all font-mono">{{ acknowledgement.post_backup_readiness_path || '-' }}</span></div>
+          </div>
+          <div class="mt-3 flex flex-wrap gap-2">
+            <IButton
+              size="sm"
+              text="Acknowledge Runbook"
+              :disabled="acknowledgement.status !== 'requested'"
+              :loading="runtimeWriteOperatorAcknowledgementLoading"
+              @click="$emit('acknowledge-operator-runbook', acknowledgement)"
+            />
+            <IButton
+              size="sm"
+              variant="secondary"
+              text="Revoke Acknowledgement"
+              :disabled="!['requested', 'acknowledged'].includes(acknowledgement.status)"
+              :loading="runtimeWriteOperatorAcknowledgementLoading"
+              @click="$emit('revoke-operator-acknowledgement', acknowledgement)"
+            />
+          </div>
+        </div>
+
+        <pre v-if="runtimeWriteOperatorAcknowledgementReport" class="max-h-96 overflow-auto whitespace-pre-wrap rounded-md bg-neutral-50 p-3 text-xs dark:bg-neutral-900">{{ formattedRuntimeWriteOperatorAcknowledgementReport }}</pre>
+      </div>
+
       <div v-if="records.length" class="space-y-2">
         <ITextDark class="font-medium" text="Execution records" />
         <div
@@ -663,7 +747,12 @@ const props = defineProps({
   runtimeWriteBackupsReport: Object,
   postBackupReadinessReport: Object,
   runtimeWriteKillSwitchGuardReport: Object,
+  runtimeWriteOperatorAcknowledgementReport: Object,
   finalConfirmations: {
+    type: Array,
+    default: () => [],
+  },
+  operatorAcknowledgements: {
     type: Array,
     default: () => [],
   },
@@ -675,6 +764,7 @@ const props = defineProps({
   runtimeWriteBackupsLoading: Boolean,
   postBackupReadinessLoading: Boolean,
   runtimeWriteKillSwitchGuardLoading: Boolean,
+  runtimeWriteOperatorAcknowledgementLoading: Boolean,
 })
 
 defineEmits([
@@ -689,6 +779,9 @@ defineEmits([
   'prepare-runtime-write-backups',
   'check-post-backup-readiness',
   'check-runtime-write-kill-switch-guard',
+  'request-operator-acknowledgement',
+  'acknowledge-operator-runbook',
+  'revoke-operator-acknowledgement',
 ])
 
 const latestExecutionId = computed(() =>
@@ -725,5 +818,9 @@ const formattedPostBackupReadinessReport = computed(() =>
 
 const formattedRuntimeWriteKillSwitchGuardReport = computed(() =>
   props.runtimeWriteKillSwitchGuardReport ? JSON.stringify(props.runtimeWriteKillSwitchGuardReport, null, 2) : 'Not run yet.'
+)
+
+const formattedRuntimeWriteOperatorAcknowledgementReport = computed(() =>
+  props.runtimeWriteOperatorAcknowledgementReport ? JSON.stringify(props.runtimeWriteOperatorAcknowledgementReport, null, 2) : 'Not run yet.'
 )
 </script>

@@ -220,6 +220,7 @@
               :runtime-write-backups-loading="runtimeWriteBackupsLoading"
               :post-backup-readiness-loading="postBackupReadinessLoading"
               :runtime-write-kill-switch-guard-loading="runtimeWriteKillSwitchGuardLoading"
+              :runtime-write-operator-acknowledgement-loading="runtimeWriteOperatorAcknowledgementLoading"
               :validation-report="validationReport || definition.last_validation_report_json"
               :preview-run="previewRun"
               :preview-manifest="definition.last_preview_manifest_json"
@@ -237,7 +238,9 @@
               :runtime-write-backups-report="runtimeWriteBackupsReport"
               :post-backup-readiness-report="postBackupReadinessReport"
               :runtime-write-kill-switch-guard-report="runtimeWriteKillSwitchGuardReport"
+              :runtime-write-operator-acknowledgement-report="runtimeWriteOperatorAcknowledgementReport"
               :runtime-write-final-confirmations="runtimeWriteFinalConfirmations"
+              :runtime-write-operator-acknowledgements="runtimeWriteOperatorAcknowledgements"
               @save="saveDefinition"
               @validate="runValidation"
               @preview="runPreview"
@@ -260,6 +263,9 @@
               @prepare-runtime-write-backups="prepareRuntimeWriteBackupArtifact"
               @check-post-backup-readiness="checkPostBackupReadiness"
               @check-runtime-write-kill-switch-guard="checkRuntimeWriteKillSwitchGuardReport"
+              @request-runtime-write-operator-acknowledgement="requestOperatorAcknowledgement"
+              @acknowledge-runtime-write-operator-runbook="acknowledgeOperatorRunbook"
+              @revoke-runtime-write-operator-acknowledgement="revokeOperatorAcknowledgement"
             />
           </div>
         </div>
@@ -286,6 +292,7 @@ import BuilderRelationsEditor from '../components/BuilderRelationsEditor.vue'
 import BuilderStatusBadge from '../components/BuilderStatusBadge.vue'
 import BuilderValidationPreviewPanel from '../components/BuilderValidationPreviewPanel.vue'
 import {
+  acknowledgeRuntimeWriteOperatorRunbook,
   analyzePublishReadiness,
   approvePublishApprovalRequest,
   archiveDefinition,
@@ -300,6 +307,7 @@ import {
   listPublishExecutions,
   listPublishApprovalRequests,
   listRuntimeWriteFinalConfirmations,
+  listRuntimeWriteOperatorAcknowledgements,
   previewDefinition,
   prepareRuntimeWriteBackups,
   rejectPublishApprovalRequest,
@@ -307,8 +315,10 @@ import {
   restoreDefinition,
   requestPublishApproval,
   requestRuntimeWriteFinalConfirmation,
+  requestRuntimeWriteOperatorAcknowledgement,
   revokePublishApprovalRequest,
   revokeRuntimeWriteFinalConfirmation,
+  revokeRuntimeWriteOperatorAcknowledgement,
   runRuntimeWriteExecutionPreflight,
   runPostBackupRuntimeWriteReadiness,
   updateDefinition,
@@ -336,6 +346,7 @@ const runtimeWriteExecutionPreflightLoading = ref(false)
 const runtimeWriteBackupsLoading = ref(false)
 const postBackupReadinessLoading = ref(false)
 const runtimeWriteKillSwitchGuardLoading = ref(false)
+const runtimeWriteOperatorAcknowledgementLoading = ref(false)
 const lifecycleAction = ref(null)
 const definition = ref(null)
 const definitionJson = ref(null)
@@ -357,6 +368,8 @@ const runtimeWriteExecutionPreflightReport = ref(null)
 const runtimeWriteBackupsReport = ref(null)
 const postBackupReadinessReport = ref(null)
 const runtimeWriteKillSwitchGuardReport = ref(null)
+const runtimeWriteOperatorAcknowledgements = ref([])
+const runtimeWriteOperatorAcknowledgementReport = ref(null)
 const jsonError = ref(null)
 const apiError = ref(null)
 const demoFlowSteps = [
@@ -542,6 +555,15 @@ async function loadRuntimeWriteFinalConfirmations(executionId) {
 
   const { data } = await listRuntimeWriteFinalConfirmations(executionId)
   runtimeWriteFinalConfirmations.value = Array.isArray(data) ? data : data.data || []
+}
+
+async function loadRuntimeWriteOperatorAcknowledgements(executionId) {
+  if (!executionId) {
+    return
+  }
+
+  const { data } = await listRuntimeWriteOperatorAcknowledgements(executionId)
+  runtimeWriteOperatorAcknowledgements.value = Array.isArray(data) ? data : data.data || []
 }
 
 async function requestApproval() {
@@ -819,11 +841,66 @@ async function checkRuntimeWriteKillSwitchGuardReport(executionId) {
     const { data } = await checkRuntimeWriteKillSwitchGuard(executionId)
     runtimeWriteKillSwitchGuardReport.value = data
     await loadPublishExecutions()
+    await loadRuntimeWriteOperatorAcknowledgements(executionId)
     Innoclapps.success('Runtime write kill-switch guard checked. No runtime write, copy, or publish was performed.')
   } catch (error) {
     apiError.value = errorMessage(error)
   } finally {
     runtimeWriteKillSwitchGuardLoading.value = false
+  }
+}
+
+async function requestOperatorAcknowledgement(executionId) {
+  if (!executionId) {
+    return
+  }
+
+  runtimeWriteOperatorAcknowledgementLoading.value = true
+  apiError.value = null
+
+  try {
+    const { data } = await requestRuntimeWriteOperatorAcknowledgement(executionId)
+    runtimeWriteOperatorAcknowledgementReport.value = data
+    await loadRuntimeWriteOperatorAcknowledgements(executionId)
+    Innoclapps.success('Operator runbook acknowledgement requested. No runtime write, copy, or publish was performed.')
+  } catch (error) {
+    apiError.value = errorMessage(error)
+  } finally {
+    runtimeWriteOperatorAcknowledgementLoading.value = false
+  }
+}
+
+async function acknowledgeOperatorRunbook(acknowledgement) {
+  const note = window.prompt('Operator acknowledgement note') || ''
+  runtimeWriteOperatorAcknowledgementLoading.value = true
+  apiError.value = null
+
+  try {
+    const { data } = await acknowledgeRuntimeWriteOperatorRunbook(acknowledgement.id, note)
+    runtimeWriteOperatorAcknowledgementReport.value = data
+    await loadRuntimeWriteOperatorAcknowledgements(acknowledgement.builder_publish_execution_id)
+    Innoclapps.success('Operator runbook acknowledged as control-plane state only. No runtime write, copy, or publish was performed.')
+  } catch (error) {
+    apiError.value = errorMessage(error)
+  } finally {
+    runtimeWriteOperatorAcknowledgementLoading.value = false
+  }
+}
+
+async function revokeOperatorAcknowledgement(acknowledgement) {
+  const note = window.prompt('Operator acknowledgement revocation note') || ''
+  runtimeWriteOperatorAcknowledgementLoading.value = true
+  apiError.value = null
+
+  try {
+    const { data } = await revokeRuntimeWriteOperatorAcknowledgement(acknowledgement.id, note)
+    runtimeWriteOperatorAcknowledgementReport.value = data
+    await loadRuntimeWriteOperatorAcknowledgements(acknowledgement.builder_publish_execution_id)
+    Innoclapps.success('Operator runbook acknowledgement revoked. No runtime write, copy, or publish was performed.')
+  } catch (error) {
+    apiError.value = errorMessage(error)
+  } finally {
+    runtimeWriteOperatorAcknowledgementLoading.value = false
   }
 }
 
@@ -938,6 +1015,8 @@ function setDefinition(value) {
   runtimeWriteBackupsReport.value = null
   postBackupReadinessReport.value = null
   runtimeWriteKillSwitchGuardReport.value = null
+  runtimeWriteOperatorAcknowledgements.value = []
+  runtimeWriteOperatorAcknowledgementReport.value = null
 }
 
 function normalizeDefinition(value) {

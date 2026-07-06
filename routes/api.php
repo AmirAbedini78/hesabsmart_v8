@@ -4,6 +4,7 @@ use App\Http\Controllers\Builder\BuilderDefinitionController;
 use App\Http\Controllers\Builder\BuilderPublishApprovalRequestController;
 use App\Http\Controllers\Builder\BuilderPublishExecutionController;
 use App\Http\Controllers\Builder\BuilderRuntimeWriteFinalConfirmationController;
+use App\Http\Controllers\Builder\BuilderRuntimeWriteOperatorAcknowledgementController;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 
@@ -61,6 +62,18 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('builder')->group(function 
 
     Route::post('publish-executions/{execution}/runtime-write-final-confirmations', [BuilderRuntimeWriteFinalConfirmationController::class, 'store'])
         ->name('builder.publish-executions.runtime-write-final-confirmations.store');
+
+    Route::get('publish-executions/{execution}/runtime-write-operator-acknowledgements', [BuilderRuntimeWriteOperatorAcknowledgementController::class, 'index'])
+        ->name('builder.publish-executions.runtime-write-operator-acknowledgements.index');
+
+    Route::post('publish-executions/{execution}/runtime-write-operator-acknowledgements', [BuilderRuntimeWriteOperatorAcknowledgementController::class, 'store'])
+        ->name('builder.publish-executions.runtime-write-operator-acknowledgements.store');
+
+    Route::post('runtime-write-operator-acknowledgements/{acknowledgement}/acknowledge', [BuilderRuntimeWriteOperatorAcknowledgementController::class, 'acknowledge'])
+        ->name('builder.runtime-write-operator-acknowledgements.acknowledge');
+
+    Route::post('runtime-write-operator-acknowledgements/{acknowledgement}/revoke', [BuilderRuntimeWriteOperatorAcknowledgementController::class, 'revoke'])
+        ->name('builder.runtime-write-operator-acknowledgements.revoke');
 
     Route::post('runtime-write-final-confirmations/{confirmation}/grant', [BuilderRuntimeWriteFinalConfirmationController::class, 'grant'])
         ->name('builder.runtime-write-final-confirmations.grant');

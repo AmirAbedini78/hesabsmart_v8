@@ -37,6 +37,8 @@
   "publish_executed": false,
   "copy_to_runtime_executed": false,
   "runtime_write_guard_passed_is_not_execution": true,
+  "operator_acknowledgement_can_bind_to_guard_report": true,
+  "acknowledgement_does_not_override_kill_switch": true,
   "agent_may_call_when_human_initiated": true,
   "agent_may_override_kill_switch": false,
   "mcp_may_override_kill_switch": false,

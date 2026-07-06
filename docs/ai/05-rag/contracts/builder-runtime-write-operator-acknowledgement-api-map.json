@@ -1,0 +1,42 @@
+{
+  "name": "ERPSMART Builder Runtime Write Operator Acknowledgement API Map",
+  "current_implementation_status": "operator_acknowledgement_persistence_mvp",
+  "writes_control_plane_records": true,
+  "runtime_writes_performed": 0,
+  "publish_executed": false,
+  "copy_to_runtime_executed": false,
+  "acknowledgement_does_not_publish": true,
+  "acknowledgement_does_not_write_runtime": true,
+  "acknowledgement_does_not_override_kill_switch": true,
+  "safe_for_ui": true,
+  "no_runtime_write_endpoint": true,
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/api/builder/publish-executions/{id}/runtime-write-operator-acknowledgements",
+      "purpose": "List operator acknowledgement records for a publish execution.",
+      "safe_for_agent": true
+    },
+    {
+      "method": "POST",
+      "path": "/api/builder/publish-executions/{id}/runtime-write-operator-acknowledgements",
+      "purpose": "Request human operator acknowledgement for the bound runbook evidence.",
+      "safe_for_agent": false,
+      "requires_explicit_human_initiation": true
+    },
+    {
+      "method": "POST",
+      "path": "/api/builder/runtime-write-operator-acknowledgements/{id}/acknowledge",
+      "purpose": "Acknowledge the operator runbook without executing runtime write.",
+      "safe_for_agent": false,
+      "requires_explicit_human_initiation": true
+    },
+    {
+      "method": "POST",
+      "path": "/api/builder/runtime-write-operator-acknowledgements/{id}/revoke",
+      "purpose": "Revoke an operator acknowledgement without executing runtime write.",
+      "safe_for_agent": false,
+      "requires_explicit_human_initiation": true
+    }
+  ]
+}

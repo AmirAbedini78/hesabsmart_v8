@@ -9,7 +9,8 @@
       "builder_publish_executions",
       "builder_publish_approval_requests",
       "builder_publish_audit_logs",
-      "builder_runtime_write_final_confirmations"
+      "builder_runtime_write_final_confirmations",
+      "builder_runtime_write_operator_acknowledgements"
     ],
     "schema": [
       "docs/ai/05-rag/contracts/module-builder-mvp-schema.json"
@@ -32,7 +33,9 @@
       "app/Services/Builder/BuilderRuntimeWriteBackupArtifactService.php",
       "app/Services/Builder/BuilderPostBackupRuntimeWriteReadinessService.php",
       "app/Services/Builder/BuilderRuntimeWriteKillSwitchGuardService.php",
-      "app/Http/Controllers/Builder/BuilderRuntimeWriteFinalConfirmationController.php"
+      "app/Services/Builder/BuilderRuntimeWriteOperatorAcknowledgementService.php",
+      "app/Http/Controllers/Builder/BuilderRuntimeWriteFinalConfirmationController.php",
+      "app/Http/Controllers/Builder/BuilderRuntimeWriteOperatorAcknowledgementController.php"
     ],
     "frontend": [
       "modules/Builder/resources/js/app.js",
@@ -88,6 +91,7 @@
       "docs/ai/03-architecture/builder-runtime-write-operator-runbook.md",
       "docs/ai/03-architecture/builder-runtime-write-kill-switch-policy.md",
       "docs/ai/03-architecture/builder-runtime-write-kill-switch-guard-mvp.md",
+      "docs/ai/03-architecture/builder-runtime-write-operator-acknowledgement-persistence-mvp.md",
       "docs/ai/03-architecture/builder-runtime-write-failure-and-rollback-policy.md"
     ],
     "demo_journey_contracts": [
@@ -140,6 +144,8 @@
       "docs/ai/05-rag/contracts/builder-runtime-write-operator-runbook-contract.json",
       "docs/ai/05-rag/contracts/builder-runtime-write-kill-switch-contract.json",
       "docs/ai/05-rag/contracts/builder-runtime-write-kill-switch-guard-contract.json",
+      "docs/ai/05-rag/contracts/builder-runtime-write-operator-acknowledgement-contract.json",
+      "docs/ai/05-rag/contracts/builder-runtime-write-operator-acknowledgement-api-map.json",
       "docs/ai/05-rag/contracts/builder-runtime-write-failure-policy-contract.json"
     ]
   },
@@ -173,13 +179,15 @@
     "App\\Models\\BuilderPublishApprovalRequest",
     "App\\Models\\BuilderPublishAuditLog",
     "App\\Models\\BuilderPublishExecution",
-    "App\\Models\\BuilderRuntimeWriteFinalConfirmation"
+    "App\\Models\\BuilderRuntimeWriteFinalConfirmation",
+    "App\\Models\\BuilderRuntimeWriteOperatorAcknowledgement"
   ],
   "backend_controllers": [
     "App\\Http\\Controllers\\Builder\\BuilderDefinitionController",
     "App\\Http\\Controllers\\Builder\\BuilderPublishApprovalRequestController",
     "App\\Http\\Controllers\\Builder\\BuilderPublishExecutionController",
-    "App\\Http\\Controllers\\Builder\\BuilderRuntimeWriteFinalConfirmationController"
+    "App\\Http\\Controllers\\Builder\\BuilderRuntimeWriteFinalConfirmationController",
+    "App\\Http\\Controllers\\Builder\\BuilderRuntimeWriteOperatorAcknowledgementController"
   ],
   "backend_services": [
     "App\\Services\\Builder\\BuilderDefinitionValidator",
@@ -192,7 +200,8 @@
     "App\\Services\\Builder\\BuilderRuntimeWriteExecutionPreflightService",
     "App\\Services\\Builder\\BuilderRuntimeWriteBackupArtifactService",
     "App\\Services\\Builder\\BuilderPostBackupRuntimeWriteReadinessService",
-    "App\\Services\\Builder\\BuilderRuntimeWriteKillSwitchGuardService"
+    "App\\Services\\Builder\\BuilderRuntimeWriteKillSwitchGuardService",
+    "App\\Services\\Builder\\BuilderRuntimeWriteOperatorAcknowledgementService"
   ],
   "frontend_module_files": [
     "modules/Builder/resources/js/app.js",
@@ -256,7 +265,9 @@
     "run runtime write execution preflight when explicitly human initiated",
     "prepare runtime write backup artifacts under storage when explicitly human initiated",
     "check post-backup runtime write readiness under storage when explicitly human initiated",
-    "check runtime write kill-switch guard under storage when explicitly human initiated"
+    "check runtime write kill-switch guard under storage when explicitly human initiated",
+    "request and acknowledge runtime write operator runbook as control-plane state when explicitly human initiated",
+    "runtime write operator acknowledgement persistence"
   ],
   "forbidden_operations": [
     "publish from Builder Studio MVP",
@@ -290,10 +301,12 @@
     "autonomously prepare runtime write backup artifacts",
     "autonomously run post-backup runtime write readiness",
     "autonomously run runtime write kill-switch guard",
+    "autonomously request or acknowledge runtime write operator runbook",
     "treat ready_for_future_runtime_write as runtime write execution",
     "treat runtime write backups as runtime write execution",
     "treat ready_for_runtime_write_execution as runtime write execution",
     "treat runtime_write_guard_passed as runtime write execution",
+    "treat operator acknowledgement as runtime write execution",
     "copy staged files to runtime",
     "call forbidden tools",
     "use MCP to bypass permissions, approval, or audit",

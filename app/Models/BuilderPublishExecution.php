@@ -81,6 +81,11 @@ class BuilderPublishExecution extends Model
         return $this->hasMany(BuilderRuntimeWriteFinalConfirmation::class, 'builder_publish_execution_id');
     }
 
+    public function runtimeWriteOperatorAcknowledgements(): HasMany
+    {
+        return $this->hasMany(BuilderRuntimeWriteOperatorAcknowledgement::class, 'builder_publish_execution_id');
+    }
+
     public function isTerminal(): bool
     {
         return in_array($this->status, [

@@ -1,6 +1,8 @@
 {
   "name": "ERPSMART Builder Runtime Write Operator Runbook Contract",
-  "current_implementation_status": "runbook_only",
+  "current_implementation_status": "operator_acknowledgement_persistence_mvp",
+  "operator_acknowledgement_persistence_implemented": true,
+  "operator_acknowledgement_endpoint_implemented": true,
   "operator_acknowledgement_required_before_future_runtime_write": true,
   "required_checklist_items": [
     "confirm_builder_definition",
@@ -22,5 +24,7 @@
     "confirm_maintenance_window_if_needed"
   ],
   "ai_may_acknowledge_operator_runbook": false,
-  "mcp_may_acknowledge_operator_runbook": false
+  "mcp_may_acknowledge_operator_runbook": false,
+  "acknowledgement_does_not_write_runtime": true,
+  "acknowledgement_does_not_override_kill_switch": true
 }

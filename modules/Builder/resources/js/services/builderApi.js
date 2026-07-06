@@ -92,6 +92,22 @@ export function checkRuntimeWriteKillSwitchGuard(executionId) {
   return Innoclapps.request().post(`/builder/publish-executions/${executionId}/runtime-write-kill-switch-guard`)
 }
 
+export function listRuntimeWriteOperatorAcknowledgements(executionId) {
+  return Innoclapps.request(`/builder/publish-executions/${executionId}/runtime-write-operator-acknowledgements`)
+}
+
+export function requestRuntimeWriteOperatorAcknowledgement(executionId) {
+  return Innoclapps.request().post(`/builder/publish-executions/${executionId}/runtime-write-operator-acknowledgements`)
+}
+
+export function acknowledgeRuntimeWriteOperatorRunbook(acknowledgementId, note) {
+  return Innoclapps.request().post(`/builder/runtime-write-operator-acknowledgements/${acknowledgementId}/acknowledge`, { note })
+}
+
+export function revokeRuntimeWriteOperatorAcknowledgement(acknowledgementId, note) {
+  return Innoclapps.request().post(`/builder/runtime-write-operator-acknowledgements/${acknowledgementId}/revoke`, { note })
+}
+
 export function listRuntimeWriteFinalConfirmations(executionId) {
   return Innoclapps.request(`/builder/publish-executions/${executionId}/runtime-write-final-confirmations`)
 }

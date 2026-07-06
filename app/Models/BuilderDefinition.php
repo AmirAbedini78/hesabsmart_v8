@@ -104,6 +104,11 @@ class BuilderDefinition extends Model
         return $this->hasMany(BuilderRuntimeWriteFinalConfirmation::class);
     }
 
+    public function runtimeWriteOperatorAcknowledgements(): HasMany
+    {
+        return $this->hasMany(BuilderRuntimeWriteOperatorAcknowledgement::class);
+    }
+
     public function transitionTo(string $status, array $attributes = []): bool
     {
         return $this->fill(array_merge($attributes, ['status' => $status]))->save();

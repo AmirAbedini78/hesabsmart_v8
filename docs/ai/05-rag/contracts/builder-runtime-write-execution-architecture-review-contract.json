@@ -3,6 +3,7 @@
   "current_implementation_status": "review_only",
   "kill_switch_guard_implemented": true,
   "kill_switch_guard_is_not_execution": true,
+  "operator_acknowledgement_persistence_implemented": true,
   "runtime_write_endpoint_implemented": false,
   "copy_to_runtime_endpoint_implemented": false,
   "publish_endpoint_implemented": false,

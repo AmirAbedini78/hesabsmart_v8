@@ -6,6 +6,7 @@
   "runtime_write_tool_implemented": false,
   "runtime_write_execution_tool_implemented": false,
   "operator_acknowledgement_tool_implemented": false,
+  "operator_acknowledgement_tools_available_to_ai_autonomously": false,
   "kill_switch_override_tool_implemented": false,
   "rollback_execution_tool_implemented": false,
   "final_confirmation_api_implemented": true,
@@ -129,6 +130,30 @@
       "publish_executed": false,
       "copy_to_runtime_executed": false,
       "runtime_write_guard_passed_is_not_execution": true
+    },
+    {
+      "name": "builder.request_runtime_write_operator_acknowledgement",
+      "maps_to": "POST /api/builder/publish-executions/{id}/runtime-write-operator-acknowledgements",
+      "safety_class": "control_plane_write",
+      "approval_required": true,
+      "audit_required": true,
+      "requires_explicit_human_initiation": true,
+      "available_to_ai_autonomously": false,
+      "runtime_writes_performed": 0,
+      "publish_executed": false,
+      "copy_to_runtime_executed": false
+    },
+    {
+      "name": "builder.acknowledge_runtime_write_operator_runbook",
+      "maps_to": "POST /api/builder/runtime-write-operator-acknowledgements/{id}/acknowledge",
+      "safety_class": "control_plane_write",
+      "approval_required": true,
+      "audit_required": true,
+      "requires_explicit_human_initiation": true,
+      "available_to_ai_autonomously": false,
+      "runtime_writes_performed": 0,
+      "publish_executed": false,
+      "copy_to_runtime_executed": false
     }
   ],
   "forbidden_tools": [
@@ -143,6 +168,7 @@
     "copy_staged_artifacts_to_runtime",
     "copy_to_runtime",
     "override_kill_switch",
+    "autonomous_operator_acknowledgement",
     "uninstall_module",
     "change_permissions_directly"
   ]
