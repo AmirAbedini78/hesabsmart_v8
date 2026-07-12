@@ -1,0 +1,58 @@
+{
+  "name": "ERPSMART Builder Runtime Write Execution Verifier Contract",
+  "current_implementation_status": "verifier_strategy_only",
+  "future_verifier_required": true,
+  "required_static_checks": [
+    "runtime write service exists only in future implementation task",
+    "execute-runtime-write endpoint exists only in future implementation task",
+    "no copy-to-runtime endpoint",
+    "no publish endpoint",
+    "no rollback endpoint",
+    "runtime write UI requires destructive typed confirmation",
+    "runtime write implementation uses allowlist",
+    "runtime write implementation forbids path traversal",
+    "runtime write implementation writes reports under storage/app/builder-runtime-write-executions"
+  ],
+  "required_runtime_checks": [
+    "post-backup readiness passed",
+    "kill-switch disabled blocks",
+    "kill-switch enabled only inside controlled verifier config context",
+    "operator acknowledgement fresh",
+    "temporary file written before final commit",
+    "temporary file checksum verified",
+    "committed file checksum recorded",
+    "rollback manifest committed entries updated",
+    "runtime write report written under storage"
+  ],
+  "required_blocking_cases": [
+    "stale operator acknowledgement",
+    "missing backup manifest",
+    "missing rollback manifest",
+    "runtime write plan blockers",
+    "path traversal",
+    "absolute external path",
+    "forbidden target path",
+    "partial write simulation",
+    "checksum mismatch"
+  ],
+  "required_success_case": "generated module path only with allowlisted target paths, per-file checksum verification, rollback manifest update, and no published state",
+  "required_no_publish_assertions": [
+    "publish endpoint not called",
+    "published status not set",
+    "route registration not performed",
+    "post-write smoke remains separate"
+  ],
+  "required_no_migration_execution_assertions": [
+    "generated migration files may be written as files only",
+    "generated migrations are not executed",
+    "global migration command is not invoked",
+    "database tables are not created by runtime write execution"
+  ],
+  "required_no_core_saas_updater_installer_assertions": [
+    "modules/Core not written",
+    "modules/SaaS not written",
+    "modules/Updater not written",
+    "modules/Installer not written",
+    "license and update code not written"
+  ]
+}

@@ -25,6 +25,8 @@
   "acknowledgement_does_not_publish": true,
   "acknowledgement_does_not_write_runtime": true,
   "acknowledgement_does_not_override_kill_switch": true,
+  "future_runtime_write_requires_acknowledged_operator_runbook": true,
+  "acknowledgement_itself_is_not_execution": true,
   "runtime_writes_performed": 0,
   "publish_executed": false,
   "copy_to_runtime_executed": false,

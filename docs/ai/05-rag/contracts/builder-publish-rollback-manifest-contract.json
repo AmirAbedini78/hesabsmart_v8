@@ -9,8 +9,10 @@
   "runtime_write_plan_may_update_draft_with_planned_entries_only": true,
   "runtime_write_backup_artifact_may_reference_storage_backups": true,
   "post_backup_readiness_checks_backup_references": true,
+  "future_runtime_write_execution_may_update_committed_file_entries": true,
   "future_rollback_manifest_must_include_runtime_write_backups": true,
   "rollback_execution_implemented": false,
+  "rollback_execution_still_separate_and_not_implemented": true,
   "future_rollback_requires_separate_human_confirmation": true,
   "required_fields": [
     "publish_id",

@@ -41,7 +41,15 @@
     "runtime_write_operator_acknowledged",
     "runtime_write_operator_acknowledgement_revoked",
     "runtime_write_operator_acknowledgement_invalidated",
-    "runtime_write_architecture_reviewed"
+    "runtime_write_architecture_reviewed",
+    "runtime_write_execute_requested",
+    "runtime_write_started",
+    "runtime_write_file_temp_created",
+    "runtime_write_file_hash_verified",
+    "runtime_write_file_committed",
+    "runtime_write_succeeded",
+    "runtime_write_failed",
+    "runtime_write_aborted"
   ],
   "future_events": [
     "candidate_snapshot_created",
@@ -85,7 +93,9 @@
     "runtime_write_kill_switch_checked",
     "runtime_write_kill_switch_blocked",
     "runtime_write_kill_switch_passed",
+    "runtime_write_execute_requested",
     "runtime_write_file_temp_created",
+    "runtime_write_file_hash_verified",
     "runtime_write_file_committed",
     "runtime_write_file_failed",
     "runtime_write_aborted",

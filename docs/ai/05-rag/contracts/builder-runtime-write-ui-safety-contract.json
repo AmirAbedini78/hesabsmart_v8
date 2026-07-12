@@ -1,0 +1,16 @@
+{
+  "name": "ERPSMART Builder Runtime Write UI Safety Contract",
+  "current_implementation_status": "ui_safety_requirements_only",
+  "runtime_write_ui_action_implemented": false,
+  "future_button_label": "Execute Runtime Write",
+  "destructive_confirmation_required": true,
+  "typed_confirmation_required": true,
+  "ai_may_click_runtime_write": false,
+  "mcp_may_click_runtime_write": false,
+  "forbidden_labels": [
+    "Publish",
+    "Deploy",
+    "Run migrations",
+    "Rollback"
+  ]
+}

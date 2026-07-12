@@ -44,6 +44,7 @@
   "copy_to_runtime_executed": false,
   "ready_for_runtime_write_execution_is_not_execution": true,
   "readiness_passed_is_not_execution": true,
+  "future_runtime_write_requires_readiness_passed": true,
   "future_execution_still_requires_architecture_review": true,
   "future_execution_still_requires_kill_switch": true,
   "future_execution_still_requires_operator_runbook": true,

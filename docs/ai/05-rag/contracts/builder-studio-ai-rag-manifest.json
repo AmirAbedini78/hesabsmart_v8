@@ -92,6 +92,9 @@
       "docs/ai/03-architecture/builder-runtime-write-kill-switch-policy.md",
       "docs/ai/03-architecture/builder-runtime-write-kill-switch-guard-mvp.md",
       "docs/ai/03-architecture/builder-runtime-write-operator-acknowledgement-persistence-mvp.md",
+      "docs/ai/03-architecture/builder-runtime-write-execution-final-implementation-plan.md",
+      "docs/ai/03-architecture/builder-runtime-write-execution-verifier-strategy.md",
+      "docs/ai/03-architecture/builder-runtime-write-ui-safety-requirements.md",
       "docs/ai/03-architecture/builder-runtime-write-failure-and-rollback-policy.md"
     ],
     "demo_journey_contracts": [
@@ -146,6 +149,9 @@
       "docs/ai/05-rag/contracts/builder-runtime-write-kill-switch-guard-contract.json",
       "docs/ai/05-rag/contracts/builder-runtime-write-operator-acknowledgement-contract.json",
       "docs/ai/05-rag/contracts/builder-runtime-write-operator-acknowledgement-api-map.json",
+      "docs/ai/05-rag/contracts/builder-runtime-write-execution-final-implementation-contract.json",
+      "docs/ai/05-rag/contracts/builder-runtime-write-execution-verifier-contract.json",
+      "docs/ai/05-rag/contracts/builder-runtime-write-ui-safety-contract.json",
       "docs/ai/05-rag/contracts/builder-runtime-write-failure-policy-contract.json"
     ]
   },
@@ -267,7 +273,8 @@
     "check post-backup runtime write readiness under storage when explicitly human initiated",
     "check runtime write kill-switch guard under storage when explicitly human initiated",
     "request and acknowledge runtime write operator runbook as control-plane state when explicitly human initiated",
-    "runtime write operator acknowledgement persistence"
+    "runtime write operator acknowledgement persistence",
+    "read runtime write execution final implementation plan as plan-only context"
   ],
   "forbidden_operations": [
     "publish from Builder Studio MVP",
@@ -302,6 +309,9 @@
     "autonomously run post-backup runtime write readiness",
     "autonomously run runtime write kill-switch guard",
     "autonomously request or acknowledge runtime write operator runbook",
+    "execute runtime write from final implementation plan",
+    "click future runtime write button",
+    "treat final implementation plan as implementation",
     "treat ready_for_future_runtime_write as runtime write execution",
     "treat runtime write backups as runtime write execution",
     "treat ready_for_runtime_write_execution as runtime write execution",
@@ -361,6 +371,7 @@
     "Runtime write execution preflight is storage-only control-plane readiness reporting and is not runtime write execution.",
     "Runtime write backup artifact copies existing future runtime target files into storage/app/builder-publish-backups only and is not runtime write execution.",
     "Post-backup runtime write readiness is storage-only control-plane reporting and ready_for_runtime_write_execution is not runtime write execution.",
+    "Runtime write execution final implementation plan is plan-only and does not implement the future service, endpoint, UI action, or runtime writes.",
     "runtime write execution architecture review is review-only and required before any future runtime write implementation.",
     "Runtime write execution architecture review is review-only and does not implement runtime write, copy-to-runtime, publish, or rollback endpoints.",
     "Future runtime write final confirmation must be explicit human action and must bind to execution, plan path, checksum, candidate, staged validation report, and approved candidate preflight evidence.",
