@@ -169,7 +169,7 @@
       "edits_definition_json": false,
       "calls_api": false,
       "risk_level": "high",
-      "notes": "Execution record, staged validation, runtime write plan, final confirmation, preflight, backup artifact, readiness, kill-switch guard, and operator acknowledgement only. Must not expose Publish, Execute Publish, Deploy, Rollback, Copy to runtime, Run migrations, Enable Runtime Write, Override Kill-Switch, or Execute Runtime Write actions."
+      "notes": "Execution record, staged validation, runtime write plan, final confirmation, preflight, backup artifact, readiness, kill-switch guard, operator acknowledgement, and guarded Execute Runtime Write action. Execute Runtime Write must be gated by safety evidence and destructive typed confirmation. Must not expose Publish, Execute Publish, Deploy, Rollback, Copy to runtime, Run migrations, Enable Runtime Write, Override Kill-Switch, or Mark published labels."
     },
     {
       "name": "BuilderStatusBadge",

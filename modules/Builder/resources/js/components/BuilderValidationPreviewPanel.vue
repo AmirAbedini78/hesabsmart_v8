@@ -249,6 +249,7 @@
       :post-backup-readiness-report="postBackupReadinessReport"
       :runtime-write-kill-switch-guard-report="runtimeWriteKillSwitchGuardReport"
       :runtime-write-operator-acknowledgement-report="runtimeWriteOperatorAcknowledgementReport"
+      :runtime-write-execution-report="runtimeWriteExecutionReport"
       :final-confirmations="runtimeWriteFinalConfirmations"
       :operator-acknowledgements="runtimeWriteOperatorAcknowledgements"
       :loading="publishExecutionCreating"
@@ -260,6 +261,7 @@
       :post-backup-readiness-loading="postBackupReadinessLoading"
       :runtime-write-kill-switch-guard-loading="runtimeWriteKillSwitchGuardLoading"
       :runtime-write-operator-acknowledgement-loading="runtimeWriteOperatorAcknowledgementLoading"
+      :runtime-write-execution-loading="runtimeWriteExecutionLoading"
       @create-execution-record="$emit('create-publish-execution-record')"
       @validate-staged-files="$emit('validate-staged-files', $event)"
       @create-runtime-write-plan="$emit('create-runtime-write-plan', $event)"
@@ -274,6 +276,7 @@
       @request-operator-acknowledgement="$emit('request-runtime-write-operator-acknowledgement', $event)"
       @acknowledge-operator-runbook="$emit('acknowledge-runtime-write-operator-runbook', $event)"
       @revoke-operator-acknowledgement="$emit('revoke-runtime-write-operator-acknowledgement', $event)"
+      @execute-runtime-write="$emit('execute-runtime-write', $event)"
     />
   </div>
 </template>
@@ -306,6 +309,7 @@ const props = defineProps({
   postBackupReadinessLoading: Boolean,
   runtimeWriteKillSwitchGuardLoading: Boolean,
   runtimeWriteOperatorAcknowledgementLoading: Boolean,
+  runtimeWriteExecutionLoading: Boolean,
   validationReport: Object,
   previewRun: Object,
   previewManifest: Object,
@@ -324,6 +328,7 @@ const props = defineProps({
   postBackupReadinessReport: Object,
   runtimeWriteKillSwitchGuardReport: Object,
   runtimeWriteOperatorAcknowledgementReport: Object,
+  runtimeWriteExecutionReport: Object,
   runtimeWriteFinalConfirmations: {
     type: Array,
     default: () => [],
@@ -360,6 +365,7 @@ defineEmits([
   'request-runtime-write-operator-acknowledgement',
   'acknowledge-runtime-write-operator-runbook',
   'revoke-runtime-write-operator-acknowledgement',
+  'execute-runtime-write',
 ])
 
 const formattedValidationReport = computed(() => formatJson(props.validationReport))

@@ -92,6 +92,10 @@ export function checkRuntimeWriteKillSwitchGuard(executionId) {
   return Innoclapps.request().post(`/builder/publish-executions/${executionId}/runtime-write-kill-switch-guard`)
 }
 
+export function executeRuntimeWrite(executionId) {
+  return Innoclapps.request().post(`/builder/publish-executions/${executionId}/execute-runtime-write`)
+}
+
 export function listRuntimeWriteOperatorAcknowledgements(executionId) {
   return Innoclapps.request(`/builder/publish-executions/${executionId}/runtime-write-operator-acknowledgements`)
 }

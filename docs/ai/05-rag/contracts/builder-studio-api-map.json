@@ -482,6 +482,22 @@
     },
     {
       "method": "POST",
+      "path": "/api/builder/publish-executions/{id}/execute-runtime-write",
+      "purpose": "Execute guarded runtime write for allowlisted staged generated artifacts after the full safety chain passes.",
+      "status": "implemented",
+      "safe_for_ui": true,
+      "safe_for_agent": false,
+      "requires_admin": true,
+      "publish_related": false,
+      "actual_publish": false,
+      "migration_execution": false,
+      "rollback": false,
+      "runtime_write_guarded": true,
+      "requires_typed_human_confirmation": true,
+      "notes": "Runtime write only. Does not publish, run migrations, dynamically register routes, mark modules published, or execute rollback."
+    },
+    {
+      "method": "POST",
       "path": "/api/builder/definitions/{id}/archive",
       "purpose": "Archive an unpublished Builder definition.",
       "status": "implemented",

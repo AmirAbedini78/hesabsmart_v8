@@ -27,6 +27,7 @@ class BuilderRuntimeWriteOperatorAcknowledgementService
         $executionStatusAllowed = in_array($execution->status, [
             BuilderPublishExecution::STATUS_RUNTIME_WRITE_GUARD_BLOCKED,
             BuilderPublishExecution::STATUS_RUNTIME_WRITE_GUARD_PASSED,
+            BuilderPublishExecution::STATUS_RUNTIME_WRITE_OPERATOR_ACKNOWLEDGED,
         ], true);
 
         if (! $executionStatusAllowed) {
@@ -97,6 +98,11 @@ class BuilderRuntimeWriteOperatorAcknowledgementService
             'acknowledgement_note' => $note,
         ])->save();
 
+        $acknowledgement->publishExecution?->fill([
+            'status' => BuilderPublishExecution::STATUS_RUNTIME_WRITE_OPERATOR_ACKNOWLEDGED,
+            'failure_reason' => null,
+        ])->save();
+
         $this->logAudit($acknowledgement->fresh(), 'runtime_write_operator_acknowledged');
 
         return $this->report($acknowledgement->fresh(), $freshness['checks'] ?? []);
@@ -136,10 +142,11 @@ class BuilderRuntimeWriteOperatorAcknowledgementService
         $statusAllowed = $execution && in_array($execution->status, [
             BuilderPublishExecution::STATUS_RUNTIME_WRITE_GUARD_BLOCKED,
             BuilderPublishExecution::STATUS_RUNTIME_WRITE_GUARD_PASSED,
+            BuilderPublishExecution::STATUS_RUNTIME_WRITE_OPERATOR_ACKNOWLEDGED,
         ], true);
 
         $this->addCheck($checks, 'execution_exists', $execution !== null, true, 'Publish execution record must exist.', $blockers);
-        $this->addCheck($checks, 'execution_status_runtime_write_guard', $statusAllowed, true, 'Execution status must remain runtime_write_guard_blocked or runtime_write_guard_passed.', $blockers);
+        $this->addCheck($checks, 'execution_status_runtime_write_guard', $statusAllowed, true, 'Execution status must remain runtime_write_guard_blocked, runtime_write_guard_passed, or runtime_write_operator_acknowledged.', $blockers);
         $this->addCheck($checks, 'definition_checksum_unchanged', $definition && $acknowledgement->definition_checksum === $definition->checksum, true, 'Definition checksum must be unchanged.', $blockers);
         $this->addCheck($checks, 'runtime_write_plan_path_unchanged', ($paths['runtime_write_plan_path'] ?? null) === $acknowledgement->runtime_write_plan_path, true, 'Runtime write plan path must be unchanged.', $blockers);
         $this->addCheck($checks, 'post_backup_readiness_path_unchanged', ($paths['post_backup_readiness_path'] ?? null) === $acknowledgement->post_backup_readiness_path, true, 'Post-backup readiness path must be unchanged.', $blockers);

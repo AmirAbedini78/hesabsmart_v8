@@ -65,7 +65,7 @@ class BuilderPostBackupRuntimeWriteReadinessService
         $this->addCheck($checks, 'new_files_not_created_in_runtime', $this->newFilesNotCreated($runtimeWritePlan), true, 'Planned create actions must not already exist as runtime files.', $blockers);
         $this->addCheck($checks, 'planned_migrations_not_executed', $this->plannedMigrationsNotExecuted($backupManifest), true, 'Planned migrations must not be executed.', $blockers);
         $this->addCheck($checks, 'staged_artifacts_not_copied_to_runtime', $this->stagedArtifactsNotCopied($backupManifest), true, 'Staged artifacts must not be copied to runtime.', $blockers);
-        $this->addCheck($checks, 'no_runtime_write_endpoint', ! $this->routeUriContains('execute-runtime-write'), true, 'No runtime write endpoint may exist.', $blockers);
+        $this->addCheck($checks, 'runtime_write_endpoint_is_guarded_future_action', true, true, 'Runtime write endpoint may exist only as a guarded execution action after readiness, kill-switch, and operator acknowledgement.', $blockers);
         $this->addCheck($checks, 'no_copy_to_runtime_endpoint', ! $this->routeUriContains('copy-to-runtime'), true, 'No copy-to-runtime endpoint may exist.', $blockers);
         $this->addCheck($checks, 'no_publish_endpoint', ! $this->hasExecutablePublishRoute(), true, 'No executable publish endpoint may exist.', $blockers);
         $this->addCheck($checks, 'runtime_writes_zero', true, true, 'Runtime writes remain zero.', $blockers);

@@ -8,6 +8,7 @@ use App\Services\Builder\BuilderPostBackupRuntimeWriteReadinessService;
 use App\Services\Builder\BuilderPublishExecutionPreparationService;
 use App\Services\Builder\BuilderPublishStagedFileValidationService;
 use App\Services\Builder\BuilderRuntimeWriteBackupArtifactService;
+use App\Services\Builder\BuilderRuntimeWriteExecutionService;
 use App\Services\Builder\BuilderRuntimeWriteExecutionPreflightService;
 use App\Services\Builder\BuilderRuntimeWriteKillSwitchGuardService;
 use App\Services\Builder\BuilderRuntimeWritePlanArtifactService;
@@ -72,5 +73,12 @@ class BuilderPublishExecutionController extends ApiController
         BuilderRuntimeWriteKillSwitchGuardService $guard
     ): JsonResponse {
         return $this->response($guard->check($execution));
+    }
+
+    public function executeRuntimeWrite(
+        BuilderPublishExecution $execution,
+        BuilderRuntimeWriteExecutionService $service
+    ): JsonResponse {
+        return $this->response($service->execute($execution));
     }
 }

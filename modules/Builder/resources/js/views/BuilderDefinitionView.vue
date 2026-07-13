@@ -221,6 +221,7 @@
               :post-backup-readiness-loading="postBackupReadinessLoading"
               :runtime-write-kill-switch-guard-loading="runtimeWriteKillSwitchGuardLoading"
               :runtime-write-operator-acknowledgement-loading="runtimeWriteOperatorAcknowledgementLoading"
+              :runtime-write-execution-loading="runtimeWriteExecutionLoading"
               :validation-report="validationReport || definition.last_validation_report_json"
               :preview-run="previewRun"
               :preview-manifest="definition.last_preview_manifest_json"
@@ -239,6 +240,7 @@
               :post-backup-readiness-report="postBackupReadinessReport"
               :runtime-write-kill-switch-guard-report="runtimeWriteKillSwitchGuardReport"
               :runtime-write-operator-acknowledgement-report="runtimeWriteOperatorAcknowledgementReport"
+              :runtime-write-execution-report="runtimeWriteExecutionReport"
               :runtime-write-final-confirmations="runtimeWriteFinalConfirmations"
               :runtime-write-operator-acknowledgements="runtimeWriteOperatorAcknowledgements"
               @save="saveDefinition"
@@ -266,6 +268,7 @@
               @request-runtime-write-operator-acknowledgement="requestOperatorAcknowledgement"
               @acknowledge-runtime-write-operator-runbook="acknowledgeOperatorRunbook"
               @revoke-runtime-write-operator-acknowledgement="revokeOperatorAcknowledgement"
+              @execute-runtime-write="executeRuntimeWriteFromUi"
             />
           </div>
         </div>
@@ -301,6 +304,7 @@ import {
   createPublishCandidateSnapshot,
   createRuntimeWritePlan,
   deleteDefinition,
+  executeRuntimeWrite,
   generatePublishDryRun,
   getDefinition,
   getApprovedCandidatePreflight,
@@ -347,6 +351,7 @@ const runtimeWriteBackupsLoading = ref(false)
 const postBackupReadinessLoading = ref(false)
 const runtimeWriteKillSwitchGuardLoading = ref(false)
 const runtimeWriteOperatorAcknowledgementLoading = ref(false)
+const runtimeWriteExecutionLoading = ref(false)
 const lifecycleAction = ref(null)
 const definition = ref(null)
 const definitionJson = ref(null)
@@ -370,6 +375,7 @@ const postBackupReadinessReport = ref(null)
 const runtimeWriteKillSwitchGuardReport = ref(null)
 const runtimeWriteOperatorAcknowledgements = ref([])
 const runtimeWriteOperatorAcknowledgementReport = ref(null)
+const runtimeWriteExecutionReport = ref(null)
 const jsonError = ref(null)
 const apiError = ref(null)
 const demoFlowSteps = [
@@ -879,11 +885,48 @@ async function acknowledgeOperatorRunbook(acknowledgement) {
     const { data } = await acknowledgeRuntimeWriteOperatorRunbook(acknowledgement.id, note)
     runtimeWriteOperatorAcknowledgementReport.value = data
     await loadRuntimeWriteOperatorAcknowledgements(acknowledgement.builder_publish_execution_id)
-    Innoclapps.success('Operator runbook acknowledged as control-plane state only. No runtime write, copy, or publish was performed.')
+    await loadPublishExecutions()
+    Innoclapps.success('Operator runbook acknowledged. Runtime write remains gated by kill-switch, typed confirmation, and execution checks.')
   } catch (error) {
     apiError.value = errorMessage(error)
   } finally {
     runtimeWriteOperatorAcknowledgementLoading.value = false
+  }
+}
+
+async function executeRuntimeWriteFromUi(execution) {
+  if (!execution?.id) {
+    return
+  }
+
+  const confirmed = window.confirm(
+    'Runtime write copies staged generated files into allowlisted runtime paths. It does not publish, run migrations, register routes, mark the module published, or execute rollback.'
+  )
+
+  if (!confirmed) {
+    return
+  }
+
+  const expected = String(execution.uuid || execution.id)
+  const typed = window.prompt(`Type ${expected} to execute runtime write`) || ''
+
+  if (typed !== expected) {
+    Innoclapps.error('Runtime write confirmation did not match. No action was performed.')
+    return
+  }
+
+  runtimeWriteExecutionLoading.value = true
+  apiError.value = null
+
+  try {
+    const { data } = await executeRuntimeWrite(execution.id)
+    runtimeWriteExecutionReport.value = data
+    await loadPublishExecutions()
+    Innoclapps.success('Runtime write execution finished. Publish, migrations, routes, and rollback were not executed.')
+  } catch (error) {
+    apiError.value = errorMessage(error)
+  } finally {
+    runtimeWriteExecutionLoading.value = false
   }
 }
 
@@ -1017,6 +1060,7 @@ function setDefinition(value) {
   runtimeWriteKillSwitchGuardReport.value = null
   runtimeWriteOperatorAcknowledgements.value = []
   runtimeWriteOperatorAcknowledgementReport.value = null
+  runtimeWriteExecutionReport.value = null
 }
 
 function normalizeDefinition(value) {

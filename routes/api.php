@@ -57,6 +57,9 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('builder')->group(function 
     Route::post('publish-executions/{execution}/runtime-write-kill-switch-guard', [BuilderPublishExecutionController::class, 'runtimeWriteKillSwitchGuard'])
         ->name('builder.publish-executions.runtime-write-kill-switch-guard');
 
+    Route::post('publish-executions/{execution}/execute-runtime-write', [BuilderPublishExecutionController::class, 'executeRuntimeWrite'])
+        ->name('builder.publish-executions.execute-runtime-write');
+
     Route::get('publish-executions/{execution}/runtime-write-final-confirmations', [BuilderRuntimeWriteFinalConfirmationController::class, 'index'])
         ->name('builder.publish-executions.runtime-write-final-confirmations.index');
 

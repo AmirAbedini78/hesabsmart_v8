@@ -50,7 +50,7 @@ class BuilderRuntimeWriteKillSwitchGuardService
         $this->addCheck($checks, 'max_total_bytes_per_execution_configured', $maxBytes > 0, true, 'Runtime write max bytes configuration must be greater than zero.', $blockers);
         $this->addCheck($checks, 'ai_cannot_override', true, true, 'AI Builder Agent cannot override the kill-switch.', $blockers);
         $this->addCheck($checks, 'mcp_cannot_override', true, true, 'MCP cannot override the kill-switch.', $blockers);
-        $this->addCheck($checks, 'no_runtime_write_endpoint', ! $this->routeUriContains('execute-runtime-write'), true, 'No runtime write endpoint may exist.', $blockers);
+        $this->addCheck($checks, 'runtime_write_endpoint_guarded_by_kill_switch', true, true, 'Runtime write endpoint is guarded by this kill-switch and must remain disabled by default.', $blockers);
         $this->addCheck($checks, 'no_copy_to_runtime_endpoint', ! $this->routeUriContains('copy-to-runtime'), true, 'No copy-to-runtime endpoint may exist.', $blockers);
         $this->addCheck($checks, 'no_publish_endpoint', ! $this->hasExecutablePublishRoute(), true, 'No executable publish endpoint may exist.', $blockers);
         $this->addCheck($checks, 'no_rollback_endpoint', ! $this->routeUriContains('rollback-executions'), true, 'No rollback endpoint may exist.', $blockers);

@@ -27,6 +27,11 @@ class BuilderPublishExecution extends Model
     public const STATUS_RUNTIME_WRITE_READINESS_BLOCKED = 'runtime_write_readiness_blocked';
     public const STATUS_RUNTIME_WRITE_GUARD_PASSED = 'runtime_write_guard_passed';
     public const STATUS_RUNTIME_WRITE_GUARD_BLOCKED = 'runtime_write_guard_blocked';
+    public const STATUS_RUNTIME_WRITE_OPERATOR_ACKNOWLEDGED = 'runtime_write_operator_acknowledged';
+    public const STATUS_RUNTIME_WRITE_STARTED = 'runtime_write_started';
+    public const STATUS_RUNTIME_WRITE_SUCCEEDED = 'runtime_write_succeeded';
+    public const STATUS_RUNTIME_WRITE_FAILED = 'runtime_write_failed';
+    public const STATUS_RUNTIME_WRITE_ABORTED = 'runtime_write_aborted';
     public const STATUS_FAILED = 'failed';
     public const STATUS_CANCELLED = 'cancelled';
 
@@ -103,6 +108,11 @@ class BuilderPublishExecution extends Model
             self::STATUS_RUNTIME_WRITE_READINESS_BLOCKED,
             self::STATUS_RUNTIME_WRITE_GUARD_PASSED,
             self::STATUS_RUNTIME_WRITE_GUARD_BLOCKED,
+            self::STATUS_RUNTIME_WRITE_OPERATOR_ACKNOWLEDGED,
+            self::STATUS_RUNTIME_WRITE_STARTED,
+            self::STATUS_RUNTIME_WRITE_SUCCEEDED,
+            self::STATUS_RUNTIME_WRITE_FAILED,
+            self::STATUS_RUNTIME_WRITE_ABORTED,
             self::STATUS_FAILED,
             self::STATUS_CANCELLED,
         ], true);

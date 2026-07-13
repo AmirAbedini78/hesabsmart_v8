@@ -139,6 +139,22 @@
         @click="$emit('request-operator-acknowledgement', latestExecutionId)"
       />
 
+      <IAlert variant="warning">
+        <IAlertBody>
+          Runtime write copies staged generated files into allowlisted runtime paths only. It does not publish, run migrations, register routes, mark the module published, or execute rollback.
+        </IAlertBody>
+      </IAlert>
+
+      <IButton
+        class="w-full justify-center"
+        icon="ExclamationTriangle"
+        text="Execute Runtime Write"
+        variant="danger"
+        :disabled="!canExecuteRuntimeWrite"
+        :loading="runtimeWriteExecutionLoading"
+        @click="$emit('execute-runtime-write', latestExecution)"
+      />
+
       <div v-if="latestReport" class="space-y-3">
         <div class="grid gap-2 text-sm">
           <div class="flex justify-between gap-4">
@@ -709,6 +725,90 @@
         <pre v-if="runtimeWriteOperatorAcknowledgementReport" class="max-h-96 overflow-auto whitespace-pre-wrap rounded-md bg-neutral-50 p-3 text-xs dark:bg-neutral-900">{{ formattedRuntimeWriteOperatorAcknowledgementReport }}</pre>
       </div>
 
+      <div v-if="runtimeWriteExecutionReport" class="space-y-3">
+        <ITextDark class="font-medium" text="Runtime write execution" />
+        <div class="grid gap-2 text-sm">
+          <div class="flex justify-between gap-4">
+            <span class="text-neutral-500 dark:text-neutral-400">runtime_write_executed</span>
+            <span class="font-mono">{{ String(runtimeWriteExecutionReport.runtime_write_executed) }}</span>
+          </div>
+          <div class="flex justify-between gap-4">
+            <span class="text-neutral-500 dark:text-neutral-400">files_committed</span>
+            <span class="font-mono">{{ runtimeWriteExecutionReport.files_committed?.length || 0 }}</span>
+          </div>
+          <div class="flex justify-between gap-4">
+            <span class="text-neutral-500 dark:text-neutral-400">runtime_writes_performed</span>
+            <span class="font-mono">{{ runtimeWriteExecutionReport.runtime_writes_performed }}</span>
+          </div>
+          <div class="flex justify-between gap-4">
+            <span class="text-neutral-500 dark:text-neutral-400">publish_executed</span>
+            <span class="font-mono">{{ String(runtimeWriteExecutionReport.publish_executed) }}</span>
+          </div>
+          <div class="flex justify-between gap-4">
+            <span class="text-neutral-500 dark:text-neutral-400">migrations_run</span>
+            <span class="font-mono">{{ String(runtimeWriteExecutionReport.migrations_run) }}</span>
+          </div>
+          <div class="flex justify-between gap-4">
+            <span class="text-neutral-500 dark:text-neutral-400">routes_registered</span>
+            <span class="font-mono">{{ String(runtimeWriteExecutionReport.routes_registered) }}</span>
+          </div>
+          <div class="flex justify-between gap-4">
+            <span class="text-neutral-500 dark:text-neutral-400">module_marked_published</span>
+            <span class="font-mono">{{ String(runtimeWriteExecutionReport.module_marked_published) }}</span>
+          </div>
+          <div class="flex justify-between gap-4">
+            <span class="text-neutral-500 dark:text-neutral-400">rollback_executed</span>
+            <span class="font-mono">{{ String(runtimeWriteExecutionReport.rollback_executed) }}</span>
+          </div>
+          <div class="flex justify-between gap-4">
+            <span class="text-neutral-500 dark:text-neutral-400">runtime_write_report_path</span>
+            <span class="break-all text-right font-mono text-xs">{{ runtimeWriteExecutionReport.runtime_write_report_path || '-' }}</span>
+          </div>
+        </div>
+
+        <IAlert v-if="runtimeWriteExecutionReport.blockers?.length" variant="danger">
+          <IAlertBody>
+            <div class="mb-1 font-medium">Blockers</div>
+            <ul class="list-disc space-y-1 pl-5">
+              <li v-for="blocker in runtimeWriteExecutionReport.blockers" :key="blocker">
+                {{ blocker }}
+              </li>
+            </ul>
+          </IAlertBody>
+        </IAlert>
+
+        <IAlert v-if="runtimeWriteExecutionReport.warnings?.length" variant="warning">
+          <IAlertBody>
+            <div class="mb-1 font-medium">Warnings</div>
+            <ul class="list-disc space-y-1 pl-5">
+              <li v-for="warning in runtimeWriteExecutionReport.warnings" :key="warning">
+                {{ warning }}
+              </li>
+            </ul>
+          </IAlertBody>
+        </IAlert>
+
+        <div v-if="runtimeWriteExecutionReport.checks?.length">
+          <ITextDark class="font-medium" text="Checks" />
+          <ul class="mt-1 space-y-1 text-sm">
+            <li v-for="check in runtimeWriteExecutionReport.checks" :key="check.key">
+              <span class="font-mono">{{ check.status }}</span> {{ check.key }} - {{ check.message }}
+            </li>
+          </ul>
+        </div>
+
+        <div v-if="runtimeWriteExecutionReport.forbidden_actions?.length">
+          <ITextDark class="font-medium" text="Forbidden actions" />
+          <ul class="mt-1 list-disc space-y-1 pl-5 text-sm">
+            <li v-for="action in runtimeWriteExecutionReport.forbidden_actions" :key="action">
+              {{ action }}
+            </li>
+          </ul>
+        </div>
+
+        <pre class="max-h-96 overflow-auto whitespace-pre-wrap rounded-md bg-neutral-50 p-3 text-xs dark:bg-neutral-900">{{ formattedRuntimeWriteExecutionReport }}</pre>
+      </div>
+
       <div v-if="records.length" class="space-y-2">
         <ITextDark class="font-medium" text="Execution records" />
         <div
@@ -748,6 +848,7 @@ const props = defineProps({
   postBackupReadinessReport: Object,
   runtimeWriteKillSwitchGuardReport: Object,
   runtimeWriteOperatorAcknowledgementReport: Object,
+  runtimeWriteExecutionReport: Object,
   finalConfirmations: {
     type: Array,
     default: () => [],
@@ -765,6 +866,7 @@ const props = defineProps({
   postBackupReadinessLoading: Boolean,
   runtimeWriteKillSwitchGuardLoading: Boolean,
   runtimeWriteOperatorAcknowledgementLoading: Boolean,
+  runtimeWriteExecutionLoading: Boolean,
 })
 
 defineEmits([
@@ -782,10 +884,41 @@ defineEmits([
   'request-operator-acknowledgement',
   'acknowledge-operator-runbook',
   'revoke-operator-acknowledgement',
+  'execute-runtime-write',
 ])
 
 const latestExecutionId = computed(() =>
   props.latestReport?.execution_id || props.records?.[0]?.id || null
+)
+
+const latestExecution = computed(() => props.records?.[0] || null)
+
+const hasAcknowledgedOperator = computed(() =>
+  props.operatorAcknowledgements.some(acknowledgement => acknowledgement.status === 'acknowledged')
+)
+
+const hasKillSwitchGuardEvidence = computed(() =>
+  Boolean(
+    props.runtimeWriteKillSwitchGuardReport?.guard_report_path ||
+      latestExecution.value?.metadata_json?.runtime_write_kill_switch_guard_path
+  )
+)
+
+const hasPostBackupReadinessEvidence = computed(() =>
+  Boolean(
+    props.postBackupReadinessReport?.readiness_report_path ||
+      latestExecution.value?.metadata_json?.post_backup_runtime_write_readiness_path
+  )
+)
+
+const canExecuteRuntimeWrite = computed(() =>
+  Boolean(
+    latestExecution.value &&
+      ['runtime_write_operator_acknowledged', 'runtime_write_guard_passed'].includes(latestExecution.value.status) &&
+      hasAcknowledgedOperator.value &&
+      hasKillSwitchGuardEvidence.value &&
+      hasPostBackupReadinessEvidence.value
+  )
 )
 
 const formattedLatestReport = computed(() =>
@@ -822,5 +955,9 @@ const formattedRuntimeWriteKillSwitchGuardReport = computed(() =>
 
 const formattedRuntimeWriteOperatorAcknowledgementReport = computed(() =>
   props.runtimeWriteOperatorAcknowledgementReport ? JSON.stringify(props.runtimeWriteOperatorAcknowledgementReport, null, 2) : 'Not run yet.'
+)
+
+const formattedRuntimeWriteExecutionReport = computed(() =>
+  props.runtimeWriteExecutionReport ? JSON.stringify(props.runtimeWriteExecutionReport, null, 2) : 'Not run yet.'
 )
 </script>
