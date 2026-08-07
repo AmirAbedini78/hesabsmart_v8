@@ -46,6 +46,9 @@
   "rollback_execution_in_runtime_write_phase": false,
   "publish_executed": false,
   "post_write_smoke_required_after_runtime_write": true,
+  "post_write_smoke_implemented": true,
+  "post_write_smoke_endpoint": "POST /api/builder/publish-executions/{id}/post-write-smoke",
+  "runtime_write_succeeded_is_not_publish": true,
   "ai_may_execute_runtime_write": false,
   "mcp_may_execute_runtime_write": false
 }

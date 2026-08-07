@@ -14,6 +14,7 @@
   "mcp_must_not_expose_operator_acknowledgement_tools": true,
   "mcp_must_not_acknowledge_operator_runbook": true,
   "mcp_must_not_expose_rollback_execution_tools": true,
+  "post_write_smoke_must_not_execute_generated_code": true,
   "mcp_must_not_bypass_human_confirmation": true,
   "runtime_write_final_confirmation_persistence_exists": true,
   "erpsmart_core_depends_on_mcp": false,

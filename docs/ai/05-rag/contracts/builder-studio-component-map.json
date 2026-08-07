@@ -165,11 +165,11 @@
     {
       "name": "BuilderPublishExecutionRecords",
       "file": "modules/Builder/resources/js/components/BuilderPublishExecutionRecords.vue",
-      "role": "Displays control-plane publish execution preparation records, staged file validation, storage-only runtime write plan artifacts, final confirmation review state, runtime write execution preflight reports, backup artifact reports, post-backup readiness reports, kill-switch guard reports, and operator acknowledgement records.",
+      "role": "Displays control-plane publish execution preparation records, staged file validation, storage-only runtime write plan artifacts, final confirmation review state, runtime write execution preflight reports, backup artifact reports, post-backup readiness reports, kill-switch guard reports, operator acknowledgement records, guarded runtime write reports, and post-write smoke verification.",
       "edits_definition_json": false,
       "calls_api": false,
       "risk_level": "high",
-      "notes": "Execution record, staged validation, runtime write plan, final confirmation, preflight, backup artifact, readiness, kill-switch guard, operator acknowledgement, and guarded Execute Runtime Write action. Execute Runtime Write must be gated by safety evidence and destructive typed confirmation. Must not expose Publish, Execute Publish, Deploy, Rollback, Copy to runtime, Run migrations, Enable Runtime Write, Override Kill-Switch, or Mark published labels."
+      "notes": "Guarded runtime write remains gated by safety evidence and destructive typed confirmation. Post-write smoke is enabled only for runtime_write_succeeded and verifies files without modifying them, publishing, migrations, route registration, mark-published, or rollback."
     },
     {
       "name": "BuilderStatusBadge",

@@ -498,6 +498,23 @@
     },
     {
       "method": "POST",
+      "path": "/api/builder/publish-executions/{id}/post-write-smoke",
+      "purpose": "Verify committed guarded runtime write files and supporting rollback/backup evidence.",
+      "status": "implemented",
+      "safe_for_ui": true,
+      "safe_for_agent": false,
+      "requires_admin": true,
+      "requires_explicit_human_initiation": true,
+      "actual_publish": false,
+      "migration_execution": false,
+      "routes_registered": false,
+      "module_marked_published": false,
+      "rollback_executed": false,
+      "runtime_files_modified": false,
+      "notes": "Read-only runtime file verification with a storage report and control-plane status/audit update. Generated PHP is syntax-checked but never executed."
+    },
+    {
+      "method": "POST",
       "path": "/api/builder/definitions/{id}/archive",
       "purpose": "Archive an unpublished Builder definition.",
       "status": "implemented",

@@ -285,6 +285,18 @@
     "module_marked_published": false,
     "rollback_executed": false
   },
+  "current_runtime_write_post_write_smoke_mvp": {
+    "implemented": true,
+    "service": "BuilderRuntimeWritePostWriteSmokeService",
+    "endpoint": "POST /api/builder/publish-executions/{id}/post-write-smoke",
+    "write_scope": "storage/app/builder-runtime-write-smoke",
+    "runtime_files_modified": false,
+    "publish_executed": false,
+    "migrations_run": false,
+    "routes_registered": false,
+    "module_marked_published": false,
+    "rollback_executed": false
+  },
   "current_runtime_write_execution_final_implementation_plan": {
     "implemented": true,
     "implementation_status": "runtime_write_execution_mvp",

@@ -32,6 +32,9 @@ class BuilderPublishExecution extends Model
     public const STATUS_RUNTIME_WRITE_SUCCEEDED = 'runtime_write_succeeded';
     public const STATUS_RUNTIME_WRITE_FAILED = 'runtime_write_failed';
     public const STATUS_RUNTIME_WRITE_ABORTED = 'runtime_write_aborted';
+    public const STATUS_RUNTIME_WRITE_SMOKE_PASSED = 'runtime_write_smoke_passed';
+    public const STATUS_RUNTIME_WRITE_SMOKE_FAILED = 'runtime_write_smoke_failed';
+    public const STATUS_RUNTIME_WRITE_SMOKE_BLOCKED = 'runtime_write_smoke_blocked';
     public const STATUS_FAILED = 'failed';
     public const STATUS_CANCELLED = 'cancelled';
 
@@ -113,6 +116,9 @@ class BuilderPublishExecution extends Model
             self::STATUS_RUNTIME_WRITE_SUCCEEDED,
             self::STATUS_RUNTIME_WRITE_FAILED,
             self::STATUS_RUNTIME_WRITE_ABORTED,
+            self::STATUS_RUNTIME_WRITE_SMOKE_PASSED,
+            self::STATUS_RUNTIME_WRITE_SMOKE_FAILED,
+            self::STATUS_RUNTIME_WRITE_SMOKE_BLOCKED,
             self::STATUS_FAILED,
             self::STATUS_CANCELLED,
         ], true);

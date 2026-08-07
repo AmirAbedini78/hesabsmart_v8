@@ -250,6 +250,7 @@
       :runtime-write-kill-switch-guard-report="runtimeWriteKillSwitchGuardReport"
       :runtime-write-operator-acknowledgement-report="runtimeWriteOperatorAcknowledgementReport"
       :runtime-write-execution-report="runtimeWriteExecutionReport"
+      :runtime-write-post-write-smoke-report="runtimeWritePostWriteSmokeReport"
       :final-confirmations="runtimeWriteFinalConfirmations"
       :operator-acknowledgements="runtimeWriteOperatorAcknowledgements"
       :loading="publishExecutionCreating"
@@ -262,6 +263,7 @@
       :runtime-write-kill-switch-guard-loading="runtimeWriteKillSwitchGuardLoading"
       :runtime-write-operator-acknowledgement-loading="runtimeWriteOperatorAcknowledgementLoading"
       :runtime-write-execution-loading="runtimeWriteExecutionLoading"
+      :runtime-write-post-write-smoke-loading="runtimeWritePostWriteSmokeLoading"
       @create-execution-record="$emit('create-publish-execution-record')"
       @validate-staged-files="$emit('validate-staged-files', $event)"
       @create-runtime-write-plan="$emit('create-runtime-write-plan', $event)"
@@ -277,6 +279,7 @@
       @acknowledge-operator-runbook="$emit('acknowledge-runtime-write-operator-runbook', $event)"
       @revoke-operator-acknowledgement="$emit('revoke-runtime-write-operator-acknowledgement', $event)"
       @execute-runtime-write="$emit('execute-runtime-write', $event)"
+      @run-post-write-smoke="$emit('run-runtime-write-post-write-smoke', $event)"
     />
   </div>
 </template>
@@ -310,6 +313,7 @@ const props = defineProps({
   runtimeWriteKillSwitchGuardLoading: Boolean,
   runtimeWriteOperatorAcknowledgementLoading: Boolean,
   runtimeWriteExecutionLoading: Boolean,
+  runtimeWritePostWriteSmokeLoading: Boolean,
   validationReport: Object,
   previewRun: Object,
   previewManifest: Object,
@@ -329,6 +333,7 @@ const props = defineProps({
   runtimeWriteKillSwitchGuardReport: Object,
   runtimeWriteOperatorAcknowledgementReport: Object,
   runtimeWriteExecutionReport: Object,
+  runtimeWritePostWriteSmokeReport: Object,
   runtimeWriteFinalConfirmations: {
     type: Array,
     default: () => [],
@@ -366,6 +371,7 @@ defineEmits([
   'acknowledge-runtime-write-operator-runbook',
   'revoke-runtime-write-operator-acknowledgement',
   'execute-runtime-write',
+  'run-runtime-write-post-write-smoke',
 ])
 
 const formattedValidationReport = computed(() => formatJson(props.validationReport))

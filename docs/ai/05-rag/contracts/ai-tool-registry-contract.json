@@ -161,6 +161,22 @@
       "runtime_writes_performed": 0,
       "publish_executed": false,
       "copy_to_runtime_executed": false
+    },
+    {
+      "name": "builder.run_runtime_write_post_write_smoke",
+      "maps_to": "POST /api/builder/publish-executions/{id}/post-write-smoke",
+      "safety_class": "control_plane_write",
+      "safe_for_agent": false,
+      "approval_required": true,
+      "audit_required": true,
+      "requires_explicit_human_initiation": true,
+      "runtime_files_modified": 0,
+      "publish_executed": false,
+      "migrations_run": false,
+      "routes_registered": false,
+      "module_marked_published": false,
+      "rollback_executed": false,
+      "generated_php_code_execution_allowed": false
     }
   ],
   "forbidden_tools": [

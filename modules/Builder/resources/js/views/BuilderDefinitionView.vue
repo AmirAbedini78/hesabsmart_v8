@@ -222,6 +222,7 @@
               :runtime-write-kill-switch-guard-loading="runtimeWriteKillSwitchGuardLoading"
               :runtime-write-operator-acknowledgement-loading="runtimeWriteOperatorAcknowledgementLoading"
               :runtime-write-execution-loading="runtimeWriteExecutionLoading"
+              :runtime-write-post-write-smoke-loading="runtimeWritePostWriteSmokeLoading"
               :validation-report="validationReport || definition.last_validation_report_json"
               :preview-run="previewRun"
               :preview-manifest="definition.last_preview_manifest_json"
@@ -241,6 +242,7 @@
               :runtime-write-kill-switch-guard-report="runtimeWriteKillSwitchGuardReport"
               :runtime-write-operator-acknowledgement-report="runtimeWriteOperatorAcknowledgementReport"
               :runtime-write-execution-report="runtimeWriteExecutionReport"
+              :runtime-write-post-write-smoke-report="runtimeWritePostWriteSmokeReport"
               :runtime-write-final-confirmations="runtimeWriteFinalConfirmations"
               :runtime-write-operator-acknowledgements="runtimeWriteOperatorAcknowledgements"
               @save="saveDefinition"
@@ -269,6 +271,7 @@
               @acknowledge-runtime-write-operator-runbook="acknowledgeOperatorRunbook"
               @revoke-runtime-write-operator-acknowledgement="revokeOperatorAcknowledgement"
               @execute-runtime-write="executeRuntimeWriteFromUi"
+              @run-runtime-write-post-write-smoke="runRuntimeWritePostWriteSmokeFromUi"
             />
           </div>
         </div>
@@ -324,6 +327,7 @@ import {
   revokeRuntimeWriteFinalConfirmation,
   revokeRuntimeWriteOperatorAcknowledgement,
   runRuntimeWriteExecutionPreflight,
+  runRuntimeWritePostWriteSmoke,
   runPostBackupRuntimeWriteReadiness,
   updateDefinition,
   grantRuntimeWriteFinalConfirmation,
@@ -352,6 +356,7 @@ const postBackupReadinessLoading = ref(false)
 const runtimeWriteKillSwitchGuardLoading = ref(false)
 const runtimeWriteOperatorAcknowledgementLoading = ref(false)
 const runtimeWriteExecutionLoading = ref(false)
+const runtimeWritePostWriteSmokeLoading = ref(false)
 const lifecycleAction = ref(null)
 const definition = ref(null)
 const definitionJson = ref(null)
@@ -376,6 +381,7 @@ const runtimeWriteKillSwitchGuardReport = ref(null)
 const runtimeWriteOperatorAcknowledgements = ref([])
 const runtimeWriteOperatorAcknowledgementReport = ref(null)
 const runtimeWriteExecutionReport = ref(null)
+const runtimeWritePostWriteSmokeReport = ref(null)
 const jsonError = ref(null)
 const apiError = ref(null)
 const demoFlowSteps = [
@@ -930,6 +936,26 @@ async function executeRuntimeWriteFromUi(execution) {
   }
 }
 
+async function runRuntimeWritePostWriteSmokeFromUi(executionId) {
+  if (!executionId) {
+    return
+  }
+
+  runtimeWritePostWriteSmokeLoading.value = true
+  apiError.value = null
+
+  try {
+    const { data } = await runRuntimeWritePostWriteSmoke(executionId)
+    runtimeWritePostWriteSmokeReport.value = data
+    await loadPublishExecutions()
+    Innoclapps.success('Post-write smoke finished. Runtime files were verified without publish, migrations, route registration, mark-published, rollback, or runtime file modification.')
+  } catch (error) {
+    apiError.value = errorMessage(error)
+  } finally {
+    runtimeWritePostWriteSmokeLoading.value = false
+  }
+}
+
 async function revokeOperatorAcknowledgement(acknowledgement) {
   const note = window.prompt('Operator acknowledgement revocation note') || ''
   runtimeWriteOperatorAcknowledgementLoading.value = true
@@ -1061,6 +1087,7 @@ function setDefinition(value) {
   runtimeWriteOperatorAcknowledgements.value = []
   runtimeWriteOperatorAcknowledgementReport.value = null
   runtimeWriteExecutionReport.value = null
+  runtimeWritePostWriteSmokeReport.value = null
 }
 
 function normalizeDefinition(value) {

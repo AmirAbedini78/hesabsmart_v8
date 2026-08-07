@@ -12,6 +12,7 @@ use App\Services\Builder\BuilderRuntimeWriteExecutionService;
 use App\Services\Builder\BuilderRuntimeWriteExecutionPreflightService;
 use App\Services\Builder\BuilderRuntimeWriteKillSwitchGuardService;
 use App\Services\Builder\BuilderRuntimeWritePlanArtifactService;
+use App\Services\Builder\BuilderRuntimeWritePostWriteSmokeService;
 use Illuminate\Http\JsonResponse;
 use Modules\Core\Http\Controllers\ApiController;
 
@@ -80,5 +81,12 @@ class BuilderPublishExecutionController extends ApiController
         BuilderRuntimeWriteExecutionService $service
     ): JsonResponse {
         return $this->response($service->execute($execution));
+    }
+
+    public function postWriteSmoke(
+        BuilderPublishExecution $execution,
+        BuilderRuntimeWritePostWriteSmokeService $service
+    ): JsonResponse {
+        return $this->response($service->verify($execution));
     }
 }

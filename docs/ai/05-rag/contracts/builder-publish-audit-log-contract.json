@@ -49,7 +49,11 @@
     "runtime_write_file_committed",
     "runtime_write_succeeded",
     "runtime_write_failed",
-    "runtime_write_aborted"
+    "runtime_write_aborted",
+    "runtime_write_smoke_started",
+    "runtime_write_smoke_passed",
+    "runtime_write_smoke_failed",
+    "runtime_write_smoke_blocked"
   ],
   "future_events": [
     "candidate_snapshot_created",
@@ -102,6 +106,10 @@
     "runtime_write_started",
     "runtime_write_succeeded",
     "runtime_write_failed",
+    "runtime_write_smoke_started",
+    "runtime_write_smoke_passed",
+    "runtime_write_smoke_failed",
+    "runtime_write_smoke_blocked",
     "runtime_write_skipped",
     "post_publish_smoke_started",
     "post_publish_smoke_failed",

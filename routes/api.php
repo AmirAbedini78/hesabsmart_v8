@@ -60,6 +60,9 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('builder')->group(function 
     Route::post('publish-executions/{execution}/execute-runtime-write', [BuilderPublishExecutionController::class, 'executeRuntimeWrite'])
         ->name('builder.publish-executions.execute-runtime-write');
 
+    Route::post('publish-executions/{execution}/post-write-smoke', [BuilderPublishExecutionController::class, 'postWriteSmoke'])
+        ->name('builder.publish-executions.post-write-smoke');
+
     Route::get('publish-executions/{execution}/runtime-write-final-confirmations', [BuilderRuntimeWriteFinalConfirmationController::class, 'index'])
         ->name('builder.publish-executions.runtime-write-final-confirmations.index');
 

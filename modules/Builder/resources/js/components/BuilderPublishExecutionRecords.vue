@@ -155,6 +155,21 @@
         @click="$emit('execute-runtime-write', latestExecution)"
       />
 
+      <IAlert variant="info">
+        <IAlertBody>
+          Post-write smoke only. This verifies committed runtime files and does not publish, run migrations, register routes, mark the module published, modify runtime files, or execute rollback.
+        </IAlertBody>
+      </IAlert>
+
+      <IButton
+        class="w-full justify-center"
+        icon="ShieldCheck"
+        text="Run Post-Write Smoke"
+        :disabled="latestExecution?.status !== 'runtime_write_succeeded'"
+        :loading="runtimeWritePostWriteSmokeLoading"
+        @click="$emit('run-post-write-smoke', latestExecutionId)"
+      />
+
       <div v-if="latestReport" class="space-y-3">
         <div class="grid gap-2 text-sm">
           <div class="flex justify-between gap-4">
@@ -809,6 +824,60 @@
         <pre class="max-h-96 overflow-auto whitespace-pre-wrap rounded-md bg-neutral-50 p-3 text-xs dark:bg-neutral-900">{{ formattedRuntimeWriteExecutionReport }}</pre>
       </div>
 
+      <div v-if="runtimeWritePostWriteSmokeReport" class="space-y-3">
+        <ITextDark class="font-medium" text="Runtime write post-write smoke" />
+        <div class="grid gap-2 text-sm">
+          <div v-for="field in smokeSummaryFields" :key="field.key" class="flex justify-between gap-4">
+            <span class="text-neutral-500 dark:text-neutral-400">{{ field.key }}</span>
+            <span :class="field.breakable ? 'break-all text-right font-mono text-xs' : 'font-mono'">{{ field.value }}</span>
+          </div>
+        </div>
+
+        <IAlert v-if="runtimeWritePostWriteSmokeReport.blockers?.length" variant="danger">
+          <IAlertBody>
+            <div class="mb-1 font-medium">Blockers</div>
+            <ul class="list-disc space-y-1 pl-5">
+              <li v-for="blocker in runtimeWritePostWriteSmokeReport.blockers" :key="blocker">{{ blocker }}</li>
+            </ul>
+          </IAlertBody>
+        </IAlert>
+
+        <IAlert v-if="runtimeWritePostWriteSmokeReport.warnings?.length" variant="warning">
+          <IAlertBody>
+            <div class="mb-1 font-medium">Warnings</div>
+            <ul class="list-disc space-y-1 pl-5">
+              <li v-for="warning in runtimeWritePostWriteSmokeReport.warnings" :key="warning">{{ warning }}</li>
+            </ul>
+          </IAlertBody>
+        </IAlert>
+
+        <div v-if="runtimeWritePostWriteSmokeReport.checks?.length">
+          <ITextDark class="font-medium" text="Checks" />
+          <ul class="mt-1 space-y-1 text-sm">
+            <li v-for="check in runtimeWritePostWriteSmokeReport.checks" :key="check.key">
+              <span class="font-mono">{{ check.status }}</span> {{ check.key }} - {{ check.message }}
+            </li>
+          </ul>
+        </div>
+
+        <div v-if="runtimeWritePostWriteSmokeReport.files?.length">
+          <ITextDark class="font-medium" text="File results" />
+          <div v-for="file in runtimeWritePostWriteSmokeReport.files" :key="file.runtime_path" class="mt-2 rounded-md border border-neutral-200 p-3 text-xs dark:border-neutral-700">
+            <div class="break-all font-mono">{{ file.runtime_path }}</div>
+            <div class="mt-1">exists={{ String(file.exists) }}, allowlisted={{ String(file.allowlisted) }}, hash_matches={{ String(file.hash_matches) }}, syntax_valid={{ String(file.syntax_valid) }}, json_valid={{ String(file.json_valid) }}</div>
+          </div>
+        </div>
+
+        <div v-if="runtimeWritePostWriteSmokeReport.forbidden_actions?.length">
+          <ITextDark class="font-medium" text="Forbidden actions" />
+          <ul class="mt-1 list-disc space-y-1 pl-5 text-sm">
+            <li v-for="action in runtimeWritePostWriteSmokeReport.forbidden_actions" :key="action">{{ action }}</li>
+          </ul>
+        </div>
+
+        <pre class="max-h-96 overflow-auto whitespace-pre-wrap rounded-md bg-neutral-50 p-3 text-xs dark:bg-neutral-900">{{ formattedRuntimeWritePostWriteSmokeReport }}</pre>
+      </div>
+
       <div v-if="records.length" class="space-y-2">
         <ITextDark class="font-medium" text="Execution records" />
         <div
@@ -849,6 +918,7 @@ const props = defineProps({
   runtimeWriteKillSwitchGuardReport: Object,
   runtimeWriteOperatorAcknowledgementReport: Object,
   runtimeWriteExecutionReport: Object,
+  runtimeWritePostWriteSmokeReport: Object,
   finalConfirmations: {
     type: Array,
     default: () => [],
@@ -867,6 +937,7 @@ const props = defineProps({
   runtimeWriteKillSwitchGuardLoading: Boolean,
   runtimeWriteOperatorAcknowledgementLoading: Boolean,
   runtimeWriteExecutionLoading: Boolean,
+  runtimeWritePostWriteSmokeLoading: Boolean,
 })
 
 defineEmits([
@@ -885,6 +956,7 @@ defineEmits([
   'acknowledge-operator-runbook',
   'revoke-operator-acknowledgement',
   'execute-runtime-write',
+  'run-post-write-smoke',
 ])
 
 const latestExecutionId = computed(() =>
@@ -959,5 +1031,26 @@ const formattedRuntimeWriteOperatorAcknowledgementReport = computed(() =>
 
 const formattedRuntimeWriteExecutionReport = computed(() =>
   props.runtimeWriteExecutionReport ? JSON.stringify(props.runtimeWriteExecutionReport, null, 2) : 'Not run yet.'
+)
+
+const smokeSummaryFields = computed(() => {
+  const report = props.runtimeWritePostWriteSmokeReport
+  const summary = report?.summary || {}
+
+  return [
+    { key: 'post_write_smoke_passed', value: String(report?.post_write_smoke_passed) },
+    { key: 'status', value: report?.status || '-' },
+    { key: 'smoke_report_path', value: report?.smoke_report_path || '-', breakable: true },
+    { key: 'total_files', value: summary.total_files || 0 },
+    { key: 'hash_matches', value: summary.hash_matches || 0 },
+    { key: 'php_syntax_passed', value: summary.php_syntax_passed || 0 },
+    { key: 'json_valid', value: summary.json_valid || 0 },
+    { key: 'migration_files_not_executed', value: summary.migration_files_not_executed || 0 },
+    { key: 'rollback_entries_found', value: summary.rollback_entries_found || 0 },
+  ]
+})
+
+const formattedRuntimeWritePostWriteSmokeReport = computed(() =>
+  props.runtimeWritePostWriteSmokeReport ? JSON.stringify(props.runtimeWritePostWriteSmokeReport, null, 2) : 'Not run yet.'
 )
 </script>

@@ -96,6 +96,10 @@ export function executeRuntimeWrite(executionId) {
   return Innoclapps.request().post(`/builder/publish-executions/${executionId}/execute-runtime-write`)
 }
 
+export function runRuntimeWritePostWriteSmoke(executionId) {
+  return Innoclapps.request().post(`/builder/publish-executions/${executionId}/post-write-smoke`)
+}
+
 export function listRuntimeWriteOperatorAcknowledgements(executionId) {
   return Innoclapps.request(`/builder/publish-executions/${executionId}/runtime-write-operator-acknowledgements`)
 }
